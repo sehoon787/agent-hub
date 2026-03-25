@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSession, signIn } from 'next-auth/react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -42,6 +42,15 @@ export function SubmitForm() {
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
   const [loading, setLoading] = useState(false);
+  const [loadingTimedOut, setLoadingTimedOut] = useState(false);
+
+  // Treat prolonged loading as unauthenticated (auth may not be configured)
+  useEffect(() => {
+    if (status === 'loading') {
+      const timer = setTimeout(() => setLoadingTimedOut(true), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [status]);
 
   const update = (field: keyof FormData, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -86,8 +95,8 @@ export function SubmitForm() {
     }
   };
 
-  // Show loading state while session is being fetched
-  if (status === 'loading') {
+  // Show loading state while session is being fetched (with timeout fallback)
+  if (status === 'loading' && !loadingTimedOut) {
     return (
       <div className="mt-12 flex flex-col items-center gap-4 rounded-xl border border-zinc-800 bg-zinc-900 p-12">
         <div className="h-12 w-12 animate-pulse rounded-full bg-zinc-800" />
