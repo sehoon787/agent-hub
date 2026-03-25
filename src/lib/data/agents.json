@@ -1,0 +1,3623 @@
+[
+  {
+    "slug": "boss",
+    "name": "boss",
+    "displayName": "Boss",
+    "description": "Dynamic meta-orchestrator that classifies intent, selects optimal models, and delegates to specialized sub-agents with full context management.",
+    "longDescription": "Boss is the ultimate meta-orchestrator for Claude Code workflows. It dynamically classifies user intent (architecture, implementation, debugging, research), selects the optimal model tier (opus for deep reasoning, sonnet for coding, haiku for lightweight tasks), and delegates to specialized sub-agents. Boss manages context windows, tracks task dependencies, and synthesizes results from multiple agents into coherent deliverables. It excels at breaking down complex projects into parallelizable work streams and ensuring quality through multi-perspective review.",
+    "category": "orchestrator",
+    "model": "opus",
+    "source": "official",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/anthropics/claude-code",
+    "installCommand": "curl -o ~/.claude/agents/boss.md https://raw.githubusercontent.com/anthropics/claude-code/main/agents/boss.md",
+    "capabilities": [
+      "Intent classification",
+      "Model routing",
+      "Sub-agent delegation",
+      "Context management",
+      "Task dependency tracking",
+      "Result synthesis"
+    ],
+    "tools": [
+      "Task",
+      "Bash",
+      "Read",
+      "Write",
+      "Edit",
+      "Grep",
+      "Glob"
+    ],
+    "tags": [
+      "orchestrator",
+      "meta-agent",
+      "delegation",
+      "multi-model"
+    ],
+    "createdAt": "2025-01-15",
+    "updatedAt": "2025-03-20",
+    "stars": 2840,
+    "downloads": 15200,
+    "featured": true,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "sisyphus",
+    "name": "sisyphus",
+    "displayName": "Sisyphus",
+    "description": "Master orchestrator with intent classification, model routing, and relentless task completion through iterative refinement loops.",
+    "longDescription": "Sisyphus is a master orchestrator that never gives up. Named after the mythological figure, it embodies relentless persistence in task completion. Sisyphus classifies user intent, routes to the optimal model, and manages complex multi-step workflows. When sub-tasks fail, it retries with alternative approaches, escalates to more powerful models, or decomposes the problem further. It maintains a comprehensive task graph and ensures every deliverable meets quality standards through iterative refinement.",
+    "category": "orchestrator",
+    "model": "opus",
+    "source": "official",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "curl -o ~/.claude/agents/sisyphus.md https://raw.githubusercontent.com/Yeachan-Heo/oh-my-claudecode/main/agents/sisyphus.md",
+    "capabilities": [
+      "Intent classification",
+      "Model routing",
+      "Iterative refinement",
+      "Failure recovery",
+      "Task graph management"
+    ],
+    "tools": [
+      "Task",
+      "Bash",
+      "Read",
+      "Write",
+      "Edit",
+      "Grep",
+      "Glob"
+    ],
+    "tags": [
+      "orchestrator",
+      "persistent",
+      "retry-logic",
+      "multi-model"
+    ],
+    "createdAt": "2025-02-01",
+    "updatedAt": "2025-03-18",
+    "stars": 2100,
+    "downloads": 11800,
+    "featured": true,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "atlas",
+    "name": "atlas",
+    "displayName": "Atlas",
+    "description": "Master task orchestrator for delegation and coordination across multiple specialized sub-agents with priority-based scheduling.",
+    "longDescription": "Atlas carries the weight of complex projects on its shoulders. As a master task orchestrator, it breaks down large objectives into discrete work items, assigns them to specialized sub-agents based on capability matching, and coordinates execution with priority-based scheduling. Atlas monitors progress in real-time, handles inter-task dependencies, resolves conflicts between parallel work streams, and assembles final deliverables from distributed agent outputs.",
+    "category": "orchestrator",
+    "model": "opus",
+    "source": "official",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/wshobson/agents",
+    "installCommand": "curl -o ~/.claude/agents/atlas.md https://raw.githubusercontent.com/wshobson/agents/main/atlas.md",
+    "capabilities": [
+      "Task decomposition",
+      "Capability matching",
+      "Priority scheduling",
+      "Dependency resolution",
+      "Progress monitoring"
+    ],
+    "tools": [
+      "Task",
+      "Bash",
+      "Read",
+      "Write",
+      "Edit"
+    ],
+    "tags": [
+      "orchestrator",
+      "coordination",
+      "scheduling",
+      "delegation"
+    ],
+    "createdAt": "2025-01-20",
+    "updatedAt": "2025-03-15",
+    "stars": 1950,
+    "downloads": 9800,
+    "featured": true,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "hephaestus",
+    "name": "hephaestus",
+    "displayName": "Hephaestus",
+    "description": "Autonomous deep worker that explores codebases, plans approaches, executes implementations, and verifies results without human intervention.",
+    "longDescription": "Named after the Greek god of the forge, Hephaestus is the ultimate autonomous worker. Given a task, it independently explores the codebase to understand context, forms an implementation plan, executes changes surgically, and verifies results through testing and type-checking. Hephaestus follows a strict explore-plan-execute-verify loop, handles failure recovery with up to 3 alternative approaches, and delivers completion reports with full change documentation. It never asks for permission — it just builds.",
+    "category": "worker",
+    "model": "opus",
+    "source": "official",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "curl -o ~/.claude/agents/hephaestus.md https://raw.githubusercontent.com/Yeachan-Heo/oh-my-claudecode/main/agents/hephaestus.md",
+    "capabilities": [
+      "Codebase exploration",
+      "Implementation planning",
+      "Surgical code changes",
+      "Test verification",
+      "Failure recovery",
+      "Completion reporting"
+    ],
+    "tools": [
+      "Bash",
+      "Read",
+      "Write",
+      "Edit",
+      "Grep",
+      "Glob",
+      "Task"
+    ],
+    "tags": [
+      "autonomous",
+      "deep-work",
+      "implementation",
+      "verification"
+    ],
+    "createdAt": "2025-01-25",
+    "updatedAt": "2025-03-22",
+    "stars": 3200,
+    "downloads": 18500,
+    "featured": true,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "prometheus",
+    "name": "prometheus",
+    "displayName": "Prometheus",
+    "description": "Strategic planning consultant with interview-based workflow that extracts requirements through structured questioning before creating detailed plans.",
+    "longDescription": "Prometheus brings fire to your projects through strategic planning. Using an interview-based workflow, it asks targeted questions to extract requirements, constraints, and success criteria before generating comprehensive implementation plans. Each plan includes phased milestones, risk assessments, technology recommendations, and verification strategies. Prometheus excels at turning vague ideas into actionable roadmaps.",
+    "category": "orchestrator",
+    "model": "opus",
+    "source": "official",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "curl -o ~/.claude/agents/prometheus.md https://raw.githubusercontent.com/Yeachan-Heo/oh-my-claudecode/main/agents/prometheus.md",
+    "capabilities": [
+      "Requirements extraction",
+      "Interview workflow",
+      "Strategic planning",
+      "Risk assessment",
+      "Milestone definition"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "WebSearch",
+      "Task"
+    ],
+    "tags": [
+      "planning",
+      "strategy",
+      "requirements",
+      "interview"
+    ],
+    "createdAt": "2025-02-05",
+    "updatedAt": "2025-03-19",
+    "stars": 1800,
+    "downloads": 8900,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "architect",
+    "name": "architect",
+    "displayName": "Architect",
+    "description": "Strategic architecture and debugging advisor that analyzes systems read-only, providing design recommendations without modifying code.",
+    "longDescription": "Architect is a read-only strategic advisor for system architecture and complex debugging. It analyzes codebases, identifies architectural patterns and anti-patterns, evaluates design decisions, and provides actionable recommendations. For debugging, it traces execution paths, identifies root causes, and suggests targeted fixes. Architect never modifies code directly — it provides expert analysis that guides implementation decisions.",
+    "category": "analyst",
+    "model": "opus",
+    "source": "official",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/wshobson/agents",
+    "installCommand": "curl -o ~/.claude/agents/architect.md https://raw.githubusercontent.com/wshobson/agents/main/architect.md",
+    "capabilities": [
+      "Architecture analysis",
+      "Pattern detection",
+      "Design evaluation",
+      "Debugging guidance",
+      "Technology recommendations"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "tags": [
+      "architecture",
+      "read-only",
+      "advisory",
+      "debugging"
+    ],
+    "createdAt": "2025-01-18",
+    "updatedAt": "2025-03-20",
+    "stars": 2500,
+    "downloads": 12400,
+    "featured": true,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "designer",
+    "name": "designer",
+    "displayName": "Designer",
+    "description": "UI/UX designer-developer that creates stunning, accessible interfaces with modern design patterns and pixel-perfect implementation.",
+    "longDescription": "Designer combines UI/UX expertise with implementation skills to create beautiful, accessible interfaces. It understands design principles (typography, color theory, spacing, hierarchy), modern CSS patterns (Tailwind, CSS Grid, Flexbox), component architecture (shadcn/ui, Radix), and accessibility standards (WCAG 2.1). Designer generates production-ready code with responsive layouts, smooth animations, and polished micro-interactions.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "official",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "curl -o ~/.claude/agents/designer.md https://raw.githubusercontent.com/Yeachan-Heo/oh-my-claudecode/main/agents/designer.md",
+    "capabilities": [
+      "UI design",
+      "Responsive layouts",
+      "Accessibility",
+      "Animation",
+      "Component architecture",
+      "Design systems"
+    ],
+    "tools": [
+      "Read",
+      "Write",
+      "Edit",
+      "Bash",
+      "Glob"
+    ],
+    "tags": [
+      "ui",
+      "ux",
+      "design",
+      "frontend",
+      "accessibility"
+    ],
+    "createdAt": "2025-02-10",
+    "updatedAt": "2025-03-21",
+    "stars": 2300,
+    "downloads": 13600,
+    "featured": true,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "executor",
+    "name": "executor",
+    "displayName": "Executor",
+    "description": "Focused task executor for implementation work that takes a well-defined plan and produces clean, tested code.",
+    "longDescription": "Executor is a focused implementation agent that takes well-defined tasks and produces clean, tested code. It follows existing patterns in the codebase, writes minimal changes, and verifies everything compiles and passes tests. Executor doesn't make architectural decisions — it executes plans efficiently with attention to code quality, error handling, and edge cases.",
+    "category": "worker",
+    "model": "sonnet",
+    "source": "official",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/wshobson/agents",
+    "installCommand": "curl -o ~/.claude/agents/executor.md https://raw.githubusercontent.com/wshobson/agents/main/executor.md",
+    "capabilities": [
+      "Code implementation",
+      "Pattern matching",
+      "Test writing",
+      "Build verification"
+    ],
+    "tools": [
+      "Bash",
+      "Read",
+      "Write",
+      "Edit",
+      "Grep",
+      "Glob"
+    ],
+    "tags": [
+      "implementation",
+      "coding",
+      "focused",
+      "worker"
+    ],
+    "createdAt": "2025-01-22",
+    "updatedAt": "2025-03-18",
+    "stars": 1600,
+    "downloads": 9200,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "code-reviewer",
+    "name": "code-reviewer",
+    "displayName": "Code Reviewer",
+    "description": "Expert code review agent with severity-rated feedback covering correctness, security, performance, and maintainability.",
+    "longDescription": "Code Reviewer provides comprehensive code review with severity-rated feedback (CRITICAL, HIGH, MEDIUM, LOW). It analyzes code for correctness bugs, security vulnerabilities, performance issues, maintainability concerns, and style violations. Each finding includes the file/line location, explanation of the issue, suggested fix, and severity rating. Code Reviewer also provides an overall assessment and highlights positive patterns.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "official",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/wshobson/agents",
+    "installCommand": "curl -o ~/.claude/agents/code-reviewer.md https://raw.githubusercontent.com/wshobson/agents/main/code-reviewer.md",
+    "capabilities": [
+      "Code review",
+      "Bug detection",
+      "Security analysis",
+      "Performance review",
+      "Style checking"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "tags": [
+      "review",
+      "quality",
+      "bugs",
+      "security"
+    ],
+    "createdAt": "2025-01-16",
+    "updatedAt": "2025-03-20",
+    "stars": 2700,
+    "downloads": 14100,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "security-reviewer",
+    "name": "security-reviewer",
+    "displayName": "Security Reviewer",
+    "description": "Security vulnerability detection agent covering OWASP Top 10, secrets scanning, and authentication/authorization review.",
+    "longDescription": "Security Reviewer is a specialized agent for finding security vulnerabilities in codebases. It checks for OWASP Top 10 issues (injection, XSS, CSRF, broken auth, etc.), scans for hardcoded secrets (API keys, passwords, tokens), reviews authentication and authorization logic, validates input sanitization, and checks dependency versions for known CVEs. Each finding includes severity, CVSS-like scoring, and remediation steps.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "official",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/wshobson/agents",
+    "installCommand": "curl -o ~/.claude/agents/security-reviewer.md https://raw.githubusercontent.com/wshobson/agents/main/security-reviewer.md",
+    "capabilities": [
+      "OWASP Top 10",
+      "Secrets scanning",
+      "Auth review",
+      "Input validation",
+      "CVE checking"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "tags": [
+      "security",
+      "owasp",
+      "vulnerabilities",
+      "scanning"
+    ],
+    "createdAt": "2025-01-17",
+    "updatedAt": "2025-03-21",
+    "stars": 2400,
+    "downloads": 11200,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "debugger",
+    "name": "debugger",
+    "displayName": "Debugger",
+    "description": "Root-cause analysis specialist with regression isolation, stack trace analysis, and hypothesis-driven debugging.",
+    "longDescription": "Debugger is an expert at finding and fixing bugs. It performs systematic root-cause analysis by isolating regressions, analyzing stack traces, forming and testing hypotheses, and tracing data flow through the codebase. Debugger uses a scientific method: observe the symptom, form hypotheses, test each one, and verify the fix doesn't introduce new issues. It excels at reproducing intermittent bugs and understanding complex failure modes.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "official",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/wshobson/agents",
+    "installCommand": "curl -o ~/.claude/agents/debugger.md https://raw.githubusercontent.com/wshobson/agents/main/debugger.md",
+    "capabilities": [
+      "Root-cause analysis",
+      "Regression isolation",
+      "Stack trace analysis",
+      "Hypothesis testing",
+      "Data flow tracing"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash",
+      "Edit"
+    ],
+    "tags": [
+      "debugging",
+      "rca",
+      "testing",
+      "analysis"
+    ],
+    "createdAt": "2025-01-19",
+    "updatedAt": "2025-03-17",
+    "stars": 2100,
+    "downloads": 10800,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "test-engineer",
+    "name": "test-engineer",
+    "displayName": "Test Engineer",
+    "description": "Test strategy specialist covering unit, integration, and E2E testing with TDD workflows and coverage optimization.",
+    "longDescription": "Test Engineer designs and implements comprehensive test strategies. It creates unit tests for individual functions, integration tests for API endpoints and database operations, and E2E tests for critical user flows. Using TDD methodology (Red-Green-Refactor), it ensures code correctness while maintaining 80%+ coverage. Test Engineer selects appropriate testing frameworks, sets up mocks and fixtures, and identifies edge cases that need coverage.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "official",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/wshobson/agents",
+    "installCommand": "curl -o ~/.claude/agents/test-engineer.md https://raw.githubusercontent.com/wshobson/agents/main/test-engineer.md",
+    "capabilities": [
+      "Test strategy",
+      "TDD workflow",
+      "Unit testing",
+      "Integration testing",
+      "E2E testing",
+      "Coverage optimization"
+    ],
+    "tools": [
+      "Bash",
+      "Read",
+      "Write",
+      "Edit",
+      "Grep",
+      "Glob"
+    ],
+    "tags": [
+      "testing",
+      "tdd",
+      "coverage",
+      "quality"
+    ],
+    "createdAt": "2025-01-21",
+    "updatedAt": "2025-03-19",
+    "stars": 1900,
+    "downloads": 10200,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "tracer",
+    "name": "tracer",
+    "displayName": "Tracer",
+    "description": "Evidence-driven causal tracing agent that evaluates competing hypotheses with confidence scoring and chain-of-evidence documentation.",
+    "longDescription": "Tracer performs evidence-driven causal analysis using competing hypotheses methodology. For any unexpected behavior, it generates multiple hypotheses, collects evidence for and against each, assigns confidence scores, and documents the chain of evidence leading to the root cause. Tracer maintains an evidence board that tracks all findings and their relationships, making it ideal for complex debugging scenarios with multiple interacting systems.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "official",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "curl -o ~/.claude/agents/tracer.md https://raw.githubusercontent.com/Yeachan-Heo/oh-my-claudecode/main/agents/tracer.md",
+    "capabilities": [
+      "Causal tracing",
+      "Hypothesis evaluation",
+      "Evidence scoring",
+      "Chain documentation"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "tags": [
+      "tracing",
+      "evidence",
+      "hypotheses",
+      "debugging"
+    ],
+    "createdAt": "2025-02-08",
+    "updatedAt": "2025-03-16",
+    "stars": 1400,
+    "downloads": 7200,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "verifier",
+    "name": "verifier",
+    "displayName": "Verifier",
+    "description": "Verification strategy agent that creates evidence-based completion checks with multi-dimensional quality assessment.",
+    "longDescription": "Verifier ensures work meets quality standards through evidence-based verification. It creates verification strategies covering functionality (does it work?), correctness (does it handle edge cases?), performance (is it fast enough?), security (is it safe?), and maintainability (is it clean?). Verifier runs automated checks, analyzes test results, and produces quality reports with pass/fail verdicts and improvement recommendations.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "official",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "curl -o ~/.claude/agents/verifier.md https://raw.githubusercontent.com/Yeachan-Heo/oh-my-claudecode/main/agents/verifier.md",
+    "capabilities": [
+      "Verification strategy",
+      "Quality assessment",
+      "Test analysis",
+      "Completeness checking"
+    ],
+    "tools": [
+      "Bash",
+      "Read",
+      "Grep",
+      "Glob"
+    ],
+    "tags": [
+      "verification",
+      "quality",
+      "testing",
+      "completeness"
+    ],
+    "createdAt": "2025-02-12",
+    "updatedAt": "2025-03-18",
+    "stars": 1200,
+    "downloads": 6500,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "writer",
+    "name": "writer",
+    "displayName": "Writer",
+    "description": "Technical documentation writer specializing in README files, API docs, architecture docs, and developer guides.",
+    "longDescription": "Writer is a technical documentation specialist that creates clear, comprehensive documentation. It generates README files with proper structure (badges, installation, usage, API reference), API documentation with request/response examples, architecture docs with diagrams (Mermaid), and developer guides with step-by-step instructions. Writer follows documentation best practices and adapts tone for the target audience (developer, end-user, stakeholder).",
+    "category": "worker",
+    "model": "haiku",
+    "source": "official",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/wshobson/agents",
+    "installCommand": "curl -o ~/.claude/agents/writer.md https://raw.githubusercontent.com/wshobson/agents/main/writer.md",
+    "capabilities": [
+      "README generation",
+      "API documentation",
+      "Architecture docs",
+      "Developer guides"
+    ],
+    "tools": [
+      "Read",
+      "Write",
+      "Grep",
+      "Glob"
+    ],
+    "tags": [
+      "documentation",
+      "readme",
+      "api-docs",
+      "writing"
+    ],
+    "createdAt": "2025-01-23",
+    "updatedAt": "2025-03-15",
+    "stars": 1500,
+    "downloads": 8100,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "git-master",
+    "name": "git-master",
+    "displayName": "Git Master",
+    "description": "Git expert for atomic commits, interactive rebasing, history management, and conflict resolution.",
+    "longDescription": "Git Master is an expert at Git workflows. It creates atomic, well-described commits using conventional commit format, manages complex rebasing operations, resolves merge conflicts intelligently, and maintains clean Git history. Git Master understands branching strategies (GitFlow, trunk-based), handles cherry-picks, bisects for bug introduction points, and manages release tagging.",
+    "category": "worker",
+    "model": "sonnet",
+    "source": "official",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "curl -o ~/.claude/agents/git-master.md https://raw.githubusercontent.com/Yeachan-Heo/oh-my-claudecode/main/agents/git-master.md",
+    "capabilities": [
+      "Atomic commits",
+      "Rebasing",
+      "Conflict resolution",
+      "History management",
+      "Branch strategies"
+    ],
+    "tools": [
+      "Bash",
+      "Read",
+      "Grep"
+    ],
+    "tags": [
+      "git",
+      "commits",
+      "branching",
+      "versioning"
+    ],
+    "createdAt": "2025-02-03",
+    "updatedAt": "2025-03-20",
+    "stars": 1700,
+    "downloads": 9400,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "explore",
+    "name": "explore",
+    "displayName": "Explore",
+    "description": "Lightweight codebase search specialist for finding files, patterns, and understanding project structure quickly.",
+    "longDescription": "Explore is a lightweight agent optimized for fast codebase navigation. It quickly finds relevant files, traces import chains, maps project structure, and identifies code patterns. Explore is ideal as a first step before deeper analysis — it provides the context that other agents need to work effectively. It uses parallel Grep/Glob operations to minimize search time.",
+    "category": "worker",
+    "model": "haiku",
+    "source": "official",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/wshobson/agents",
+    "installCommand": "curl -o ~/.claude/agents/explore.md https://raw.githubusercontent.com/wshobson/agents/main/explore.md",
+    "capabilities": [
+      "File search",
+      "Pattern matching",
+      "Structure mapping",
+      "Import tracing"
+    ],
+    "tools": [
+      "Grep",
+      "Glob",
+      "Read",
+      "Bash"
+    ],
+    "tags": [
+      "search",
+      "navigation",
+      "lightweight",
+      "exploration"
+    ],
+    "createdAt": "2025-01-24",
+    "updatedAt": "2025-03-14",
+    "stars": 1300,
+    "downloads": 7800,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "analyst",
+    "name": "analyst",
+    "displayName": "Analyst",
+    "description": "Pre-planning consultant for requirements analysis, scope definition, and feasibility assessment.",
+    "longDescription": "Analyst is a pre-planning consultant that helps define project scope and requirements before implementation begins. It analyzes existing codebases to understand constraints, identifies potential risks and dependencies, estimates effort for different approaches, and produces structured requirement documents. Analyst bridges the gap between vague requests and actionable specifications.",
+    "category": "analyst",
+    "model": "opus",
+    "source": "official",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/wshobson/agents",
+    "installCommand": "curl -o ~/.claude/agents/analyst.md https://raw.githubusercontent.com/wshobson/agents/main/analyst.md",
+    "capabilities": [
+      "Requirements analysis",
+      "Scope definition",
+      "Risk assessment",
+      "Effort estimation"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "tags": [
+      "analysis",
+      "requirements",
+      "planning",
+      "assessment"
+    ],
+    "createdAt": "2025-01-26",
+    "updatedAt": "2025-03-17",
+    "stars": 1600,
+    "downloads": 8400,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "metis",
+    "name": "metis",
+    "displayName": "Metis",
+    "description": "Pre-planning intent analyst that detects ambiguity, clarifies requirements, and ensures alignment before work begins.",
+    "longDescription": "Named after the Greek goddess of wisdom and counsel, Metis analyzes user requests to detect ambiguity, identify unstated assumptions, and clarify requirements before implementation begins. It generates targeted clarification questions, proposes interpretations with trade-offs, and produces unambiguous specifications. Metis prevents wasted effort from misunderstood requirements.",
+    "category": "analyst",
+    "model": "opus",
+    "source": "official",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "curl -o ~/.claude/agents/metis.md https://raw.githubusercontent.com/Yeachan-Heo/oh-my-claudecode/main/agents/metis.md",
+    "capabilities": [
+      "Ambiguity detection",
+      "Requirement clarification",
+      "Assumption identification",
+      "Specification generation"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob"
+    ],
+    "tags": [
+      "analysis",
+      "ambiguity",
+      "requirements",
+      "clarity"
+    ],
+    "createdAt": "2025-02-06",
+    "updatedAt": "2025-03-19",
+    "stars": 1100,
+    "downloads": 5800,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "momus",
+    "name": "momus",
+    "displayName": "Momus",
+    "description": "Practical work plan reviewer that critiques implementation plans read-only, finding gaps and suggesting improvements.",
+    "longDescription": "Named after the Greek god of criticism, Momus reviews work plans and implementation proposals to find gaps, contradictions, and improvement opportunities. It evaluates plans for completeness, feasibility, risk coverage, and alignment with stated goals. Momus provides constructive criticism with specific, actionable suggestions. It operates read-only and never modifies plans directly.",
+    "category": "analyst",
+    "model": "opus",
+    "source": "official",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "curl -o ~/.claude/agents/momus.md https://raw.githubusercontent.com/Yeachan-Heo/oh-my-claudecode/main/agents/momus.md",
+    "capabilities": [
+      "Plan review",
+      "Gap analysis",
+      "Feasibility assessment",
+      "Constructive criticism"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob"
+    ],
+    "tags": [
+      "review",
+      "criticism",
+      "planning",
+      "read-only"
+    ],
+    "createdAt": "2025-02-07",
+    "updatedAt": "2025-03-16",
+    "stars": 950,
+    "downloads": 4900,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "oracle",
+    "name": "oracle",
+    "displayName": "Oracle",
+    "description": "Strategic technical advisor for architecture decisions and complex debugging with deep reasoning capabilities.",
+    "longDescription": "Oracle is a strategic technical advisor that provides deep analysis for architecture decisions and complex debugging scenarios. It evaluates trade-offs between competing approaches, predicts long-term consequences of design choices, and provides evidence-based recommendations. Oracle excels at situations where the obvious solution has hidden pitfalls and deeper analysis is required.",
+    "category": "analyst",
+    "model": "opus",
+    "source": "official",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "curl -o ~/.claude/agents/oracle.md https://raw.githubusercontent.com/Yeachan-Heo/oh-my-claudecode/main/agents/oracle.md",
+    "capabilities": [
+      "Trade-off analysis",
+      "Design evaluation",
+      "Strategic advice",
+      "Deep reasoning"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "tags": [
+      "advisory",
+      "strategy",
+      "architecture",
+      "deep-reasoning"
+    ],
+    "createdAt": "2025-02-09",
+    "updatedAt": "2025-03-20",
+    "stars": 1350,
+    "downloads": 6800,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "critic",
+    "name": "critic",
+    "displayName": "Critic",
+    "description": "Multi-perspective work plan and code review expert that evaluates from security, performance, and maintainability angles.",
+    "longDescription": "Critic provides multi-perspective review of both work plans and code. It evaluates from the perspectives of a security expert, performance engineer, maintainability advocate, and user experience specialist. Each perspective generates independent findings, which are then synthesized into a unified review with prioritized recommendations. Critic is especially valuable for catching issues that single-perspective reviewers miss.",
+    "category": "analyst",
+    "model": "opus",
+    "source": "official",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "curl -o ~/.claude/agents/critic.md https://raw.githubusercontent.com/Yeachan-Heo/oh-my-claudecode/main/agents/critic.md",
+    "capabilities": [
+      "Multi-perspective review",
+      "Security analysis",
+      "Performance review",
+      "Maintainability assessment"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "tags": [
+      "review",
+      "multi-perspective",
+      "quality",
+      "analysis"
+    ],
+    "createdAt": "2025-02-11",
+    "updatedAt": "2025-03-18",
+    "stars": 1250,
+    "downloads": 6200,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "scientist",
+    "name": "scientist",
+    "displayName": "Scientist",
+    "description": "Data analysis and research execution specialist for statistical analysis, data exploration, and hypothesis testing.",
+    "longDescription": "Scientist is a data analysis specialist that performs statistical analysis, data exploration, and hypothesis testing. It can analyze datasets, create visualizations (using Python/matplotlib), run statistical tests, and present findings in clear reports. Scientist follows the scientific method: observe, hypothesize, experiment, analyze, conclude. It's ideal for data-driven decision making and research tasks.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "official",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "curl -o ~/.claude/agents/scientist.md https://raw.githubusercontent.com/Yeachan-Heo/oh-my-claudecode/main/agents/scientist.md",
+    "capabilities": [
+      "Data analysis",
+      "Statistical testing",
+      "Visualization",
+      "Research methodology"
+    ],
+    "tools": [
+      "Bash",
+      "Read",
+      "Write",
+      "Grep"
+    ],
+    "tags": [
+      "data",
+      "analysis",
+      "research",
+      "statistics"
+    ],
+    "createdAt": "2025-02-13",
+    "updatedAt": "2025-03-15",
+    "stars": 1100,
+    "downloads": 5600,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "planner",
+    "name": "planner",
+    "displayName": "Planner",
+    "description": "Strategic planning agent with interview workflow for creating detailed implementation plans with phased milestones.",
+    "longDescription": "Planner creates detailed implementation plans through a structured interview process. It gathers context about the project, identifies constraints and dependencies, breaks work into phases with clear milestones, and produces actionable task lists. Each plan includes success criteria, risk mitigation strategies, and estimated timelines. Planner is the recommended first step for any complex feature implementation.",
+    "category": "specialist",
+    "model": "opus",
+    "source": "official",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/wshobson/agents",
+    "installCommand": "curl -o ~/.claude/agents/planner.md https://raw.githubusercontent.com/wshobson/agents/main/planner.md",
+    "capabilities": [
+      "Implementation planning",
+      "Phase breakdown",
+      "Risk mitigation",
+      "Timeline estimation"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash",
+      "Task"
+    ],
+    "tags": [
+      "planning",
+      "strategy",
+      "milestones",
+      "task-breakdown"
+    ],
+    "createdAt": "2025-01-14",
+    "updatedAt": "2025-03-21",
+    "stars": 2000,
+    "downloads": 10600,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "qa-tester",
+    "name": "qa-tester",
+    "displayName": "QA Tester",
+    "description": "Interactive CLI testing specialist using tmux for manual testing, form filling, and UI verification.",
+    "longDescription": "QA Tester is an interactive testing agent that uses tmux to spawn and interact with CLI applications and development servers. It can fill forms, navigate UIs, verify visual output, and test user flows end-to-end. QA Tester writes test scripts, documents test cases, and reports bugs with reproduction steps. It's especially useful for testing CLI tools, TUIs, and development server outputs.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "official",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "curl -o ~/.claude/agents/qa-tester.md https://raw.githubusercontent.com/Yeachan-Heo/oh-my-claudecode/main/agents/qa-tester.md",
+    "capabilities": [
+      "Interactive testing",
+      "CLI testing",
+      "Form filling",
+      "UI verification",
+      "Bug reporting"
+    ],
+    "tools": [
+      "Bash",
+      "Read",
+      "Write"
+    ],
+    "tags": [
+      "testing",
+      "qa",
+      "interactive",
+      "tmux"
+    ],
+    "createdAt": "2025-02-14",
+    "updatedAt": "2025-03-17",
+    "stars": 980,
+    "downloads": 5100,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "librarian",
+    "name": "librarian",
+    "displayName": "Librarian",
+    "description": "Open-source codebase understanding agent that analyzes GitHub repositories with evidence-based documentation.",
+    "longDescription": "Librarian specializes in understanding unfamiliar open-source codebases. It clones repositories, analyzes structure, traces key code paths, identifies design patterns, and produces comprehensive documentation. Librarian creates architecture maps, dependency graphs, and annotated code walkthroughs. It provides evidence from the source code for every claim, making it a trustworthy guide to unfamiliar codebases.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "official",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "curl -o ~/.claude/agents/librarian.md https://raw.githubusercontent.com/Yeachan-Heo/oh-my-claudecode/main/agents/librarian.md",
+    "capabilities": [
+      "Codebase analysis",
+      "Architecture mapping",
+      "Design pattern identification",
+      "Documentation generation"
+    ],
+    "tools": [
+      "Bash",
+      "Read",
+      "Grep",
+      "Glob"
+    ],
+    "tags": [
+      "codebase",
+      "analysis",
+      "documentation",
+      "open-source"
+    ],
+    "createdAt": "2025-02-15",
+    "updatedAt": "2025-03-19",
+    "stars": 1050,
+    "downloads": 5400,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "multimodal-looker",
+    "name": "multimodal-looker",
+    "displayName": "Multimodal Looker",
+    "description": "Visual analysis agent for images, PDFs, diagrams, and screenshots with detailed description and comparison capabilities.",
+    "longDescription": "Multimodal Looker analyzes visual content including screenshots, diagrams, PDFs, and images. It can describe UI layouts, identify visual bugs, compare designs against specifications, extract text from images, and analyze architectural diagrams. Multimodal Looker is especially useful for verifying UI implementations against design mockups and analyzing error screenshots.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "official",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "curl -o ~/.claude/agents/multimodal-looker.md https://raw.githubusercontent.com/Yeachan-Heo/oh-my-claudecode/main/agents/multimodal-looker.md",
+    "capabilities": [
+      "Image analysis",
+      "PDF reading",
+      "Diagram interpretation",
+      "Visual comparison",
+      "OCR"
+    ],
+    "tools": [
+      "Read",
+      "Bash"
+    ],
+    "tags": [
+      "visual",
+      "multimodal",
+      "images",
+      "screenshots"
+    ],
+    "createdAt": "2025-02-16",
+    "updatedAt": "2025-03-18",
+    "stars": 1150,
+    "downloads": 5900,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "document-specialist",
+    "name": "document-specialist",
+    "displayName": "Document Specialist",
+    "description": "External documentation and reference specialist for finding, reading, and synthesizing documentation from multiple sources.",
+    "longDescription": "Document Specialist finds, reads, and synthesizes documentation from external sources. It navigates official docs, reads API references, cross-references multiple documentation sources, and produces clear summaries tailored to the current task. Document Specialist is ideal when you need to understand a library API, framework convention, or third-party service before implementation.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "official",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "curl -o ~/.claude/agents/document-specialist.md https://raw.githubusercontent.com/Yeachan-Heo/oh-my-claudecode/main/agents/document-specialist.md",
+    "capabilities": [
+      "Documentation search",
+      "API reference reading",
+      "Cross-referencing",
+      "Summary generation"
+    ],
+    "tools": [
+      "WebSearch",
+      "WebFetch",
+      "Read"
+    ],
+    "tags": [
+      "documentation",
+      "research",
+      "reference",
+      "synthesis"
+    ],
+    "createdAt": "2025-02-17",
+    "updatedAt": "2025-03-16",
+    "stars": 890,
+    "downloads": 4600,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "backend-architect",
+    "name": "backend-architect",
+    "displayName": "Backend Architect",
+    "description": "Scalable system design specialist covering database architecture, API development, and microservices patterns.",
+    "longDescription": "Backend Architect designs scalable backend systems with expertise in database architecture (SQL, NoSQL, graph databases), API development (REST, GraphQL, gRPC), microservices patterns (saga, CQRS, event sourcing), and infrastructure design (load balancing, caching, message queues). It produces architecture decision records (ADRs), system diagrams, and implementation guidelines.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "community",
+    "githubUrl": "https://github.com/community/claude-agents",
+    "installCommand": "curl -o ~/.claude/agents/backend-architect.md https://raw.githubusercontent.com/community/claude-agents/main/backend-architect.md",
+    "capabilities": [
+      "System design",
+      "Database architecture",
+      "API design",
+      "Microservices patterns"
+    ],
+    "tools": [
+      "Read",
+      "Write",
+      "Bash",
+      "Grep",
+      "Glob"
+    ],
+    "tags": [
+      "backend",
+      "architecture",
+      "database",
+      "api"
+    ],
+    "createdAt": "2025-02-20",
+    "updatedAt": "2025-03-20",
+    "stars": 1800,
+    "downloads": 9100,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "frontend-developer",
+    "name": "frontend-developer",
+    "displayName": "Frontend Developer",
+    "description": "Modern web technologies specialist covering React, Vue, Angular, performance optimization, and responsive design.",
+    "longDescription": "Frontend Developer is an expert in modern web technologies including React (hooks, server components, suspense), Vue (composition API, Pinia), Angular (signals, standalone components), and vanilla web APIs. It implements responsive designs, optimizes performance (code splitting, lazy loading, image optimization), and ensures accessibility compliance. Frontend Developer writes clean component code with proper state management and testing.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "community",
+    "githubUrl": "https://github.com/community/claude-agents",
+    "installCommand": "curl -o ~/.claude/agents/frontend-developer.md https://raw.githubusercontent.com/community/claude-agents/main/frontend-developer.md",
+    "capabilities": [
+      "React/Vue/Angular",
+      "Performance optimization",
+      "Responsive design",
+      "Accessibility",
+      "State management"
+    ],
+    "tools": [
+      "Read",
+      "Write",
+      "Edit",
+      "Bash",
+      "Glob"
+    ],
+    "tags": [
+      "frontend",
+      "react",
+      "vue",
+      "angular",
+      "web"
+    ],
+    "createdAt": "2025-02-21",
+    "updatedAt": "2025-03-21",
+    "stars": 2100,
+    "downloads": 11500,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "security-engineer",
+    "name": "security-engineer",
+    "displayName": "Security Engineer",
+    "description": "Threat modeling and vulnerability assessment specialist with secure code review and penetration testing capabilities.",
+    "longDescription": "Security Engineer performs comprehensive security analysis including threat modeling (STRIDE, DREAD), vulnerability assessment (SAST, DAST patterns), secure code review, and penetration testing guidance. It identifies attack surfaces, evaluates security controls, recommends mitigations, and helps implement security best practices. Security Engineer stays current with CVE databases and security advisories.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "community",
+    "githubUrl": "https://github.com/community/claude-agents",
+    "installCommand": "curl -o ~/.claude/agents/security-engineer.md https://raw.githubusercontent.com/community/claude-agents/main/security-engineer.md",
+    "capabilities": [
+      "Threat modeling",
+      "Vulnerability assessment",
+      "Secure code review",
+      "Penetration testing"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "tags": [
+      "security",
+      "threat-modeling",
+      "pentest",
+      "vulnerabilities"
+    ],
+    "createdAt": "2025-02-22",
+    "updatedAt": "2025-03-19",
+    "stars": 1650,
+    "downloads": 8300,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "mobile-app-builder",
+    "name": "mobile-app-builder",
+    "displayName": "Mobile App Builder",
+    "description": "Native iOS/Android and cross-platform mobile development specialist covering Flutter, React Native, and SwiftUI.",
+    "longDescription": "Mobile App Builder develops mobile applications using native (SwiftUI, Jetpack Compose) and cross-platform (Flutter, React Native) frameworks. It handles navigation patterns, state management, API integration, offline storage, push notifications, and app store deployment. Mobile App Builder follows platform-specific design guidelines (HIG, Material Design) and optimizes for performance and battery life.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "community",
+    "githubUrl": "https://github.com/community/claude-agents",
+    "installCommand": "curl -o ~/.claude/agents/mobile-app-builder.md https://raw.githubusercontent.com/community/claude-agents/main/mobile-app-builder.md",
+    "capabilities": [
+      "Flutter",
+      "React Native",
+      "SwiftUI",
+      "Jetpack Compose",
+      "App Store deployment"
+    ],
+    "tools": [
+      "Read",
+      "Write",
+      "Edit",
+      "Bash",
+      "Glob"
+    ],
+    "tags": [
+      "mobile",
+      "flutter",
+      "react-native",
+      "ios",
+      "android"
+    ],
+    "createdAt": "2025-02-23",
+    "updatedAt": "2025-03-18",
+    "stars": 1450,
+    "downloads": 7600,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "devops-automator",
+    "name": "devops-automator",
+    "displayName": "DevOps Automator",
+    "description": "Infrastructure automation specialist covering CI/CD pipelines, Docker, Kubernetes, and cloud operations.",
+    "longDescription": "DevOps Automator automates infrastructure and deployment workflows. It creates CI/CD pipelines (GitHub Actions, GitLab CI, Jenkins), containerizes applications (Docker, Docker Compose), manages Kubernetes deployments (Helm charts, manifests), and configures cloud services (AWS, GCP, Azure). DevOps Automator follows infrastructure-as-code principles and implements GitOps workflows.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "community",
+    "githubUrl": "https://github.com/community/claude-agents",
+    "installCommand": "curl -o ~/.claude/agents/devops-automator.md https://raw.githubusercontent.com/community/claude-agents/main/devops-automator.md",
+    "capabilities": [
+      "CI/CD",
+      "Docker",
+      "Kubernetes",
+      "Cloud operations",
+      "Infrastructure as code"
+    ],
+    "tools": [
+      "Bash",
+      "Read",
+      "Write",
+      "Edit"
+    ],
+    "tags": [
+      "devops",
+      "ci-cd",
+      "docker",
+      "kubernetes",
+      "cloud"
+    ],
+    "createdAt": "2025-02-24",
+    "updatedAt": "2025-03-20",
+    "stars": 1550,
+    "downloads": 8000,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "database-optimizer",
+    "name": "database-optimizer",
+    "displayName": "Database Optimizer",
+    "description": "Schema design and query optimization specialist with indexing strategies and performance tuning for SQL and NoSQL databases.",
+    "longDescription": "Database Optimizer designs efficient database schemas, optimizes slow queries, implements indexing strategies, and tunes database performance. It supports SQL (PostgreSQL, MySQL, SQLite) and NoSQL (MongoDB, Redis, DynamoDB) databases. Database Optimizer analyzes query execution plans, identifies N+1 problems, recommends denormalization strategies, and implements connection pooling and caching layers.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "community",
+    "githubUrl": "https://github.com/community/claude-agents",
+    "installCommand": "curl -o ~/.claude/agents/database-optimizer.md https://raw.githubusercontent.com/community/claude-agents/main/database-optimizer.md",
+    "capabilities": [
+      "Schema design",
+      "Query optimization",
+      "Indexing",
+      "Performance tuning",
+      "Caching"
+    ],
+    "tools": [
+      "Read",
+      "Write",
+      "Edit",
+      "Bash",
+      "Grep"
+    ],
+    "tags": [
+      "database",
+      "sql",
+      "optimization",
+      "performance"
+    ],
+    "createdAt": "2025-02-25",
+    "updatedAt": "2025-03-17",
+    "stars": 1300,
+    "downloads": 6900,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "data-engineer",
+    "name": "data-engineer",
+    "displayName": "Data Engineer",
+    "description": "Data pipeline specialist covering lakehouse architectures, ETL/ELT workflows, and data quality frameworks.",
+    "longDescription": "Data Engineer builds and maintains data pipelines using modern lakehouse architectures. It implements ETL/ELT workflows (Airflow, dbt, Spark), designs data models (star schema, snowflake), ensures data quality (Great Expectations, dbt tests), and manages data governance. Data Engineer works with batch and streaming architectures, data catalogs, and observability tools.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "community",
+    "githubUrl": "https://github.com/community/claude-agents",
+    "installCommand": "curl -o ~/.claude/agents/data-engineer.md https://raw.githubusercontent.com/community/claude-agents/main/data-engineer.md",
+    "capabilities": [
+      "Data pipelines",
+      "ETL/ELT",
+      "Data modeling",
+      "Data quality",
+      "Streaming"
+    ],
+    "tools": [
+      "Bash",
+      "Read",
+      "Write",
+      "Edit",
+      "Grep"
+    ],
+    "tags": [
+      "data",
+      "pipeline",
+      "etl",
+      "lakehouse"
+    ],
+    "createdAt": "2025-02-26",
+    "updatedAt": "2025-03-18",
+    "stars": 1200,
+    "downloads": 6300,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "technical-writer",
+    "name": "technical-writer",
+    "displayName": "Technical Writer",
+    "description": "Developer documentation specialist covering API references, tutorials, migration guides, and changelog management.",
+    "longDescription": "Technical Writer creates comprehensive developer documentation including API references (OpenAPI/Swagger), step-by-step tutorials, migration guides, architecture documentation, and automated changelog management. It follows documentation best practices (Divio documentation system), maintains consistent terminology, and optimizes for developer experience with code examples and interactive elements.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "community",
+    "githubUrl": "https://github.com/community/claude-agents",
+    "installCommand": "curl -o ~/.claude/agents/technical-writer.md https://raw.githubusercontent.com/community/claude-agents/main/technical-writer.md",
+    "capabilities": [
+      "API documentation",
+      "Tutorials",
+      "Migration guides",
+      "Changelog management"
+    ],
+    "tools": [
+      "Read",
+      "Write",
+      "Edit",
+      "Grep",
+      "Glob"
+    ],
+    "tags": [
+      "documentation",
+      "api-docs",
+      "tutorials",
+      "writing"
+    ],
+    "createdAt": "2025-02-27",
+    "updatedAt": "2025-03-19",
+    "stars": 1050,
+    "downloads": 5500,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "software-architect",
+    "name": "software-architect",
+    "displayName": "Software Architect",
+    "description": "System design expert covering DDD, architectural patterns (hexagonal, clean, event-driven), and technology selection.",
+    "longDescription": "Software Architect designs robust software systems using domain-driven design (DDD), architectural patterns (hexagonal, clean architecture, event-driven), and proven technology selection frameworks. It creates bounded context maps, defines aggregate boundaries, designs event flows, and produces architecture decision records (ADRs). Software Architect evaluates trade-offs between consistency, availability, and partition tolerance for distributed systems.",
+    "category": "specialist",
+    "model": "opus",
+    "source": "plugin",
+    "author": "community",
+    "githubUrl": "https://github.com/community/claude-agents",
+    "installCommand": "curl -o ~/.claude/agents/software-architect.md https://raw.githubusercontent.com/community/claude-agents/main/software-architect.md",
+    "capabilities": [
+      "DDD",
+      "Architectural patterns",
+      "Technology selection",
+      "ADR creation",
+      "Trade-off analysis"
+    ],
+    "tools": [
+      "Read",
+      "Write",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "tags": [
+      "architecture",
+      "ddd",
+      "design-patterns",
+      "system-design"
+    ],
+    "createdAt": "2025-02-28",
+    "updatedAt": "2025-03-20",
+    "stars": 1750,
+    "downloads": 8800,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "rapid-prototyper",
+    "name": "rapid-prototyper",
+    "displayName": "Rapid Prototyper",
+    "description": "Ultra-fast POC and MVP creation specialist that builds working prototypes in minutes with minimal scaffolding.",
+    "longDescription": "Rapid Prototyper builds working prototypes and MVPs at maximum speed. It uses scaffolding tools, starter templates, and opinionated defaults to get from idea to working demo as fast as possible. Rapid Prototyper prioritizes speed over perfection, making pragmatic trade-offs to deliver something tangible quickly. It excels at hackathon-style development, proof-of-concept creation, and rapid iteration cycles.",
+    "category": "worker",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "community",
+    "githubUrl": "https://github.com/community/claude-agents",
+    "installCommand": "curl -o ~/.claude/agents/rapid-prototyper.md https://raw.githubusercontent.com/community/claude-agents/main/rapid-prototyper.md",
+    "capabilities": [
+      "MVP creation",
+      "Scaffolding",
+      "Rapid iteration",
+      "Template usage",
+      "Demo building"
+    ],
+    "tools": [
+      "Bash",
+      "Read",
+      "Write",
+      "Edit",
+      "Glob"
+    ],
+    "tags": [
+      "prototyping",
+      "mvp",
+      "rapid",
+      "hackathon"
+    ],
+    "createdAt": "2025-03-01",
+    "updatedAt": "2025-03-21",
+    "stars": 1400,
+    "downloads": 7400,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "ai-engineer",
+    "name": "ai-engineer",
+    "displayName": "AI Engineer",
+    "description": "ML model development, deployment, and integration specialist covering training pipelines, inference optimization, and MLOps.",
+    "longDescription": "AI Engineer develops, deploys, and integrates machine learning models. It builds training pipelines (PyTorch, TensorFlow, JAX), optimizes inference (quantization, pruning, ONNX), implements MLOps workflows (MLflow, Weights & Biases), and integrates models into production systems. AI Engineer handles prompt engineering, fine-tuning, RAG architectures, and vector database integration for LLM applications.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "community",
+    "githubUrl": "https://github.com/community/claude-agents",
+    "installCommand": "curl -o ~/.claude/agents/ai-engineer.md https://raw.githubusercontent.com/community/claude-agents/main/ai-engineer.md",
+    "capabilities": [
+      "ML training",
+      "Inference optimization",
+      "MLOps",
+      "LLM integration",
+      "RAG"
+    ],
+    "tools": [
+      "Bash",
+      "Read",
+      "Write",
+      "Edit",
+      "Grep"
+    ],
+    "tags": [
+      "ai",
+      "ml",
+      "deep-learning",
+      "mlops",
+      "llm"
+    ],
+    "createdAt": "2025-03-02",
+    "updatedAt": "2025-03-22",
+    "stars": 1600,
+    "downloads": 8200,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "solidity-engineer",
+    "name": "solidity-engineer",
+    "displayName": "Solidity Smart Contract Engineer",
+    "description": "EVM architecture specialist covering gas optimization, DeFi protocols, and smart contract security auditing.",
+    "longDescription": "Solidity Smart Contract Engineer develops and audits smart contracts for EVM-compatible blockchains. It implements gas-optimized contracts, designs DeFi protocols (AMMs, lending, staking), performs security audits (reentrancy, overflow, access control), and writes comprehensive test suites (Foundry, Hardhat). It follows Solidity best practices and stays current with EIP standards.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "community",
+    "githubUrl": "https://github.com/community/claude-agents",
+    "installCommand": "curl -o ~/.claude/agents/solidity-engineer.md https://raw.githubusercontent.com/community/claude-agents/main/solidity-engineer.md",
+    "capabilities": [
+      "Solidity development",
+      "Gas optimization",
+      "Security auditing",
+      "DeFi protocols",
+      "Testing"
+    ],
+    "tools": [
+      "Read",
+      "Write",
+      "Edit",
+      "Bash",
+      "Grep"
+    ],
+    "tags": [
+      "solidity",
+      "blockchain",
+      "defi",
+      "smart-contracts",
+      "evm"
+    ],
+    "createdAt": "2025-03-03",
+    "updatedAt": "2025-03-20",
+    "stars": 1350,
+    "downloads": 7000,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "performance-engineer",
+    "name": "performance-engineer",
+    "displayName": "Performance Engineer",
+    "description": "Application performance specialist covering profiling, bottleneck identification, memory optimization, and load testing.",
+    "longDescription": "Performance Engineer identifies and resolves performance bottlenecks in applications. It performs profiling (CPU, memory, I/O), analyzes flame graphs, identifies memory leaks, optimizes database queries, and designs load testing strategies. Performance Engineer works across the stack — frontend bundle optimization, backend response times, database query plans, and infrastructure scaling.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "community",
+    "githubUrl": "https://github.com/community/claude-agents",
+    "installCommand": "curl -o ~/.claude/agents/performance-engineer.md https://raw.githubusercontent.com/community/claude-agents/main/performance-engineer.md",
+    "capabilities": [
+      "Profiling",
+      "Bottleneck identification",
+      "Memory optimization",
+      "Load testing",
+      "Bundle optimization"
+    ],
+    "tools": [
+      "Bash",
+      "Read",
+      "Grep",
+      "Glob"
+    ],
+    "tags": [
+      "performance",
+      "profiling",
+      "optimization",
+      "load-testing"
+    ],
+    "createdAt": "2025-03-04",
+    "updatedAt": "2025-03-21",
+    "stars": 1150,
+    "downloads": 5800,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "accessibility-expert",
+    "name": "accessibility-expert",
+    "displayName": "Accessibility Expert",
+    "description": "WCAG 2.1 compliance specialist covering screen reader testing, keyboard navigation, and ARIA implementation.",
+    "longDescription": "Accessibility Expert ensures applications meet WCAG 2.1 AA/AAA standards. It audits for proper ARIA attributes, keyboard navigation, color contrast, screen reader compatibility, and semantic HTML. Accessibility Expert provides remediation guidance with code examples, tests with assistive technology patterns, and generates compliance reports. It handles both web and mobile accessibility requirements.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "community",
+    "githubUrl": "https://github.com/community/claude-agents",
+    "installCommand": "curl -o ~/.claude/agents/accessibility-expert.md https://raw.githubusercontent.com/community/claude-agents/main/accessibility-expert.md",
+    "capabilities": [
+      "WCAG compliance",
+      "Screen reader testing",
+      "Keyboard navigation",
+      "ARIA implementation",
+      "Contrast checking"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "tags": [
+      "accessibility",
+      "wcag",
+      "a11y",
+      "aria"
+    ],
+    "createdAt": "2025-03-05",
+    "updatedAt": "2025-03-19",
+    "stars": 980,
+    "downloads": 5100,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "api-designer",
+    "name": "api-designer",
+    "displayName": "API Designer",
+    "description": "REST and GraphQL API design specialist with OpenAPI specification generation and versioning strategies.",
+    "longDescription": "API Designer creates well-structured APIs following REST principles and GraphQL best practices. It generates OpenAPI/Swagger specifications, designs consistent resource naming, implements pagination patterns, handles versioning strategies, and documents endpoints with request/response examples. API Designer ensures APIs are intuitive, consistent, and backward-compatible.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "community",
+    "githubUrl": "https://github.com/community/claude-agents",
+    "installCommand": "curl -o ~/.claude/agents/api-designer.md https://raw.githubusercontent.com/community/claude-agents/main/api-designer.md",
+    "capabilities": [
+      "REST design",
+      "GraphQL schema",
+      "OpenAPI specs",
+      "Versioning",
+      "Documentation"
+    ],
+    "tools": [
+      "Read",
+      "Write",
+      "Edit",
+      "Grep"
+    ],
+    "tags": [
+      "api",
+      "rest",
+      "graphql",
+      "openapi"
+    ],
+    "createdAt": "2025-03-06",
+    "updatedAt": "2025-03-20",
+    "stars": 1250,
+    "downloads": 6500,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "geographer",
+    "name": "geographer",
+    "displayName": "Geographer",
+    "description": "Physical and human geography expert specializing in climate systems, cartography, and spatial analysis.",
+    "longDescription": "Geographer provides deep expertise in physical and human geography, climate science, and cartographic analysis. It can analyze spatial data, interpret geographic patterns, create location-based recommendations, and provide context on environmental and demographic factors for any project.",
+    "category": "specialist",
+    "model": "opus",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install geographer@omc",
+    "capabilities": [
+      "Spatial analysis",
+      "Climate interpretation",
+      "Cartographic reasoning",
+      "Demographic context",
+      "Environmental assessment"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "WebSearch"
+    ],
+    "tags": [
+      "geography",
+      "climate",
+      "spatial",
+      "cartography"
+    ],
+    "createdAt": "2025-06-10",
+    "updatedAt": "2025-12-15",
+    "stars": 320,
+    "downloads": 1800,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "anthropologist",
+    "name": "anthropologist",
+    "displayName": "Anthropologist",
+    "description": "Cultural systems and human behavior expert analyzing rituals, belief systems, and social structures.",
+    "longDescription": "Anthropologist brings deep understanding of cultural systems, rituals, belief structures, and social dynamics. It analyzes human behavior patterns, provides cultural context for product decisions, and ensures culturally sensitive design across diverse user populations.",
+    "category": "specialist",
+    "model": "opus",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install anthropologist@omc",
+    "capabilities": [
+      "Cultural analysis",
+      "Behavioral patterns",
+      "Social structure mapping",
+      "Cross-cultural design",
+      "Ethnographic research"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "WebSearch"
+    ],
+    "tags": [
+      "culture",
+      "behavior",
+      "social",
+      "ethnography"
+    ],
+    "createdAt": "2025-07-02",
+    "updatedAt": "2025-12-10",
+    "stars": 280,
+    "downloads": 1500,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "historian",
+    "name": "historian",
+    "displayName": "Historian",
+    "description": "Historical analysis and periodization expert providing deep context on events, trends, and precedents.",
+    "longDescription": "Historian provides comprehensive historical analysis, periodization expertise, and contextual understanding of past events. It draws parallels between historical patterns and current situations, analyzes precedents, and provides rich narrative context for decision-making.",
+    "category": "specialist",
+    "model": "opus",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install historian@omc",
+    "capabilities": [
+      "Historical analysis",
+      "Periodization",
+      "Precedent research",
+      "Trend identification",
+      "Contextual narrative"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "WebSearch"
+    ],
+    "tags": [
+      "history",
+      "analysis",
+      "research",
+      "context"
+    ],
+    "createdAt": "2025-07-15",
+    "updatedAt": "2025-12-18",
+    "stars": 350,
+    "downloads": 2100,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "narratologist",
+    "name": "narratologist",
+    "displayName": "Narratologist",
+    "description": "Narrative theory and story structure expert specializing in compelling storytelling across media.",
+    "longDescription": "Narratologist applies narrative theory, story structure analysis, and storytelling expertise to any content creation task. It helps craft compelling narratives, analyze story arcs, design character development, and ensure engaging user journeys through narrative-driven experiences.",
+    "category": "specialist",
+    "model": "opus",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install narratologist@omc",
+    "capabilities": [
+      "Story structure analysis",
+      "Narrative design",
+      "Character development",
+      "Arc planning",
+      "Audience engagement"
+    ],
+    "tools": [
+      "Read",
+      "Write",
+      "Edit"
+    ],
+    "tags": [
+      "narrative",
+      "storytelling",
+      "content",
+      "writing"
+    ],
+    "createdAt": "2025-08-01",
+    "updatedAt": "2026-01-05",
+    "stars": 410,
+    "downloads": 2400,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "psychologist",
+    "name": "psychologist",
+    "displayName": "Psychologist",
+    "description": "Human behavior, personality, and motivation expert for user psychology and team dynamics.",
+    "longDescription": "Psychologist provides expertise in human behavior, personality frameworks, motivation theory, and cognitive biases. It helps design persuasive interfaces, understand user psychology, analyze team dynamics, and create experiences that align with human cognitive patterns.",
+    "category": "specialist",
+    "model": "opus",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install psychologist@omc",
+    "capabilities": [
+      "Behavioral analysis",
+      "Motivation modeling",
+      "Cognitive bias detection",
+      "UX psychology",
+      "Team dynamics"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "WebSearch"
+    ],
+    "tags": [
+      "psychology",
+      "behavior",
+      "motivation",
+      "cognition"
+    ],
+    "createdAt": "2025-08-12",
+    "updatedAt": "2026-01-10",
+    "stars": 480,
+    "downloads": 3200,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "brand-guardian",
+    "name": "brand-guardian",
+    "displayName": "Brand Guardian",
+    "description": "Brand identity and consistency specialist ensuring cohesive visual and verbal brand expression.",
+    "longDescription": "Brand Guardian monitors and enforces brand consistency across all touchpoints. It reviews content for brand voice alignment, checks visual design against brand guidelines, suggests improvements for brand coherence, and maintains a unified brand identity across platforms.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install brand-guardian@omc",
+    "capabilities": [
+      "Brand voice analysis",
+      "Visual consistency check",
+      "Guideline enforcement",
+      "Content review",
+      "Identity alignment"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Edit"
+    ],
+    "tags": [
+      "brand",
+      "identity",
+      "consistency",
+      "design"
+    ],
+    "createdAt": "2025-09-01",
+    "updatedAt": "2026-01-15",
+    "stars": 290,
+    "downloads": 1600,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "image-prompt-engineer",
+    "name": "image-prompt-engineer",
+    "displayName": "Image Prompt Engineer",
+    "description": "AI image generation prompt specialist crafting precise prompts for visual content creation.",
+    "longDescription": "Image Prompt Engineer specializes in crafting optimized prompts for AI image generation tools. It understands the nuances of different image models, composition techniques, style references, and technical parameters to produce exactly the visual output needed.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install image-prompt-engineer@omc",
+    "capabilities": [
+      "Prompt crafting",
+      "Style specification",
+      "Composition guidance",
+      "Model-specific optimization",
+      "Iterative refinement"
+    ],
+    "tools": [
+      "Read",
+      "Write",
+      "Edit"
+    ],
+    "tags": [
+      "image",
+      "prompt",
+      "ai-art",
+      "generation"
+    ],
+    "createdAt": "2025-09-15",
+    "updatedAt": "2026-01-20",
+    "stars": 520,
+    "downloads": 4100,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "ui-designer",
+    "name": "ui-designer",
+    "displayName": "UI Designer",
+    "description": "Visual design systems and component library specialist for polished user interfaces.",
+    "longDescription": "UI Designer creates and maintains visual design systems, component libraries, and polished user interfaces. It provides expertise in color theory, typography, spacing, and visual hierarchy to create beautiful, consistent UI implementations.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install ui-designer@omc",
+    "capabilities": [
+      "Design systems",
+      "Component libraries",
+      "Color theory",
+      "Typography",
+      "Visual hierarchy"
+    ],
+    "tools": [
+      "Read",
+      "Write",
+      "Edit",
+      "Bash"
+    ],
+    "tags": [
+      "ui",
+      "design",
+      "components",
+      "visual"
+    ],
+    "createdAt": "2025-10-01",
+    "updatedAt": "2026-02-01",
+    "stars": 680,
+    "downloads": 5200,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "ux-architect",
+    "name": "ux-architect",
+    "displayName": "UX Architect",
+    "description": "Technical architecture and UX integration specialist bridging engineering and user experience.",
+    "longDescription": "UX Architect bridges the gap between technical architecture and user experience design. It ensures that architectural decisions support optimal user flows, performance targets translate to great UX, and technical constraints are communicated clearly to design teams.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install ux-architect@omc",
+    "capabilities": [
+      "Information architecture",
+      "User flow design",
+      "Technical-UX bridging",
+      "Performance-UX tradeoffs",
+      "Accessibility architecture"
+    ],
+    "tools": [
+      "Read",
+      "Write",
+      "Edit",
+      "Grep"
+    ],
+    "tags": [
+      "ux",
+      "architecture",
+      "user-flow",
+      "accessibility"
+    ],
+    "createdAt": "2025-10-08",
+    "updatedAt": "2026-02-05",
+    "stars": 440,
+    "downloads": 3100,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "ux-researcher",
+    "name": "ux-researcher",
+    "displayName": "UX Researcher",
+    "description": "User experience research specialist conducting usability analysis and user behavior studies.",
+    "longDescription": "UX Researcher designs and conducts user research studies, analyzes usability patterns, interprets user behavior data, and translates findings into actionable design recommendations. It supports both qualitative and quantitative research methodologies.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install ux-researcher@omc",
+    "capabilities": [
+      "Usability analysis",
+      "User interviews",
+      "Behavior mapping",
+      "A/B test design",
+      "Research synthesis"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "WebSearch"
+    ],
+    "tags": [
+      "ux",
+      "research",
+      "usability",
+      "user-behavior"
+    ],
+    "createdAt": "2025-10-15",
+    "updatedAt": "2026-02-08",
+    "stars": 370,
+    "downloads": 2300,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "content-creator",
+    "name": "content-creator",
+    "displayName": "Content Creator",
+    "description": "Multi-platform content strategy and creation specialist for blogs, social, and documentation.",
+    "longDescription": "Content Creator develops and executes multi-platform content strategies. It writes blog posts, social media content, documentation, newsletters, and marketing copy while maintaining consistent voice and optimizing for each platform's unique requirements.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install content-creator@omc",
+    "capabilities": [
+      "Content strategy",
+      "Blog writing",
+      "Social media copy",
+      "Documentation",
+      "SEO content"
+    ],
+    "tools": [
+      "Read",
+      "Write",
+      "Edit",
+      "WebSearch"
+    ],
+    "tags": [
+      "content",
+      "writing",
+      "marketing",
+      "social-media"
+    ],
+    "createdAt": "2025-10-22",
+    "updatedAt": "2026-02-12",
+    "stars": 550,
+    "downloads": 4500,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "growth-hacker",
+    "name": "growth-hacker",
+    "displayName": "Growth Hacker",
+    "description": "Data-driven growth experimentation specialist for acquisition, activation, and retention optimization.",
+    "longDescription": "Growth Hacker designs and analyzes data-driven growth experiments across the full funnel. It identifies growth opportunities, designs A/B tests, analyzes conversion data, and recommends optimization strategies for acquisition, activation, retention, and revenue.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install growth-hacker@omc",
+    "capabilities": [
+      "Funnel analysis",
+      "A/B testing",
+      "Conversion optimization",
+      "Growth modeling",
+      "Experiment design"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "WebSearch",
+      "Bash"
+    ],
+    "tags": [
+      "growth",
+      "experimentation",
+      "conversion",
+      "analytics"
+    ],
+    "createdAt": "2025-11-01",
+    "updatedAt": "2026-02-15",
+    "stars": 460,
+    "downloads": 3400,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "seo-specialist",
+    "name": "seo-specialist",
+    "displayName": "SEO Specialist",
+    "description": "Technical SEO and content optimization expert for search engine visibility and ranking.",
+    "longDescription": "SEO Specialist provides comprehensive search engine optimization expertise including technical SEO audits, content optimization, keyword research, schema markup implementation, and site architecture recommendations for maximum search visibility.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install seo-specialist@omc",
+    "capabilities": [
+      "Technical SEO audit",
+      "Keyword research",
+      "Content optimization",
+      "Schema markup",
+      "Site architecture"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Edit",
+      "WebSearch"
+    ],
+    "tags": [
+      "seo",
+      "search",
+      "optimization",
+      "content"
+    ],
+    "createdAt": "2025-11-08",
+    "updatedAt": "2026-02-18",
+    "stars": 390,
+    "downloads": 2800,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "social-media-strategist",
+    "name": "social-media-strategist",
+    "displayName": "Social Media Strategist",
+    "description": "Cross-platform social media campaign strategist for engagement and brand awareness.",
+    "longDescription": "Social Media Strategist develops comprehensive social media strategies across platforms. It plans content calendars, analyzes engagement metrics, recommends posting strategies, and creates platform-specific content that maximizes reach and engagement.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install social-media-strategist@omc",
+    "capabilities": [
+      "Platform strategy",
+      "Content calendars",
+      "Engagement analysis",
+      "Community management",
+      "Campaign planning"
+    ],
+    "tools": [
+      "Read",
+      "Write",
+      "WebSearch"
+    ],
+    "tags": [
+      "social-media",
+      "strategy",
+      "engagement",
+      "marketing"
+    ],
+    "createdAt": "2025-11-15",
+    "updatedAt": "2026-02-20",
+    "stars": 310,
+    "downloads": 1900,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "product-manager",
+    "name": "product-manager",
+    "displayName": "Product Manager",
+    "description": "Full product lifecycle management specialist from ideation to launch and iteration.",
+    "longDescription": "Product Manager handles the complete product lifecycle from ideation through launch and iteration. It creates PRDs, prioritizes backlogs, defines success metrics, coordinates cross-functional teams, and ensures product-market fit through continuous user feedback analysis.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install product-manager@omc",
+    "capabilities": [
+      "PRD creation",
+      "Backlog prioritization",
+      "Metrics definition",
+      "Stakeholder alignment",
+      "Roadmap planning"
+    ],
+    "tools": [
+      "Read",
+      "Write",
+      "Edit",
+      "Grep"
+    ],
+    "tags": [
+      "product",
+      "management",
+      "roadmap",
+      "prd"
+    ],
+    "createdAt": "2025-11-22",
+    "updatedAt": "2026-02-22",
+    "stars": 720,
+    "downloads": 5800,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "sprint-prioritizer",
+    "name": "sprint-prioritizer",
+    "displayName": "Sprint Prioritizer",
+    "description": "Agile sprint planning and prioritization specialist for efficient development cycles.",
+    "longDescription": "Sprint Prioritizer optimizes agile sprint planning by analyzing story complexity, business value, technical dependencies, and team capacity. It recommends sprint compositions that maximize value delivery while maintaining sustainable development velocity.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install sprint-prioritizer@omc",
+    "capabilities": [
+      "Story estimation",
+      "Priority scoring",
+      "Dependency mapping",
+      "Capacity planning",
+      "Velocity tracking"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Write"
+    ],
+    "tags": [
+      "agile",
+      "sprint",
+      "planning",
+      "prioritization"
+    ],
+    "createdAt": "2025-12-01",
+    "updatedAt": "2026-02-25",
+    "stars": 340,
+    "downloads": 2000,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "trend-researcher",
+    "name": "trend-researcher",
+    "displayName": "Trend Researcher",
+    "description": "Market intelligence and opportunity assessment specialist tracking emerging trends.",
+    "longDescription": "Trend Researcher monitors and analyzes market trends, emerging technologies, and competitive landscapes. It provides intelligence on industry shifts, identifies opportunities, assesses market timing, and delivers strategic recommendations based on trend analysis.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install trend-researcher@omc",
+    "capabilities": [
+      "Market analysis",
+      "Trend identification",
+      "Competitive intelligence",
+      "Opportunity assessment",
+      "Strategic forecasting"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "WebSearch"
+    ],
+    "tags": [
+      "trends",
+      "market",
+      "research",
+      "intelligence"
+    ],
+    "createdAt": "2025-12-08",
+    "updatedAt": "2026-02-28",
+    "stars": 380,
+    "downloads": 2500,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "project-shepherd",
+    "name": "project-shepherd",
+    "displayName": "Project Shepherd",
+    "description": "Cross-functional project coordination specialist guiding projects from inception to delivery.",
+    "longDescription": "Project Shepherd guides projects through their full lifecycle, coordinating across functions, managing risks, tracking milestones, and ensuring timely delivery. It excels at identifying blockers early, facilitating communication, and keeping complex projects on track.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install project-shepherd@omc",
+    "capabilities": [
+      "Project tracking",
+      "Risk management",
+      "Milestone planning",
+      "Cross-team coordination",
+      "Status reporting"
+    ],
+    "tools": [
+      "Read",
+      "Write",
+      "Grep",
+      "Task"
+    ],
+    "tags": [
+      "project",
+      "coordination",
+      "management",
+      "delivery"
+    ],
+    "createdAt": "2025-12-15",
+    "updatedAt": "2026-03-01",
+    "stars": 420,
+    "downloads": 3000,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "analytics-reporter",
+    "name": "analytics-reporter",
+    "displayName": "Analytics Reporter",
+    "description": "Data analysis, dashboard design, and KPI tracking specialist for data-driven decisions.",
+    "longDescription": "Analytics Reporter transforms raw data into actionable insights through analysis, visualization recommendations, and KPI tracking. It designs dashboard layouts, writes data queries, interprets metrics, and creates comprehensive reports for stakeholders.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install analytics-reporter@omc",
+    "capabilities": [
+      "Data analysis",
+      "Dashboard design",
+      "KPI tracking",
+      "Report generation",
+      "Metric interpretation"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Bash",
+      "Write"
+    ],
+    "tags": [
+      "analytics",
+      "data",
+      "dashboards",
+      "kpi"
+    ],
+    "createdAt": "2025-12-22",
+    "updatedAt": "2026-03-05",
+    "stars": 490,
+    "downloads": 3600,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "finance-tracker",
+    "name": "finance-tracker",
+    "displayName": "Finance Tracker",
+    "description": "Financial planning, budget management, and cost analysis specialist for project finances.",
+    "longDescription": "Finance Tracker manages financial aspects of projects including budget planning, cost tracking, ROI analysis, and financial forecasting. It helps teams understand cost implications of technical decisions and optimize spending for maximum value.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install finance-tracker@omc",
+    "capabilities": [
+      "Budget planning",
+      "Cost tracking",
+      "ROI analysis",
+      "Financial forecasting",
+      "Spend optimization"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Bash",
+      "Write"
+    ],
+    "tags": [
+      "finance",
+      "budget",
+      "cost",
+      "roi"
+    ],
+    "createdAt": "2026-01-05",
+    "updatedAt": "2026-03-08",
+    "stars": 260,
+    "downloads": 1400,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "legal-compliance-checker",
+    "name": "legal-compliance-checker",
+    "displayName": "Legal Compliance Checker",
+    "description": "Legal compliance analyst covering GDPR, CCPA, and other regulatory frameworks across jurisdictions.",
+    "longDescription": "Legal Compliance Checker reviews code, policies, and processes for legal compliance across jurisdictions. It covers GDPR, CCPA, ADA, HIPAA, and other regulatory frameworks, identifying compliance gaps and recommending remediation steps.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install legal-compliance-checker@omc",
+    "capabilities": [
+      "GDPR compliance",
+      "CCPA review",
+      "Privacy audit",
+      "Terms analysis",
+      "Regulatory mapping"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "WebSearch"
+    ],
+    "tags": [
+      "legal",
+      "compliance",
+      "gdpr",
+      "privacy"
+    ],
+    "createdAt": "2026-01-12",
+    "updatedAt": "2026-03-10",
+    "stars": 310,
+    "downloads": 1800,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "accessibility-auditor",
+    "name": "accessibility-auditor",
+    "displayName": "Accessibility Auditor",
+    "description": "WCAG standards and assistive technology testing specialist for inclusive design.",
+    "longDescription": "Accessibility Auditor evaluates web applications against WCAG 2.1/2.2 standards, tests with assistive technology patterns, identifies accessibility barriers, and provides specific remediation guidance for creating inclusive digital experiences.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install accessibility-auditor@omc",
+    "capabilities": [
+      "WCAG audit",
+      "Screen reader testing",
+      "Color contrast analysis",
+      "Keyboard navigation",
+      "ARIA implementation"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Edit",
+      "Bash"
+    ],
+    "tags": [
+      "accessibility",
+      "wcag",
+      "a11y",
+      "inclusive"
+    ],
+    "createdAt": "2026-01-18",
+    "updatedAt": "2026-03-12",
+    "stars": 450,
+    "downloads": 3300,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "performance-benchmarker",
+    "name": "performance-benchmarker",
+    "displayName": "Performance Benchmarker",
+    "description": "Performance testing and optimization specialist for web applications and APIs.",
+    "longDescription": "Performance Benchmarker designs and executes performance tests, analyzes bottlenecks, measures Core Web Vitals, and recommends optimizations. It covers load testing, profiling, bundle analysis, and runtime performance improvements.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install performance-benchmarker@omc",
+    "capabilities": [
+      "Load testing",
+      "Profiling",
+      "Bundle analysis",
+      "Core Web Vitals",
+      "Optimization recommendations"
+    ],
+    "tools": [
+      "Bash",
+      "Read",
+      "Grep",
+      "Edit"
+    ],
+    "tags": [
+      "performance",
+      "benchmarking",
+      "optimization",
+      "web-vitals"
+    ],
+    "createdAt": "2026-01-25",
+    "updatedAt": "2026-03-14",
+    "stars": 530,
+    "downloads": 4200,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "workflow-optimizer",
+    "name": "workflow-optimizer",
+    "displayName": "Workflow Optimizer",
+    "description": "Process improvement and automation specialist for development and business workflows.",
+    "longDescription": "Workflow Optimizer analyzes existing processes, identifies inefficiencies, and designs automated workflows. It maps process flows, recommends tooling, creates automation scripts, and measures improvement impact for development and business operations.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install workflow-optimizer@omc",
+    "capabilities": [
+      "Process mapping",
+      "Bottleneck identification",
+      "Automation design",
+      "Tool recommendation",
+      "Impact measurement"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Bash",
+      "Write"
+    ],
+    "tags": [
+      "workflow",
+      "automation",
+      "process",
+      "optimization"
+    ],
+    "createdAt": "2026-02-01",
+    "updatedAt": "2026-03-16",
+    "stars": 380,
+    "downloads": 2600,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "api-tester",
+    "name": "api-tester",
+    "displayName": "API Tester",
+    "description": "API validation, contract testing, and performance testing specialist for robust APIs.",
+    "longDescription": "API Tester validates API endpoints, runs contract tests, measures response times, and ensures API reliability. It generates test suites from OpenAPI specs, tests edge cases, validates error handling, and monitors API health.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install api-tester@omc",
+    "capabilities": [
+      "Endpoint validation",
+      "Contract testing",
+      "Performance measurement",
+      "Error handling verification",
+      "Test generation"
+    ],
+    "tools": [
+      "Bash",
+      "Read",
+      "Write",
+      "Grep"
+    ],
+    "tags": [
+      "api",
+      "testing",
+      "validation",
+      "contract"
+    ],
+    "createdAt": "2026-02-05",
+    "updatedAt": "2026-03-18",
+    "stars": 470,
+    "downloads": 3500,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "evidence-collector",
+    "name": "evidence-collector",
+    "displayName": "Evidence Collector",
+    "description": "Screenshot-based QA specialist collecting visual proof of test results and bug reproductions.",
+    "longDescription": "Evidence Collector captures and organizes visual evidence during QA processes. It takes screenshots, records state changes, documents bug reproductions with visual proof, and creates comprehensive test evidence reports for stakeholder review.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install evidence-collector@omc",
+    "capabilities": [
+      "Visual capture",
+      "Bug documentation",
+      "State recording",
+      "Evidence organization",
+      "Report generation"
+    ],
+    "tools": [
+      "Bash",
+      "Read",
+      "Write",
+      "Glob"
+    ],
+    "tags": [
+      "qa",
+      "evidence",
+      "screenshots",
+      "documentation"
+    ],
+    "createdAt": "2026-02-10",
+    "updatedAt": "2026-03-19",
+    "stars": 290,
+    "downloads": 1700,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "reality-checker",
+    "name": "reality-checker",
+    "displayName": "Reality Checker",
+    "description": "Evidence-based production readiness certification specialist for launch decisions.",
+    "longDescription": "Reality Checker provides evidence-based assessment of production readiness. It verifies test coverage, checks deployment prerequisites, validates monitoring setup, reviews rollback procedures, and certifies that a release meets all quality gates before launch.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install reality-checker@omc",
+    "capabilities": [
+      "Readiness assessment",
+      "Quality gate verification",
+      "Deployment checklist",
+      "Risk evaluation",
+      "Launch certification"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Bash",
+      "Glob"
+    ],
+    "tags": [
+      "production",
+      "readiness",
+      "certification",
+      "quality"
+    ],
+    "createdAt": "2026-02-14",
+    "updatedAt": "2026-03-20",
+    "stars": 350,
+    "downloads": 2200,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "game-designer",
+    "name": "game-designer",
+    "displayName": "Game Designer",
+    "description": "Game systems and mechanics architect specializing in GDD authorship and balance design.",
+    "longDescription": "Game Designer architects game systems, designs mechanics, creates game design documents (GDDs), and balances gameplay. It covers economy systems, progression curves, reward schedules, and player engagement loops for interactive experiences.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install game-designer@omc",
+    "capabilities": [
+      "Systems design",
+      "Mechanics architecture",
+      "GDD authorship",
+      "Balance tuning",
+      "Economy design"
+    ],
+    "tools": [
+      "Read",
+      "Write",
+      "Edit"
+    ],
+    "tags": [
+      "game-design",
+      "mechanics",
+      "gdd",
+      "balance"
+    ],
+    "createdAt": "2026-02-18",
+    "updatedAt": "2026-03-21",
+    "stars": 620,
+    "downloads": 4800,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "level-designer",
+    "name": "level-designer",
+    "displayName": "Level Designer",
+    "description": "Spatial storytelling and flow design specialist for game environments and interactive spaces.",
+    "longDescription": "Level Designer creates compelling spatial experiences through environmental storytelling, flow design, pacing management, and spatial puzzles. It designs level layouts that guide players naturally while providing meaningful exploration and challenge.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install level-designer@omc",
+    "capabilities": [
+      "Spatial design",
+      "Flow planning",
+      "Pacing management",
+      "Environmental storytelling",
+      "Puzzle design"
+    ],
+    "tools": [
+      "Read",
+      "Write",
+      "Edit"
+    ],
+    "tags": [
+      "level-design",
+      "spatial",
+      "flow",
+      "environment"
+    ],
+    "createdAt": "2026-02-20",
+    "updatedAt": "2026-03-22",
+    "stars": 340,
+    "downloads": 2100,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "narrative-designer",
+    "name": "narrative-designer",
+    "displayName": "Narrative Designer",
+    "description": "Interactive story systems and dialogue design specialist for games and applications.",
+    "longDescription": "Narrative Designer creates interactive story systems, branching dialogue trees, character arcs, and narrative-driven experiences. It designs story structures that respond to player choices while maintaining narrative coherence and emotional impact.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install narrative-designer@omc",
+    "capabilities": [
+      "Branching dialogue",
+      "Character arcs",
+      "Story systems",
+      "Choice design",
+      "Emotional pacing"
+    ],
+    "tools": [
+      "Read",
+      "Write",
+      "Edit"
+    ],
+    "tags": [
+      "narrative",
+      "dialogue",
+      "story",
+      "interactive"
+    ],
+    "createdAt": "2026-02-22",
+    "updatedAt": "2026-03-23",
+    "stars": 380,
+    "downloads": 2400,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "mcp-builder",
+    "name": "mcp-builder",
+    "displayName": "MCP Builder",
+    "description": "Model Context Protocol server development specialist for building custom tool integrations.",
+    "longDescription": "MCP Builder specializes in developing Model Context Protocol servers that extend Claude Code's capabilities. It handles transport configuration, tool definition, resource management, and server lifecycle for building reliable MCP integrations.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install mcp-builder@omc",
+    "capabilities": [
+      "Server scaffolding",
+      "Tool definition",
+      "Transport setup",
+      "Resource management",
+      "Integration testing"
+    ],
+    "tools": [
+      "Bash",
+      "Read",
+      "Write",
+      "Edit",
+      "Grep"
+    ],
+    "tags": [
+      "mcp",
+      "protocol",
+      "server",
+      "integration"
+    ],
+    "createdAt": "2026-02-25",
+    "updatedAt": "2026-03-24",
+    "stars": 890,
+    "downloads": 7200,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "document-generator",
+    "name": "document-generator",
+    "displayName": "Document Generator",
+    "description": "PDF, PPTX, DOCX, and XLSX creation worker for automated document generation.",
+    "longDescription": "Document Generator creates professional documents in multiple formats including PDF, PowerPoint, Word, and Excel. It handles templates, data binding, styling, charts, and automated report generation for business and technical documentation.",
+    "category": "worker",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install document-generator@omc",
+    "capabilities": [
+      "PDF generation",
+      "PPTX creation",
+      "DOCX formatting",
+      "XLSX reports",
+      "Template management"
+    ],
+    "tools": [
+      "Bash",
+      "Read",
+      "Write",
+      "Edit"
+    ],
+    "tags": [
+      "documents",
+      "pdf",
+      "reports",
+      "generation"
+    ],
+    "createdAt": "2026-02-28",
+    "updatedAt": "2026-03-24",
+    "stars": 560,
+    "downloads": 4300,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "blockchain-security-auditor",
+    "name": "blockchain-security-auditor",
+    "displayName": "Blockchain Security Auditor",
+    "description": "Smart contract security auditing specialist for Solidity, Rust, and Move contracts.",
+    "longDescription": "Blockchain Security Auditor performs comprehensive security audits on smart contracts across Solidity, Rust, and Move ecosystems. It identifies vulnerabilities like reentrancy, overflow, and access control issues, providing detailed remediation guidance.",
+    "category": "specialist",
+    "model": "opus",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install blockchain-security-auditor@omc",
+    "capabilities": [
+      "Vulnerability scanning",
+      "Reentrancy detection",
+      "Access control audit",
+      "Gas optimization",
+      "Formal verification"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Bash",
+      "Edit"
+    ],
+    "tags": [
+      "blockchain",
+      "security",
+      "smart-contracts",
+      "audit"
+    ],
+    "createdAt": "2026-03-01",
+    "updatedAt": "2026-03-24",
+    "stars": 740,
+    "downloads": 5500,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "compliance-auditor",
+    "name": "compliance-auditor",
+    "displayName": "Compliance Auditor",
+    "description": "SOC 2, ISO 27001, and HIPAA compliance audit specialist for enterprise security.",
+    "longDescription": "Compliance Auditor evaluates systems and processes against major compliance frameworks including SOC 2, ISO 27001, HIPAA, and PCI DSS. It generates audit reports, identifies gaps, recommends controls, and tracks remediation progress.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install compliance-auditor@omc",
+    "capabilities": [
+      "SOC 2 assessment",
+      "ISO 27001 audit",
+      "HIPAA review",
+      "Gap analysis",
+      "Control recommendations"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Write"
+    ],
+    "tags": [
+      "compliance",
+      "soc2",
+      "iso27001",
+      "hipaa"
+    ],
+    "createdAt": "2026-03-05",
+    "updatedAt": "2026-03-25",
+    "stars": 420,
+    "downloads": 3100,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "developer-advocate",
+    "name": "developer-advocate",
+    "displayName": "Developer Advocate",
+    "description": "Developer community building and DX optimization specialist for API adoption.",
+    "longDescription": "Developer Advocate focuses on developer experience optimization, community building, and API adoption. It creates developer documentation, designs onboarding flows, writes code samples, manages community engagement, and measures developer satisfaction.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install developer-advocate@omc",
+    "capabilities": [
+      "Developer documentation",
+      "Onboarding design",
+      "Code samples",
+      "Community engagement",
+      "DX metrics"
+    ],
+    "tools": [
+      "Read",
+      "Write",
+      "Edit",
+      "WebSearch"
+    ],
+    "tags": [
+      "devrel",
+      "developer-experience",
+      "community",
+      "documentation"
+    ],
+    "createdAt": "2026-03-08",
+    "updatedAt": "2026-03-25",
+    "stars": 380,
+    "downloads": 2500,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "salesforce-architect",
+    "name": "salesforce-architect",
+    "displayName": "Salesforce Architect",
+    "description": "Multi-cloud Salesforce design specialist for enterprise CRM architecture.",
+    "longDescription": "Salesforce Architect designs enterprise CRM solutions across Salesforce clouds. It handles data modeling, integration architecture, automation design, and multi-cloud orchestration for Sales, Service, Marketing, and Commerce clouds.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install salesforce-architect@omc",
+    "capabilities": [
+      "Data modeling",
+      "Integration design",
+      "Automation architecture",
+      "Multi-cloud planning",
+      "Governor limit management"
+    ],
+    "tools": [
+      "Read",
+      "Write",
+      "Edit",
+      "Grep"
+    ],
+    "tags": [
+      "salesforce",
+      "crm",
+      "enterprise",
+      "architecture"
+    ],
+    "createdAt": "2026-03-10",
+    "updatedAt": "2026-03-25",
+    "stars": 280,
+    "downloads": 1500,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "workflow-architect",
+    "name": "workflow-architect",
+    "displayName": "Workflow Architect",
+    "description": "Complete workflow tree mapping specialist for complex multi-step process design.",
+    "longDescription": "Workflow Architect maps and designs complete workflow trees for complex business and development processes. It visualizes decision paths, identifies parallel execution opportunities, optimizes handoff points, and creates executable workflow definitions.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "omc-plugins",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "/plugin install workflow-architect@omc",
+    "capabilities": [
+      "Workflow mapping",
+      "Decision tree design",
+      "Parallel execution planning",
+      "Handoff optimization",
+      "Process visualization"
+    ],
+    "tools": [
+      "Read",
+      "Write",
+      "Edit",
+      "Grep"
+    ],
+    "tags": [
+      "workflow",
+      "architecture",
+      "process",
+      "automation"
+    ],
+    "createdAt": "2026-03-12",
+    "updatedAt": "2026-03-25",
+    "stars": 350,
+    "downloads": 2100,
+    "featured": false,
+    "verified": true,
+    "platform": "claude"
+  },
+  {
+    "slug": "codebase-investigator",
+    "name": "codebase_investigator",
+    "displayName": "Codebase Investigator",
+    "description": "Architectural analysis, dependency mapping, and bug root-cause investigation for codebases",
+    "longDescription": "Built-in Gemini CLI agent that performs deep codebase investigation including architectural analysis, dependency mapping, and root-cause analysis for bugs. Uses read-only tools (ls, read_file, glob, grep) to explore code without making changes.",
+    "category": "analyst",
+    "model": "sonnet",
+    "source": "official",
+    "platform": "gemini",
+    "author": "Google",
+    "githubUrl": "https://github.com/google-gemini/gemini-cli",
+    "installCommand": "gemini-cli (built-in)",
+    "capabilities": [
+      "Architectural analysis",
+      "Dependency mapping",
+      "Bug root-cause investigation",
+      "Code exploration"
+    ],
+    "tools": [
+      "ls",
+      "read_file",
+      "glob",
+      "grep"
+    ],
+    "tags": [
+      "gemini",
+      "analysis",
+      "codebase",
+      "investigation",
+      "built-in"
+    ],
+    "createdAt": "2025-06-25",
+    "updatedAt": "2025-08-10",
+    "stars": 3200,
+    "downloads": 45000,
+    "featured": false,
+    "verified": true
+  },
+  {
+    "slug": "cli-help",
+    "name": "cli_help",
+    "displayName": "CLI Help",
+    "description": "Answers questions about Gemini CLI features, configuration, and usage",
+    "longDescription": "Built-in Gemini CLI agent that provides answers about Gemini CLI features and configuration. It accesses internal documentation to help users understand available commands, settings, and workflows.",
+    "category": "analyst",
+    "model": "sonnet",
+    "source": "official",
+    "platform": "gemini",
+    "author": "Google",
+    "githubUrl": "https://github.com/google-gemini/gemini-cli",
+    "installCommand": "gemini-cli (built-in)",
+    "capabilities": [
+      "CLI documentation",
+      "Configuration guidance",
+      "Feature explanation",
+      "Usage examples"
+    ],
+    "tools": [
+      "get_internal_docs"
+    ],
+    "tags": [
+      "gemini",
+      "help",
+      "documentation",
+      "cli",
+      "built-in"
+    ],
+    "createdAt": "2025-06-25",
+    "updatedAt": "2025-08-10",
+    "stars": 2800,
+    "downloads": 38000,
+    "featured": false,
+    "verified": true
+  },
+  {
+    "slug": "gemini-generalist",
+    "name": "gemini_generalist",
+    "displayName": "Gemini Generalist",
+    "description": "General-purpose agent with access to all tools, handles turn-intensive tasks offloaded by other agents",
+    "longDescription": "Built-in Gemini CLI general-purpose agent with access to all available tools. Designed to offload turn-intensive tasks from other agents, it can handle any coding task including file operations, code generation, and system commands.",
+    "category": "worker",
+    "model": "sonnet",
+    "source": "official",
+    "platform": "gemini",
+    "author": "Google",
+    "githubUrl": "https://github.com/google-gemini/gemini-cli",
+    "installCommand": "gemini-cli (built-in)",
+    "capabilities": [
+      "General coding",
+      "File operations",
+      "Task offloading",
+      "Code generation"
+    ],
+    "tools": [
+      "read_file",
+      "write_file",
+      "edit_file",
+      "shell",
+      "glob",
+      "grep"
+    ],
+    "tags": [
+      "gemini",
+      "general-purpose",
+      "worker",
+      "built-in"
+    ],
+    "createdAt": "2025-06-25",
+    "updatedAt": "2025-08-10",
+    "stars": 3100,
+    "downloads": 42000,
+    "featured": false,
+    "verified": true
+  },
+  {
+    "slug": "browser-agent",
+    "name": "browser_agent",
+    "displayName": "Browser Agent",
+    "description": "Controls a browser for web automation, testing, and data extraction tasks",
+    "longDescription": "Built-in Gemini CLI agent that controls a browser for web automation tasks. It can navigate pages, interact with elements, extract data, and perform end-to-end testing workflows through browser control tools.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "official",
+    "platform": "gemini",
+    "author": "Google",
+    "githubUrl": "https://github.com/google-gemini/gemini-cli",
+    "installCommand": "gemini-cli (built-in)",
+    "capabilities": [
+      "Web automation",
+      "Browser control",
+      "Data extraction",
+      "E2E testing"
+    ],
+    "tools": [
+      "browser_navigate",
+      "browser_click",
+      "browser_type",
+      "browser_snapshot"
+    ],
+    "tags": [
+      "gemini",
+      "browser",
+      "automation",
+      "testing",
+      "built-in"
+    ],
+    "createdAt": "2025-06-25",
+    "updatedAt": "2025-08-10",
+    "stars": 2600,
+    "downloads": 31000,
+    "featured": false,
+    "verified": true
+  },
+  {
+    "slug": "memory-manager",
+    "name": "memory_manager",
+    "displayName": "Memory Manager",
+    "description": "Manages global GEMINI.md persistent memory for storing context and preferences",
+    "longDescription": "Built-in Gemini CLI agent that manages the global GEMINI.md persistent memory file. It reads, updates, and organizes stored context, user preferences, and project-specific notes that persist across sessions.",
+    "category": "worker",
+    "model": "haiku",
+    "source": "official",
+    "platform": "gemini",
+    "author": "Google",
+    "githubUrl": "https://github.com/google-gemini/gemini-cli",
+    "installCommand": "gemini-cli (built-in)",
+    "capabilities": [
+      "Persistent memory",
+      "Context management",
+      "Preference storage",
+      "Session continuity"
+    ],
+    "tools": [
+      "read_file",
+      "write_file",
+      "edit_file"
+    ],
+    "tags": [
+      "gemini",
+      "memory",
+      "persistence",
+      "context",
+      "built-in"
+    ],
+    "createdAt": "2025-06-25",
+    "updatedAt": "2025-08-10",
+    "stars": 2400,
+    "downloads": 28000,
+    "featured": false,
+    "verified": true
+  },
+  {
+    "slug": "maestro-gemini",
+    "name": "maestro_gemini",
+    "displayName": "Maestro Gemini",
+    "description": "22-specialist multi-agent orchestration system for complex software development workflows",
+    "longDescription": "A comprehensive multi-agent orchestration system for Gemini CLI featuring 22 specialized agents. Maestro coordinates planning, implementation, testing, and deployment across complex software projects with intelligent task routing and parallel execution.",
+    "category": "orchestrator",
+    "model": "opus",
+    "source": "community",
+    "platform": "gemini",
+    "author": "josstei",
+    "githubUrl": "https://github.com/josstei/maestro-gemini",
+    "installCommand": "git clone https://github.com/josstei/maestro-gemini.git ~/.gemini/agents/maestro",
+    "capabilities": [
+      "Multi-agent orchestration",
+      "Task routing",
+      "Parallel execution",
+      "Workflow management",
+      "Agent coordination"
+    ],
+    "tools": [
+      "read_file",
+      "write_file",
+      "edit_file",
+      "shell",
+      "glob",
+      "grep"
+    ],
+    "tags": [
+      "gemini",
+      "orchestrator",
+      "multi-agent",
+      "community"
+    ],
+    "createdAt": "2025-07-15",
+    "updatedAt": "2025-09-01",
+    "stars": 1800,
+    "downloads": 12000,
+    "featured": false,
+    "verified": false
+  },
+  {
+    "slug": "gemini-security",
+    "name": "gemini_security",
+    "displayName": "Gemini Security Scanner",
+    "description": "Security vulnerability scanner extension for Gemini CLI projects",
+    "longDescription": "Official Google security extension for Gemini CLI that scans codebases for security vulnerabilities, dependency issues, and common attack vectors. Provides actionable remediation guidance and integrates with the Gemini CLI workflow.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "official",
+    "platform": "gemini",
+    "author": "Google",
+    "githubUrl": "https://github.com/google-gemini/gemini-cli",
+    "installCommand": "gemini-cli (extension)",
+    "capabilities": [
+      "Vulnerability scanning",
+      "Dependency analysis",
+      "Security remediation",
+      "Attack vector detection"
+    ],
+    "tools": [
+      "read_file",
+      "glob",
+      "grep",
+      "shell"
+    ],
+    "tags": [
+      "gemini",
+      "security",
+      "vulnerability",
+      "scanning",
+      "official"
+    ],
+    "createdAt": "2025-07-01",
+    "updatedAt": "2025-09-05",
+    "stars": 2200,
+    "downloads": 18000,
+    "featured": false,
+    "verified": true
+  },
+  {
+    "slug": "gemini-conductor",
+    "name": "gemini_conductor",
+    "displayName": "Gemini Conductor",
+    "description": "Plans and implements software features with structured workflow and validation",
+    "longDescription": "Official Google agent for Gemini CLI that plans and implements software features. It creates structured implementation plans, generates code, and validates results through automated testing and review steps.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "official",
+    "platform": "gemini",
+    "author": "Google",
+    "githubUrl": "https://github.com/google-gemini/gemini-cli",
+    "installCommand": "gemini-cli (extension)",
+    "capabilities": [
+      "Feature planning",
+      "Code implementation",
+      "Automated validation",
+      "Structured workflows"
+    ],
+    "tools": [
+      "read_file",
+      "write_file",
+      "edit_file",
+      "shell",
+      "glob",
+      "grep"
+    ],
+    "tags": [
+      "gemini",
+      "planning",
+      "implementation",
+      "official"
+    ],
+    "createdAt": "2025-07-01",
+    "updatedAt": "2025-09-05",
+    "stars": 2000,
+    "downloads": 15000,
+    "featured": false,
+    "verified": true
+  },
+  {
+    "slug": "codex-default",
+    "name": "codex_default",
+    "displayName": "Codex Default",
+    "description": "General-purpose fallback agent for standard coding tasks in Codex CLI",
+    "longDescription": "Built-in Codex CLI default agent that handles standard coding tasks. It serves as the fallback agent when no specific subagent is invoked, providing general-purpose code generation, editing, and problem-solving capabilities.",
+    "category": "worker",
+    "model": "sonnet",
+    "source": "official",
+    "platform": "codex",
+    "author": "OpenAI",
+    "githubUrl": "https://github.com/openai/codex",
+    "installCommand": "codex (built-in)",
+    "capabilities": [
+      "General coding",
+      "Code generation",
+      "Problem solving",
+      "File editing"
+    ],
+    "tools": [
+      "shell",
+      "read_file",
+      "write_file",
+      "apply_patch"
+    ],
+    "tags": [
+      "codex",
+      "general-purpose",
+      "default",
+      "built-in"
+    ],
+    "createdAt": "2025-05-16",
+    "updatedAt": "2025-08-20",
+    "stars": 4500,
+    "downloads": 52000,
+    "featured": false,
+    "verified": true
+  },
+  {
+    "slug": "codex-worker",
+    "name": "codex_worker",
+    "displayName": "Codex Worker",
+    "description": "Execution-focused agent that implements and fixes code with read-write sandbox access",
+    "longDescription": "Built-in Codex CLI execution agent that focuses on implementing changes and fixing code. Operates within a read-write sandbox environment, making it safe to execute code changes while maintaining isolation from the host system.",
+    "category": "worker",
+    "model": "sonnet",
+    "source": "official",
+    "platform": "codex",
+    "author": "OpenAI",
+    "githubUrl": "https://github.com/openai/codex",
+    "installCommand": "codex (built-in)",
+    "capabilities": [
+      "Code implementation",
+      "Bug fixing",
+      "Sandboxed execution",
+      "File operations"
+    ],
+    "tools": [
+      "shell",
+      "read_file",
+      "write_file",
+      "apply_patch"
+    ],
+    "tags": [
+      "codex",
+      "worker",
+      "implementation",
+      "sandbox",
+      "built-in"
+    ],
+    "createdAt": "2025-05-16",
+    "updatedAt": "2025-08-20",
+    "stars": 4200,
+    "downloads": 48000,
+    "featured": false,
+    "verified": true
+  },
+  {
+    "slug": "codex-explorer",
+    "name": "codex_explorer",
+    "displayName": "Codex Explorer",
+    "description": "Read-only codebase exploration agent that gathers evidence and analyzes code",
+    "longDescription": "Built-in Codex CLI exploration agent designed for read-only codebase investigation. It gathers evidence by reading files, searching patterns, and analyzing code structure without making any modifications.",
+    "category": "analyst",
+    "model": "sonnet",
+    "source": "official",
+    "platform": "codex",
+    "author": "OpenAI",
+    "githubUrl": "https://github.com/openai/codex",
+    "installCommand": "codex (built-in)",
+    "capabilities": [
+      "Code exploration",
+      "Pattern search",
+      "Structure analysis",
+      "Evidence gathering"
+    ],
+    "tools": [
+      "shell",
+      "read_file"
+    ],
+    "tags": [
+      "codex",
+      "explorer",
+      "analysis",
+      "read-only",
+      "built-in"
+    ],
+    "createdAt": "2025-05-16",
+    "updatedAt": "2025-08-20",
+    "stars": 3800,
+    "downloads": 41000,
+    "featured": false,
+    "verified": true
+  },
+  {
+    "slug": "skill-creator",
+    "name": "skill_creator",
+    "displayName": "Skill Creator",
+    "description": "Meta-skill for creating new agent skills across Claude Code, Gemini CLI, and Codex CLI",
+    "longDescription": "A cross-platform meta-skill for creating new agent skills that work across Claude Code, Gemini CLI, and Codex CLI. Uses the shared SKILL.md open standard to generate portable skill definitions with capabilities, tools, and configuration.",
+    "category": "worker",
+    "model": "sonnet",
+    "source": "community",
+    "platform": "universal",
+    "author": "community",
+    "githubUrl": "https://github.com/openai/skills",
+    "installCommand": "Copy SKILL.md template to your agents directory",
+    "capabilities": [
+      "Skill generation",
+      "Cross-platform compatibility",
+      "Template creation",
+      "SKILL.md standard"
+    ],
+    "tools": [
+      "read_file",
+      "write_file",
+      "edit_file"
+    ],
+    "tags": [
+      "universal",
+      "cross-platform",
+      "skill",
+      "meta",
+      "SKILL.md"
+    ],
+    "createdAt": "2025-08-01",
+    "updatedAt": "2025-10-15",
+    "stars": 1500,
+    "downloads": 9500,
+    "featured": false,
+    "verified": false
+  },
+  {
+    "slug": "pr-reviewer",
+    "name": "pr_reviewer",
+    "displayName": "PR Reviewer",
+    "description": "Cross-platform pull request review agent with security and quality analysis",
+    "longDescription": "A universal pull request review agent that works across Claude Code, Gemini CLI, and Codex CLI. Analyzes code changes for quality issues, security vulnerabilities, and best practice violations with actionable feedback.",
+    "category": "analyst",
+    "model": "sonnet",
+    "source": "community",
+    "platform": "universal",
+    "author": "community",
+    "githubUrl": "https://github.com/community/pr-reviewer-agent",
+    "installCommand": "Copy pr-reviewer.md to your agents directory",
+    "capabilities": [
+      "Code review",
+      "Security analysis",
+      "Quality assessment",
+      "Best practice validation"
+    ],
+    "tools": [
+      "read_file",
+      "glob",
+      "grep",
+      "shell"
+    ],
+    "tags": [
+      "universal",
+      "cross-platform",
+      "code-review",
+      "pull-request"
+    ],
+    "createdAt": "2025-09-01",
+    "updatedAt": "2025-11-10",
+    "stars": 1200,
+    "downloads": 7800,
+    "featured": false,
+    "verified": false
+  }
+]

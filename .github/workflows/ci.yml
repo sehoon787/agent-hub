@@ -1,0 +1,105 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Build
+        run: npm run build
+        env:
+          SKIP_ENV_VALIDATION: 'true'
+
+  verify-agents:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify agent data integrity
+        run: |
+          node -e "
+            const agents = require('./src/lib/data/agents.json');
+            let errors = 0;
+            const requiredFields = ['slug', 'name', 'displayName', 'description', 'category', 'model', 'platform', 'verified'];
+            const validCategories = ['orchestrator', 'specialist', 'worker', 'analyst'];
+            const validModels = ['opus', 'sonnet', 'haiku'];
+            const validPlatforms = ['claude', 'gemini', 'codex', 'universal'];
+            const slugs = new Set();
+
+            agents.forEach((agent, i) => {
+              requiredFields.forEach(field => {
+                if (!agent[field] && agent[field] !== false) {
+                  console.error('Agent ' + agent.slug + ' missing field: ' + field);
+                  errors++;
+                }
+              });
+              if (!validCategories.includes(agent.category)) {
+                console.error('Agent ' + agent.slug + ' invalid category: ' + agent.category);
+                errors++;
+              }
+              if (!validModels.includes(agent.model)) {
+                console.error('Agent ' + agent.slug + ' invalid model: ' + agent.model);
+                errors++;
+              }
+              if (!validPlatforms.includes(agent.platform)) {
+                console.error('Agent ' + agent.slug + ' invalid platform: ' + agent.platform);
+                errors++;
+              }
+              if (slugs.has(agent.slug)) {
+                console.error('Duplicate slug: ' + agent.slug);
+                errors++;
+              }
+              slugs.add(agent.slug);
+            });
+
+            console.log('Verified ' + agents.length + ' agents, ' + errors + ' errors');
+            if (errors > 0) process.exit(1);
+          "
+
+      - name: Verify GitHub links
+        if: env.GITHUB_TOKEN
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          node -e "
+            const agents = require('./src/lib/data/agents.json');
+            const withUrls = agents.filter(a => a.githubUrl);
+            console.log(withUrls.length + ' agents have GitHub URLs');
+            withUrls.forEach(a => {
+              try { new URL(a.githubUrl); }
+              catch { console.error('Invalid URL for ' + a.slug + ': ' + a.githubUrl); process.exit(1); }
+            });
+            console.log('All GitHub URLs are valid format');
+          "
