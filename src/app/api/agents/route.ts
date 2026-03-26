@@ -13,7 +13,11 @@ export async function GET(request: NextRequest) {
     model: sp.get('model') || undefined,
     source: sp.get('source') || undefined,
     platform: sp.get('platform') || undefined,
-    stage: sp.get('stage') || undefined,
+    stage: (() => {
+      const s = sp.get('stage');
+      const valid = new Set(['discover','plan','implement','review','verify','debug','operate']);
+      return s && valid.has(s) ? s : undefined;
+    })(),
     sort: sp.get('sort') || undefined,
     page: sp.get('page') ? Number(sp.get('page')) : undefined,
     limit: sp.get('limit') ? Number(sp.get('limit')) : undefined,

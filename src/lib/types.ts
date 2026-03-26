@@ -14,6 +14,7 @@ export interface Agent {
   model: AgentModel;
   source: AgentSource;
   platform: AgentPlatform;
+  /** Dynamically inferred by stage-classifier.ts — not stored in agents.json */
   stages: AgentStage[];
   author: string;
   githubUrl?: string;
@@ -28,6 +29,9 @@ export interface Agent {
   featured: boolean;
   verified: boolean;
 }
+
+/** Agent data as stored in agents.json (without computed fields) */
+export type RawAgent = Omit<Agent, 'stages'>;
 
 export interface SearchResult {
   type: 'agent';

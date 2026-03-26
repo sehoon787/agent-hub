@@ -31,7 +31,7 @@ export function inferStages(agent: {
 
   // Combine text fields for keyword matching
   const text = [
-    agent.description,
+    agent.description ?? '',
     ...(agent.tags ?? []),
     ...(agent.capabilities ?? []),
   ].join(' ');
@@ -52,9 +52,13 @@ export function inferStages(agent: {
   const hasRead = tools.some(t => READ_TOOLS.includes(t));
   const hasOrchestration = tools.some(t => ORCHESTRATION_TOOLS.includes(t));
 
+  if (hasRead) {
+    scores.discover += 1;
+    scores.review += 1;
+  }
   if (hasRead && !hasWrite && !hasExec) {
-    scores.discover += 3;
-    scores.review += 3;
+    scores.discover += 2;
+    scores.review += 2;
   }
   if (hasWrite) {
     scores.implement += 3;

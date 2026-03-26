@@ -1,8 +1,8 @@
-import type { Agent, AgentStage, Stats, SearchResult } from './types';
+import type { Agent, AgentStage, RawAgent, Stats, SearchResult } from './types';
 import { inferStages } from './stage-classifier';
 import agentsData from './data/agents.json';
 
-const agents: Agent[] = (agentsData as Omit<Agent, 'stages'>[]).map((a) => ({
+const agents: Agent[] = (agentsData as RawAgent[]).map((a) => ({
   ...a,
   stages: inferStages(a),
 }));
