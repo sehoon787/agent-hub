@@ -148,6 +148,27 @@ test.describe('API Routes', () => {
     expect(response.status()).toBe(401)
   })
 
+  test('should include stages field in agent response', async ({ request }) => {
+    const res = await request.get('/api/agents?limit=1')
+    expect(res.ok()).toBeTruthy()
+    const data = await res.json()
+    expect(data.items.length).toBeGreaterThan(0)
+    const agent = data.items[0]
+    expect(agent.stages).toBeDefined()
+    expect(Array.isArray(agent.stages)).toBeTruthy()
+    expect(agent.stages.length).toBeGreaterThan(0)
+  })
+
+  test('should filter agents by stage parameter', async ({ request }) => {
+    const res = await request.get('/api/agents?stage=implement')
+    expect(res.ok()).toBeTruthy()
+    const data = await res.json()
+    expect(data.items.length).toBeGreaterThan(0)
+    for (const agent of data.items) {
+      expect(agent.stages).toContain('implement')
+    }
+  })
+
   test('GET /sitemap.xml should return sitemap', async ({ request }) => {
     const response = await request.get('/sitemap.xml')
     expect(response.ok()).toBeTruthy()

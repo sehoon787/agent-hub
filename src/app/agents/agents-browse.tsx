@@ -35,6 +35,7 @@ const ALL_BROWSE_MODELS = [
 export function AgentsBrowse() {
   const [q, setQ] = useState('');
   const [category, setCategory] = useState<string | null>(null);
+  const [stage, setStage] = useState<string | null>(null);
   const [model, setModel] = useState<string | null>(null);
   const [source, setSource] = useState<string | null>(null);
   const [platform, setPlatform] = useState<string | null>(null);
@@ -45,6 +46,7 @@ export function AgentsBrowse() {
     return getAgents({
       q: q || undefined,
       category: category || undefined,
+      stage: stage || undefined,
       model: model || undefined,
       source: source || undefined,
       platform: platform || undefined,
@@ -52,7 +54,7 @@ export function AgentsBrowse() {
       page,
       limit: 12,
     });
-  }, [q, category, model, source, platform, sort, page]);
+  }, [q, category, stage, model, source, platform, sort, page]);
 
   const totalPages = Math.ceil(total / 12);
 
@@ -88,6 +90,20 @@ export function AgentsBrowse() {
       ],
       selected: category,
       onSelect: (v: string | null) => { setCategory(v); setPage(1); },
+    },
+    {
+      title: 'Stage',
+      options: [
+        { value: 'discover', label: 'Discover' },
+        { value: 'plan', label: 'Plan' },
+        { value: 'implement', label: 'Implement' },
+        { value: 'review', label: 'Review' },
+        { value: 'verify', label: 'Verify' },
+        { value: 'debug', label: 'Debug' },
+        { value: 'operate', label: 'Operate' },
+      ],
+      selected: stage,
+      onSelect: (v: string | null) => { setStage(v); setPage(1); },
     },
     {
       title: 'Model',

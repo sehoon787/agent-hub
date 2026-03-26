@@ -2,6 +2,7 @@ export type AgentCategory = 'orchestrator' | 'specialist' | 'worker' | 'analyst'
 export type AgentModel = 'opus' | 'sonnet' | 'haiku' | 'gemini-2.5-pro' | 'gemini-2.5-flash' | 'gpt-5.4' | 'gpt-5.4-mini' | 'custom';
 export type AgentSource = 'official' | 'community' | 'plugin';
 export type AgentPlatform = 'claude' | 'gemini' | 'codex' | 'cursor' | 'windsurf' | 'aider' | 'universal';
+export type AgentStage = 'discover' | 'plan' | 'implement' | 'review' | 'verify' | 'debug' | 'operate';
 
 export interface Agent {
   slug: string;
@@ -13,6 +14,7 @@ export interface Agent {
   model: AgentModel;
   source: AgentSource;
   platform: AgentPlatform;
+  stages: AgentStage[];
   author: string;
   githubUrl?: string;
   installCommand: string;
@@ -40,4 +42,5 @@ export interface Stats {
   totalCategories: number;
   totalContributors: number;
   totalPlatforms: number;
+  totalStages: number;
 }

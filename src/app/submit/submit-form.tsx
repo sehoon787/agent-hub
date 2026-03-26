@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useSession, signIn } from 'next-auth/react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Bot, CheckCircle2, LogIn } from 'lucide-react';
+import { inferStages } from '@/lib/stage-classifier';
 
 interface FormData {
   name: string;
@@ -62,6 +63,26 @@ const NAME_RE = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/;
 const GITHUB_URL_RE = /^https:\/\/github\.com\/[a-zA-Z0-9._-]+\/[a-zA-Z0-9._-]+/;
 const AUTHOR_RE = /^[a-zA-Z0-9](?:[a-zA-Z0-9._-]*[a-zA-Z0-9])?$/;
 
+const stageColors: Record<string, string> = {
+  discover: 'bg-teal-500/20 text-teal-300 border-teal-500/30',
+  plan: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30',
+  implement: 'bg-lime-500/20 text-lime-300 border-lime-500/30',
+  review: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30',
+  verify: 'bg-sky-500/20 text-sky-300 border-sky-500/30',
+  debug: 'bg-rose-500/20 text-rose-300 border-rose-500/30',
+  operate: 'bg-stone-500/20 text-stone-300 border-stone-500/30',
+};
+
+const stageLabels: Record<string, string> = {
+  discover: 'Discover',
+  plan: 'Plan',
+  implement: 'Implement',
+  review: 'Review',
+  verify: 'Verify',
+  debug: 'Debug',
+  operate: 'Operate',
+};
+
 export function SubmitForm() {
   const { data: session, status } = useSession();
   const [form, setForm] = useState<FormData>(initial);
@@ -72,6 +93,18 @@ export function SubmitForm() {
   const [loading, setLoading] = useState(false);
   const [issueUrl, setIssueUrl] = useState('');
   const [loadingTimedOut, setLoadingTimedOut] = useState(false);
+
+  const predictedStages = useMemo(() => {
+    if (!form.description) return [];
+    return inferStages({
+      description: form.description,
+      tags: form.tags.split(',').map(t => t.trim()).filter(Boolean),
+      capabilities: form.capabilities.split(',').map(c => c.trim()).filter(Boolean),
+      tools: form.tools.split(',').map(t => t.trim()).filter(Boolean),
+      model: form.model || undefined,
+      category: form.category || undefined,
+    });
+  }, [form.description, form.tags, form.capabilities, form.tools, form.model, form.category]);
 
   // Auto-fill author from session
   useEffect(() => {
@@ -423,6 +456,18 @@ export function SubmitForm() {
                 </Badge>
               ))}
           </div>
+          {predictedStages.length > 0 && (
+            <div className="mt-3 border-t border-zinc-800 pt-3">
+              <p className="text-xs text-zinc-500 mb-1.5">Predicted Stages</p>
+              <div className="flex flex-wrap gap-1.5">
+                {predictedStages.map((s) => (
+                  <Badge key={s} variant="outline" className={`text-xs ${stageColors[s] ?? ''}`}>
+                    {stageLabels[s] ?? s}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

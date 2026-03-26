@@ -27,6 +27,26 @@ const categoryLabels: Record<string, string> = {
   analyst: 'Analyst',
 };
 
+const stageColors: Record<string, string> = {
+  discover: 'bg-teal-500/20 text-teal-300 border-teal-500/30',
+  plan: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30',
+  implement: 'bg-lime-500/20 text-lime-300 border-lime-500/30',
+  review: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30',
+  verify: 'bg-sky-500/20 text-sky-300 border-sky-500/30',
+  debug: 'bg-rose-500/20 text-rose-300 border-rose-500/30',
+  operate: 'bg-stone-500/20 text-stone-300 border-stone-500/30',
+};
+
+const stageLabels: Record<string, string> = {
+  discover: 'Discover',
+  plan: 'Plan',
+  implement: 'Implement',
+  review: 'Review',
+  verify: 'Verify',
+  debug: 'Debug',
+  operate: 'Operate',
+};
+
 export function AgentCard({ agent }: { agent: Agent }) {
   return (
     <Link
@@ -59,6 +79,11 @@ export function AgentCard({ agent }: { agent: Agent }) {
         <Badge variant="secondary" className="text-xs">
           {categoryLabels[agent.category]}
         </Badge>
+        {agent.stages?.slice(0, 2).map((s) => (
+          <Badge key={s} variant="outline" className={`text-xs ${stageColors[s] ?? ''}`}>
+            {stageLabels[s] ?? s}
+          </Badge>
+        ))}
         {agent.tags.slice(0, 2).map((tag) => (
           <Badge key={tag} variant="outline" className="border-zinc-700 text-xs text-zinc-500">
             {tag}

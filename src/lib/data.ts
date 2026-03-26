@@ -1,7 +1,11 @@
-import type { Agent, Stats, SearchResult } from './types';
+import type { Agent, AgentStage, Stats, SearchResult } from './types';
+import { inferStages } from './stage-classifier';
 import agentsData from './data/agents.json';
 
-const agents: Agent[] = agentsData as Agent[];
+const agents: Agent[] = (agentsData as Omit<Agent, 'stages'>[]).map((a) => ({
+  ...a,
+  stages: inferStages(a),
+}));
 
 // --- Agents ---
 
@@ -11,12 +15,13 @@ export function getAgents(options?: {
   model?: string;
   source?: string;
   platform?: string;
+  stage?: string;
   sort?: string;
   page?: number;
   limit?: number;
 }): { items: Agent[]; total: number } {
   let filtered = [...agents];
-  const { q, category, model, source, platform, sort, page = 1, limit = 12 } = options ?? {};
+  const { q, category, model, source, platform, stage, sort, page = 1, limit = 12 } = options ?? {};
 
   if (q) {
     const lower = q.toLowerCase();
@@ -32,6 +37,7 @@ export function getAgents(options?: {
   if (model) filtered = filtered.filter((a) => a.model === model);
   if (source) filtered = filtered.filter((a) => a.source === source);
   if (platform) filtered = filtered.filter((a) => a.platform === platform);
+  if (stage) filtered = filtered.filter((a) => a.stages.includes(stage as AgentStage));
 
   if (sort === 'name') {
     filtered.sort((a, b) => a.displayName.localeCompare(b.displayName));
@@ -104,5 +110,6 @@ export function getStats(): Stats {
     totalCategories: categories.size,
     totalContributors: contributors.size,
     totalPlatforms: new Set(agents.map((a) => a.platform)).size,
+    totalStages: 7,
   };
 }

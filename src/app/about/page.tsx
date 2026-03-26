@@ -93,6 +93,44 @@ export default function AboutPage() {
       </div>
 
       <div className="mt-12">
+        <h2 className="text-2xl font-semibold text-zinc-100">Workflow Stages</h2>
+        <p className="mt-2 text-sm text-zinc-400">
+          Each agent participates in one or more stages of the development workflow. Stages are
+          automatically classified based on the agent&apos;s description, tools, and model.
+        </p>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="rounded-xl border border-teal-500/30 bg-teal-500/10 p-4">
+            <h3 className="font-semibold text-teal-300">Discover</h3>
+            <p className="mt-1 text-xs text-zinc-400">Codebase exploration, file search, information gathering</p>
+          </div>
+          <div className="rounded-xl border border-indigo-500/30 bg-indigo-500/10 p-4">
+            <h3 className="font-semibold text-indigo-300">Plan</h3>
+            <p className="mt-1 text-xs text-zinc-400">Requirements analysis, architecture design, strategy</p>
+          </div>
+          <div className="rounded-xl border border-lime-500/30 bg-lime-500/10 p-4">
+            <h3 className="font-semibold text-lime-300">Implement</h3>
+            <p className="mt-1 text-xs text-zinc-400">Code writing, feature building, refactoring</p>
+          </div>
+          <div className="rounded-xl border border-yellow-500/30 bg-yellow-500/10 p-4">
+            <h3 className="font-semibold text-yellow-300">Review</h3>
+            <p className="mt-1 text-xs text-zinc-400">Code review, security audit, quality inspection</p>
+          </div>
+          <div className="rounded-xl border border-sky-500/30 bg-sky-500/10 p-4">
+            <h3 className="font-semibold text-sky-300">Verify</h3>
+            <p className="mt-1 text-xs text-zinc-400">Testing, QA, validation, coverage checks</p>
+          </div>
+          <div className="rounded-xl border border-rose-500/30 bg-rose-500/10 p-4">
+            <h3 className="font-semibold text-rose-300">Debug</h3>
+            <p className="mt-1 text-xs text-zinc-400">Debugging, root cause analysis, error tracing</p>
+          </div>
+          <div className="rounded-xl border border-stone-500/30 bg-stone-500/10 p-4">
+            <h3 className="font-semibold text-stone-300">Operate</h3>
+            <p className="mt-1 text-xs text-zinc-400">Git operations, deployment, documentation, releases</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-12">
         <h2 className="text-2xl font-semibold text-zinc-100">Cross-Platform Compatibility</h2>
         <div className="mt-4 rounded-xl border border-zinc-800 bg-zinc-900 p-6">
           <Globe className="h-8 w-8 text-purple-400" />

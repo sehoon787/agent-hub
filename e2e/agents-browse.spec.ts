@@ -99,4 +99,39 @@ test.describe('Agents Browse Page', () => {
     await expect(sortSelect.locator('option:has-text("Name A-Z")')).toBeAttached()
   })
 
+  test('should have stage filter with correct labels', async ({ page }) => {
+    await page.goto('/agents')
+    await expect(page.locator('aside button:has-text("Discover")')).toBeVisible({ timeout: 5000 })
+    await expect(page.locator('aside button:has-text("Plan")')).toBeVisible()
+    await expect(page.locator('aside button:has-text("Implement")')).toBeVisible()
+    await expect(page.locator('aside button:has-text("Review")')).toBeVisible()
+    await expect(page.locator('aside button:has-text("Verify")')).toBeVisible()
+    await expect(page.locator('aside button:has-text("Debug")')).toBeVisible()
+    await expect(page.locator('aside button:has-text("Operate")')).toBeVisible()
+  })
+
+  test('should filter agents when stage is selected', async ({ page }) => {
+    await page.goto('/agents')
+    const showingText = page.locator('text=Showing')
+    await expect(showingText).toBeVisible()
+    const initialText = await showingText.textContent()
+
+    // Click a stage filter button
+    await page.locator('aside button:has-text("Implement")').click()
+    await page.waitForTimeout(300)
+
+    // Result count should change (likely fewer agents)
+    const filteredText = await showingText.textContent()
+    expect(filteredText).not.toEqual(initialText)
+  })
+
+  test('should show stage badges on agent cards', async ({ page }) => {
+    await page.goto('/agents')
+    await page.waitForTimeout(500)
+    // At least some agent cards should have stage badges
+    const stageBadges = page.locator('main [data-slot="badge"]')
+    const count = await stageBadges.count()
+    expect(count).toBeGreaterThan(5)
+  })
+
 })
