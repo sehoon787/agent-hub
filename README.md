@@ -51,6 +51,42 @@ AgentHub is a unified registry that collects, verifies, and presents AI coding a
 | **Worker** | Execute implementation tasks | executor, writer |
 | **Analyst** | Read-only analysis and strategy | oracle, critic, metis |
 
+## Screenshots
+
+![Homepage](docs/screenshots/hero.png)
+
+**Homepage** — Search and discover agents
+
+![Browse Agents](docs/screenshots/browse.png)
+
+**Browse** — Filter by category, platform, and model
+
+![Agent Detail](docs/screenshots/detail.png)
+
+**Detail** — Install commands, capabilities, and configuration
+
+![Sign In](docs/screenshots/submit.png)
+
+**Submit** — Contribute your agents via GitHub OAuth
+
+## Usage
+
+### Browse Agents
+
+Visit [agent-hub-omega.vercel.app](https://agent-hub-omega.vercel.app) and use the search bar or filters (category, platform, model) to find agents that fit your workflow.
+
+### Install an Agent
+
+Copy the install command from the agent detail page. For example:
+
+```bash
+curl -o ~/.claude/agents/boss.md https://agent-hub-omega.vercel.app/agents/boss/raw
+```
+
+### Submit an Agent
+
+Sign in with GitHub, fill out the submission form with your agent's details, and submit. Your submission creates a GitHub Issue for review before it is listed in the registry.
+
 ## Quick Start
 
 ```bash

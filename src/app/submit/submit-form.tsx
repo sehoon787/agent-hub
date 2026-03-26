@@ -37,12 +37,39 @@ const initial: FormData = {
   tags: '',
 };
 
+const ALL_MODELS = [
+  { value: 'opus', label: 'Opus (Claude)' },
+  { value: 'sonnet', label: 'Sonnet (Claude)' },
+  { value: 'haiku', label: 'Haiku (Claude)' },
+  { value: 'gemini-pro', label: 'Gemini Pro' },
+  { value: 'gemini-flash', label: 'Gemini Flash' },
+  { value: 'gpt-4o', label: 'GPT-4o' },
+  { value: 'gpt-4o-mini', label: 'GPT-4o Mini' },
+  { value: 'o3', label: 'o3' },
+  { value: 'custom', label: 'Custom' },
+];
+
+const PLATFORM_MODELS: Record<string, string[]> = {
+  claude: ['opus', 'sonnet', 'haiku'],
+  gemini: ['gemini-pro', 'gemini-flash'],
+  codex: ['gpt-4o', 'gpt-4o-mini', 'o3'],
+  cursor: ALL_MODELS.map((m) => m.value),
+  windsurf: ALL_MODELS.map((m) => m.value),
+  aider: ALL_MODELS.map((m) => m.value),
+  universal: ALL_MODELS.map((m) => m.value),
+};
+
+const NAME_RE = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/;
+const GITHUB_URL_RE = /^https:\/\/github\.com\/[a-zA-Z0-9._-]+\/[a-zA-Z0-9._-]+/;
+const AUTHOR_RE = /^[a-zA-Z0-9](?:[a-zA-Z0-9._-]*[a-zA-Z0-9])?$/;
+
 export function SubmitForm() {
   const { data: session, status } = useSession();
   const [form, setForm] = useState<FormData>(initial);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
+  const [clientErrors, setClientErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const [issueUrl, setIssueUrl] = useState('');
   const [loadingTimedOut, setLoadingTimedOut] = useState(false);
@@ -71,6 +98,34 @@ export function SubmitForm() {
         delete next[field];
         return next;
       });
+    }
+  };
+
+  const validate = (field: keyof FormData, value: string) => {
+    let msg = '';
+    if (field === 'name' && value && !NAME_RE.test(value)) {
+      msg = 'Must be lowercase alphanumeric with hyphens, cannot start/end with a hyphen.';
+    } else if (field === 'githubUrl' && value && !GITHUB_URL_RE.test(value)) {
+      msg = 'Must start with https://github.com/owner/repo';
+    } else if (field === 'author' && value && !AUTHOR_RE.test(value)) {
+      msg = 'Must be alphanumeric, may include dots, hyphens, or underscores.';
+    }
+    setClientErrors((prev) => {
+      if (!msg) {
+        const next = { ...prev };
+        delete next[field];
+        return next;
+      }
+      return { ...prev, [field]: msg };
+    });
+  };
+
+  const handlePlatformChange = (platform: string) => {
+    update('platform', platform);
+    if (!platform) return;
+    const allowed = PLATFORM_MODELS[platform] ?? ALL_MODELS.map((m) => m.value);
+    if (!allowed.includes(form.model)) {
+      setForm((prev) => ({ ...prev, model: allowed[0] }));
     }
   };
 
@@ -174,9 +229,11 @@ export function SubmitForm() {
           <Input
             value={form.name}
             onChange={(e) => update('name', e.target.value)}
+            onBlur={(e) => validate('name', e.target.value)}
             placeholder="e.g. my-agent (lowercase, hyphens only)"
             className="mt-1 border-zinc-700 bg-zinc-800/50 text-zinc-100"
           />
+          {clientErrors.name && <p className="mt-1 text-xs text-red-400">{clientErrors.name}</p>}
           {fieldErrors.name && <p className="mt-1 text-xs text-red-400">{fieldErrors.name[0]}</p>}
         </div>
         <div>
@@ -233,15 +290,12 @@ export function SubmitForm() {
               onChange={(e) => update('model', e.target.value)}
               className="mt-1 w-full rounded-md border border-zinc-700 bg-zinc-800/50 px-3 py-2 text-sm text-zinc-300"
             >
-              <option value="opus">Opus (Claude)</option>
-              <option value="sonnet">Sonnet (Claude)</option>
-              <option value="haiku">Haiku (Claude)</option>
-              <option value="gemini-pro">Gemini Pro</option>
-              <option value="gemini-flash">Gemini Flash</option>
-              <option value="gpt-4o">GPT-4o</option>
-              <option value="gpt-4o-mini">GPT-4o Mini</option>
-              <option value="o3">o3</option>
-              <option value="custom">Custom</option>
+              {(form.platform && PLATFORM_MODELS[form.platform]
+                ? ALL_MODELS.filter((m) => PLATFORM_MODELS[form.platform].includes(m.value))
+                : ALL_MODELS
+              ).map((m) => (
+                <option key={m.value} value={m.value}>{m.label}</option>
+              ))}
             </select>
           </div>
         </div>
@@ -249,7 +303,7 @@ export function SubmitForm() {
           <label className="text-sm font-medium text-zinc-300">Platform</label>
           <select
             value={form.platform}
-            onChange={(e) => update('platform', e.target.value)}
+            onChange={(e) => handlePlatformChange(e.target.value)}
             className="mt-1 w-full rounded-md border border-zinc-700 bg-zinc-800/50 px-3 py-2 text-sm text-zinc-300"
           >
             <option value="">Select platform</option>
@@ -268,20 +322,24 @@ export function SubmitForm() {
           <Input
             value={form.author}
             onChange={(e) => update('author', e.target.value)}
+            onBlur={(e) => validate('author', e.target.value)}
             placeholder="e.g. your-username"
             className="mt-1 border-zinc-700 bg-zinc-800/50 text-zinc-100"
           />
+          {clientErrors.author && <p className="mt-1 text-xs text-red-400">{clientErrors.author}</p>}
           {fieldErrors.author && <p className="mt-1 text-xs text-red-400">{fieldErrors.author[0]}</p>}
         </div>
         <div>
           <label className="text-sm font-medium text-zinc-300">GitHub URL</label>
           <Input
             value={form.githubUrl}
-            onChange={(e) => update('githubUrl', e.target.value)}
+            onChange={(e) => { update('githubUrl', e.target.value); validate('githubUrl', e.target.value); }}
+            onBlur={(e) => validate('githubUrl', e.target.value)}
             placeholder="https://github.com/..."
             className="mt-1 border-zinc-700 bg-zinc-800/50 text-zinc-100"
           />
           <p className="mt-1 text-xs text-zinc-500">Must be a GitHub URL (https://github.com/owner/repo)</p>
+          {clientErrors.githubUrl && <p className="mt-1 text-xs text-red-400">{clientErrors.githubUrl}</p>}
           {fieldErrors.githubUrl && <p className="mt-1 text-xs text-red-400">{fieldErrors.githubUrl[0]}</p>}
         </div>
         <div>
