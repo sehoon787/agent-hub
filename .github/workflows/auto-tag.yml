@@ -85,6 +85,7 @@ jobs:
 
       - name: Bump package.json version via PR
         if: steps.bump.outputs.skip != 'true'
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
