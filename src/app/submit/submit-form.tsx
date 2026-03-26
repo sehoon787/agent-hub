@@ -15,6 +15,7 @@ interface FormData {
   githubUrl: string;
   category: string;
   model: string;
+  platform: string;
   author: string;
   capabilities: string;
   tools: string;
@@ -29,6 +30,7 @@ const initial: FormData = {
   githubUrl: '',
   category: '',
   model: 'sonnet',
+  platform: '',
   author: '',
   capabilities: '',
   tools: '',
@@ -42,7 +44,15 @@ export function SubmitForm() {
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
   const [loading, setLoading] = useState(false);
+  const [issueUrl, setIssueUrl] = useState('');
   const [loadingTimedOut, setLoadingTimedOut] = useState(false);
+
+  // Auto-fill author from session
+  useEffect(() => {
+    if (session?.user?.name && !form.author) {
+      update('author', session.user.name);
+    }
+  }, [session]);
 
   // Treat prolonged loading as unauthenticated (auth may not be configured)
   useEffect(() => {
@@ -80,6 +90,7 @@ export function SubmitForm() {
       const data = await res.json();
 
       if (res.ok) {
+        if (data.issueUrl) setIssueUrl(data.issueUrl);
         setSubmitted(true);
         setForm(initial);
       } else if (data.details && typeof data.details === 'object') {
@@ -133,12 +144,24 @@ export function SubmitForm() {
         <CheckCircle2 className="h-12 w-12 text-emerald-500" />
         <h2 className="text-xl font-semibold text-zinc-100">Submission Received</h2>
         <p className="text-sm text-zinc-400">Your agent has been submitted and is pending review. Thank you for contributing!</p>
-        <button
-          onClick={() => setSubmitted(false)}
-          className="mt-4 rounded-lg bg-violet-600 px-5 py-2 text-sm font-medium text-white hover:bg-violet-500"
-        >
-          Submit Another
-        </button>
+        <div className="mt-4 flex items-center gap-3">
+          {issueUrl && (
+            <a
+              href={issueUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-lg border border-zinc-700 bg-zinc-800 px-5 py-2 text-sm font-medium text-zinc-200 hover:bg-zinc-700"
+            >
+              View on GitHub
+            </a>
+          )}
+          <button
+            onClick={() => { setSubmitted(false); setIssueUrl(''); }}
+            className="rounded-lg bg-violet-600 px-5 py-2 text-sm font-medium text-white hover:bg-violet-500"
+          >
+            Submit Another
+          </button>
+        </div>
       </div>
     );
   }
@@ -151,7 +174,7 @@ export function SubmitForm() {
           <Input
             value={form.name}
             onChange={(e) => update('name', e.target.value)}
-            placeholder="e.g. my-agent"
+            placeholder="e.g. my-agent (lowercase, hyphens only)"
             className="mt-1 border-zinc-700 bg-zinc-800/50 text-zinc-100"
           />
           {fieldErrors.name && <p className="mt-1 text-xs text-red-400">{fieldErrors.name[0]}</p>}
@@ -210,11 +233,35 @@ export function SubmitForm() {
               onChange={(e) => update('model', e.target.value)}
               className="mt-1 w-full rounded-md border border-zinc-700 bg-zinc-800/50 px-3 py-2 text-sm text-zinc-300"
             >
-              <option value="opus">Opus</option>
-              <option value="sonnet">Sonnet</option>
-              <option value="haiku">Haiku</option>
+              <option value="opus">Opus (Claude)</option>
+              <option value="sonnet">Sonnet (Claude)</option>
+              <option value="haiku">Haiku (Claude)</option>
+              <option value="gemini-pro">Gemini Pro</option>
+              <option value="gemini-flash">Gemini Flash</option>
+              <option value="gpt-4o">GPT-4o</option>
+              <option value="gpt-4o-mini">GPT-4o Mini</option>
+              <option value="o3">o3</option>
+              <option value="custom">Custom</option>
             </select>
           </div>
+        </div>
+        <div>
+          <label className="text-sm font-medium text-zinc-300">Platform</label>
+          <select
+            value={form.platform}
+            onChange={(e) => update('platform', e.target.value)}
+            className="mt-1 w-full rounded-md border border-zinc-700 bg-zinc-800/50 px-3 py-2 text-sm text-zinc-300"
+          >
+            <option value="">Select platform</option>
+            <option value="claude">Claude Code</option>
+            <option value="gemini">Gemini CLI</option>
+            <option value="codex">Codex CLI</option>
+            <option value="cursor">Cursor</option>
+            <option value="windsurf">Windsurf</option>
+            <option value="aider">Aider</option>
+            <option value="universal">Universal</option>
+          </select>
+          {fieldErrors.platform && <p className="mt-1 text-xs text-red-400">{fieldErrors.platform[0]}</p>}
         </div>
         <div>
           <label className="text-sm font-medium text-zinc-300">Author</label>
@@ -234,6 +281,7 @@ export function SubmitForm() {
             placeholder="https://github.com/..."
             className="mt-1 border-zinc-700 bg-zinc-800/50 text-zinc-100"
           />
+          <p className="mt-1 text-xs text-zinc-500">Must be a GitHub URL (https://github.com/owner/repo)</p>
           {fieldErrors.githubUrl && <p className="mt-1 text-xs text-red-400">{fieldErrors.githubUrl[0]}</p>}
         </div>
         <div>
@@ -299,6 +347,11 @@ export function SubmitForm() {
             {form.category && (
               <Badge variant="secondary" className="text-xs capitalize">
                 {form.category}
+              </Badge>
+            )}
+            {form.platform && (
+              <Badge variant="outline" className="text-xs capitalize">
+                {form.platform}
               </Badge>
             )}
             {form.tags

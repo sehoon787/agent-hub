@@ -1,7 +1,7 @@
 export type AgentCategory = 'orchestrator' | 'specialist' | 'worker' | 'analyst';
-export type AgentModel = 'opus' | 'sonnet' | 'haiku';
+export type AgentModel = 'opus' | 'sonnet' | 'haiku' | 'gemini-pro' | 'gemini-flash' | 'gpt-4o' | 'gpt-4o-mini' | 'o3' | 'custom';
 export type AgentSource = 'official' | 'community' | 'plugin';
-export type AgentPlatform = 'claude' | 'gemini' | 'codex' | 'universal';
+export type AgentPlatform = 'claude' | 'gemini' | 'codex' | 'cursor' | 'windsurf' | 'aider' | 'universal';
 
 export interface Agent {
   slug: string;

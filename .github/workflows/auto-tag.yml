@@ -1,0 +1,108 @@
+name: Auto Tag & Release
+
+on:
+  push:
+    branches: [master]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  tag-and-release:
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get latest tag
+        id: latest_tag
+        run: |
+          TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "Latest tag: $TAG"
+
+      - name: Determine version bump
+        id: bump
+        run: |
+          LATEST_TAG="${{ steps.latest_tag.outputs.tag }}"
+          COMMITS=$(git log "${LATEST_TAG}..HEAD" --pretty=format:"%s" 2>/dev/null || git log --pretty=format:"%s")
+
+          MAJOR=0
+          MINOR=0
+          PATCH=0
+
+          while IFS= read -r msg; do
+            if echo "$msg" | grep -qi "BREAKING CHANGE"; then
+              MAJOR=1
+            elif echo "$msg" | grep -qE "^feat(\(.*\))?:"; then
+              MINOR=1
+            elif echo "$msg" | grep -qE "^(fix|perf|refactor)(\(.*\))?:"; then
+              PATCH=1
+            fi
+          done <<< "$COMMITS"
+
+          # Parse current version
+          VERSION="${LATEST_TAG#v}"
+          IFS='.' read -r CUR_MAJOR CUR_MINOR CUR_PATCH <<< "$VERSION"
+
+          if [ "$MAJOR" -eq 1 ]; then
+            NEW_VERSION="$((CUR_MAJOR + 1)).0.0"
+            BUMP_TYPE="major"
+          elif [ "$MINOR" -eq 1 ]; then
+            NEW_VERSION="${CUR_MAJOR}.$((CUR_MINOR + 1)).0"
+            BUMP_TYPE="minor"
+          elif [ "$PATCH" -eq 1 ]; then
+            NEW_VERSION="${CUR_MAJOR}.${CUR_MINOR}.$((CUR_PATCH + 1))"
+            BUMP_TYPE="patch"
+          else
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "No version bump needed"
+            exit 0
+          fi
+
+          echo "skip=false" >> "$GITHUB_OUTPUT"
+          echo "new_version=v${NEW_VERSION}" >> "$GITHUB_OUTPUT"
+          echo "bump_type=$BUMP_TYPE" >> "$GITHUB_OUTPUT"
+          echo "Bumping $BUMP_TYPE → v${NEW_VERSION}"
+
+      - name: Create and push tag
+        if: steps.bump.outputs.skip != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag "${{ steps.bump.outputs.new_version }}"
+          git push origin "${{ steps.bump.outputs.new_version }}"
+
+      - name: Create GitHub Release
+        if: steps.bump.outputs.skip != 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.bump.outputs.new_version }}
+          generate_release_notes: true
+
+      - name: Bump package.json version via PR
+        if: steps.bump.outputs.skip != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${{ steps.bump.outputs.new_version }}"
+          VERSION_NUM="${VERSION#v}"
+          BRANCH="auto/bump-${VERSION}"
+
+          git checkout -b "$BRANCH"
+          npm version "$VERSION_NUM" --no-git-tag-version
+          git add package.json package-lock.json
+          git commit -m "chore: bump version to ${VERSION} [skip ci]"
+          git push origin "$BRANCH"
+
+          gh pr create \
+            --title "chore: bump version to ${VERSION}" \
+            --body "Automated version bump to \`${VERSION}\` after release." \
+            --label "auto-sync" \
+            --base master \
+            --head "$BRANCH"
+
+          gh pr merge "$BRANCH" --squash --auto

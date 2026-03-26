@@ -31,8 +31,8 @@ Add these variables:
 | `AUTH_SECRET` | (generate with `openssl rand -base64 32`) |
 | `GITHUB_ID` | (from GitHub OAuth App) |
 | `GITHUB_SECRET` | (from GitHub OAuth App) |
-| `NEXT_PUBLIC_SUPABASE_URL` | (from Supabase dashboard) |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | (from Supabase dashboard) |
+| `GITHUB_TOKEN` | (GitHub PAT for submissions and verification) |
+| `CRON_SECRET` | (generate with `openssl rand -hex 32`) |
 | `NEXT_PUBLIC_SITE_URL` | `https://your-project.vercel.app` |
 
 ### Step 4: Update GitHub OAuth App
@@ -53,10 +53,6 @@ After setting environment variables, trigger a redeployment:
 3. Update DNS records as instructed
 4. Update `NEXT_PUBLIC_SITE_URL` and GitHub OAuth App URLs
 
-## Without Supabase
+## Note
 
-The app works for browsing without Supabase. Features that require Supabase:
-- Agent submissions (submit form)
-- Visitor counting (total/daily)
-
-All other features (browse, search, filter, agent details) work with JSON data only.
+All agent data is stored in `agents.json`. Submissions create GitHub Issues which are processed into PRs via GitHub Actions.

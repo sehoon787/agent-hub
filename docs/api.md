@@ -14,8 +14,8 @@ List agents with optional filters.
 |-------|------|-------------|
 | `q` | string | Search query |
 | `category` | string | Filter by category (orchestrator, specialist, worker, analyst) |
-| `model` | string | Filter by model (opus, sonnet, haiku) |
-| `platform` | string | Filter by platform (claude, gemini, codex, universal) |
+| `model` | string | Filter by model (opus, sonnet, haiku, gemini-pro, gemini-flash, gpt-4o, gpt-4o-mini, o3, custom) |
+| `platform` | string | Filter by platform (claude, gemini, codex, cursor, windsurf, aider, universal) |
 | `source` | string | Filter by source (official, community, plugin) |
 | `sort` | string | Sort order (popular, recent, name) |
 | `page` | number | Page number (default: 1) |
@@ -54,6 +54,7 @@ Submit a new agent. Requires GitHub authentication.
   "longDescription": "Detailed description (optional)",
   "category": "specialist",
   "model": "sonnet",
+  "platform": "claude",
   "author": "Your Name",
   "githubUrl": "https://github.com/user/repo",
   "capabilities": "cap1, cap2",
@@ -62,20 +63,24 @@ Submit a new agent. Requires GitHub authentication.
 }
 ```
 
+Valid `model` values: `opus`, `sonnet`, `haiku`, `gemini-pro`, `gemini-flash`, `gpt-4o`, `gpt-4o-mini`, `o3`, `custom`
+
 **Response (201):**
 
 ```json
 {
   "success": true,
   "slug": "my-agent",
-  "message": "Submission saved. It will be reviewed before publishing."
+  "issueUrl": "https://github.com/...",
+  "message": "Submitted successfully."
 }
 ```
 
 **Errors:**
 - `401` — Not authenticated
 - `400` — Validation failed or security check failed
-- `503` — Supabase not configured
+- `429` — Rate limit exceeded
+- `503` — GitHub integration not configured
 
 ## Search
 
@@ -114,38 +119,11 @@ Get aggregate statistics.
 }
 ```
 
-## Views
-
-### GET /api/views
-
-Get visitor counts. Returns zeros if Supabase is not configured.
-
-**Response:**
-
-```json
-{
-  "total": 1234,
-  "today": 56
-}
-```
-
-### POST /api/views
-
-Record a page view. No-op if Supabase is not configured.
-
-**Response:**
-
-```json
-{
-  "success": true
-}
-```
-
 ## Verification
 
 ### POST /api/verify
 
-Verify that a GitHub URL exists and is accessible.
+Verify that a GitHub URL exists and is accessible. Requires authenticated session. Rate limited to 10 requests/minute.
 
 **Body:**
 
@@ -172,6 +150,8 @@ Only GitHub URLs (`https://github.com/...`) are accepted.
 ### POST /api/collect
 
 Trigger auto-collection of agents from GitHub repositories. Discovers new agents not already in the registry.
+
+**Headers:** Requires `Authorization: Bearer <CRON_SECRET>` header.
 
 **Response:**
 

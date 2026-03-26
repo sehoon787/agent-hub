@@ -8,7 +8,7 @@
 | Language | TypeScript | Type safety |
 | Styling | Tailwind CSS v4 + shadcn/ui | UI components |
 | Auth | Auth.js v5 (NextAuth) | GitHub OAuth |
-| Database | Supabase (optional) | Submissions, analytics |
+| Database | None (DB-free) | All data in JSON + GitHub Issues |
 | Data | JSON files | Agent registry (read-only) |
 | Deployment | Vercel | Hosting, serverless |
 | CI/CD | GitHub Actions | Lint, type check, build, agent verification |
@@ -22,16 +22,15 @@ agents.json (static) ──> getAgents() ──> Browse/Search/Detail pages
 GitHub OAuth ──> Auth.js ──> Session ──> Submit Form
                                     ──> /api/agents POST
 
-Supabase ──> submissions table ──> Pending review
-         ──> page_views table  ──> Visitor counter
-         ──> daily_views table ──> Daily counter
+Submit Form ──> /api/agents POST ──> GitHub Issues API ──> Issue created
+GitHub Actions ──> issue-to-pr.yml ──> agents.json PR ──> Review & merge
 ```
 
 ## Key Design Decisions
 
 1. **JSON over Database for agent data** -- Agents are static content. JSON files enable SSG (Static Site Generation), making pages load instantly. No database query on every page load.
 
-2. **Supabase only for dynamic data** -- Submissions and view counts need persistence. Everything else works without a database.
+2. **GitHub Issues for submissions** -- Submissions create GitHub Issues which are reviewed and merged via automated workflows. No database needed.
 
 3. **Multi-platform from day one** -- The agent ecosystem spans Claude, Gemini, and Codex. AgentHub is platform-agnostic by design.
 

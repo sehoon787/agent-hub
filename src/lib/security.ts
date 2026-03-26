@@ -16,16 +16,29 @@ const MALICIOUS_PATTERNS = [
   /\.exec\s*\(/i,
   /spawn\s*\(/i,
   /\bFetch\s*\(\s*['"]file:/i,
+  /data:/i,
+  /vbscript:/i,
+  /<svg\b/i,
+  /<iframe\b/i,
+  /expression\s*\(/i,
+  /\$\{/,
+  /\{\{/,
 ]
+
+function extractStrings(data: unknown): string[] {
+  if (typeof data === "string") return [data];
+  if (Array.isArray(data)) return data.flatMap(extractStrings);
+  if (data && typeof data === "object")
+    return Object.values(data).flatMap(extractStrings);
+  return [];
+}
 
 export function checkMaliciousContent(data: Record<string, unknown>): {
   safe: boolean
   issues: string[]
 } {
   const issues: string[] = []
-  const textToCheck = Object.values(data)
-    .filter((v) => typeof v === "string")
-    .join(" ")
+  const textToCheck = extractStrings(data).join(" ")
 
   for (const pattern of MALICIOUS_PATTERNS) {
     if (pattern.test(textToCheck)) {

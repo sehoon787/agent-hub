@@ -1,11 +1,15 @@
 # AgentHub
 
+[![CI](https://github.com/sehoon787/agent-hub/actions/workflows/ci.yml/badge.svg)](https://github.com/sehoon787/agent-hub/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./docs/contributing.md)
+
 **The open-source registry for AI coding agents.**
 
 > Smithery indexes MCP servers. SkillHub catalogs skills.
 > **AgentHub is where you find agents.**
 
-**Live**: [agent-hub.vercel.app](https://agent-hub.vercel.app)
+**Live**: [agent-hub-omega.vercel.app](https://agent-hub-omega.vercel.app)
 
 ## The Problem
 
@@ -25,6 +29,9 @@ AgentHub is a unified registry that collects, verifies, and presents AI coding a
 | **Gemini CLI** | 8 agents | `.md` with YAML frontmatter |
 | **Codex CLI** | 3 agents | `.toml` files |
 | **Universal** | 2 agents | Cross-platform |
+| **Cursor** | TBD | `.md` / `.cursorrules` |
+| **Windsurf** | TBD | `.md` rules |
+| **Aider** | TBD | Convention files |
 
 ### Key Features
 
@@ -32,7 +39,7 @@ AgentHub is a unified registry that collects, verifies, and presents AI coding a
 - **Verified Agents** -- Every listed agent is validated against its source
 - **Community Submissions** -- Submit agents with GitHub OAuth and automatic security checks
 - **Auto-Collection** -- Agents are periodically discovered from GitHub repositories
-- **Analytics** -- Track total and daily visitor counts
+- **Analytics** -- Vercel Analytics for usage tracking
 - **Security** -- Malicious content detection on all submissions
 
 ### Agent Categories
@@ -56,7 +63,7 @@ npm run dev -- --port 3100
 
 **Full documentation**: [docs/](./docs/)
 
-- [Setup Guide](./docs/setup.md) -- Environment variables, GitHub OAuth, Supabase
+- [Setup Guide](./docs/setup.md) -- Environment variables, GitHub OAuth, GITHUB_TOKEN
 - [Deployment](./docs/deployment.md) -- Vercel deployment step-by-step
 - [API Reference](./docs/api.md) -- REST API endpoints
 - [Contributing](./docs/contributing.md) -- How to submit agents and contribute
@@ -64,7 +71,7 @@ npm run dev -- --port 3100
 
 ## Tech Stack
 
-Next.js 15 · TypeScript · Tailwind CSS v4 · shadcn/ui · Auth.js v5 · Supabase · Vercel
+Next.js 15 · TypeScript · Tailwind CSS v4 · shadcn/ui · Auth.js v5 · Vercel Analytics · Vercel
 
 ## License
 

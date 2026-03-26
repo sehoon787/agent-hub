@@ -4,12 +4,12 @@
 
 ### Via the Website
 
-1. Go to [AgentHub](https://agent-hub.vercel.app)
+1. Go to [AgentHub](https://agent-hub-omega.vercel.app)
 2. Click **"Sign in"** with your GitHub account
 3. Navigate to **Submit**
 4. Fill in the agent details
-5. Your submission will be reviewed automatically for security issues
-6. Approved agents appear in the registry
+5. Your submission creates a GitHub Issue for review.
+6. Once approved, it's automatically merged into the registry.
 
 ### Via Pull Request
 
@@ -51,7 +51,7 @@
 - Description must accurately reflect the agent's capabilities
 - GitHub URL must be valid and accessible (if provided)
 - No malicious code or suspicious patterns
-- Must specify the correct platform (claude, gemini, codex, or universal)
+- Must specify the correct platform (claude, gemini, codex, cursor, windsurf, aider, or universal)
 
 ## Development
 
@@ -64,7 +64,7 @@ agent-hub/
 │   ├── components/    # React components
 │   └── lib/           # Data, types, utilities
 ├── docs/              # Documentation
-├── supabase/          # Database schema
+├── e2e/               # End-to-end tests
 ├── scripts/           # Automation scripts
 └── .github/           # CI/CD workflows
 ```

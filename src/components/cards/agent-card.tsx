@@ -15,6 +15,9 @@ const platformColors: Record<string, string> = {
   gemini: 'bg-blue-500/20 text-blue-300 border-blue-500/30',
   codex: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
   universal: 'bg-purple-500/20 text-purple-300 border-purple-500/30',
+  cursor: 'bg-pink-500/20 text-pink-300 border-pink-500/30',
+  windsurf: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30',
+  aider: 'bg-orange-500/20 text-orange-300 border-orange-500/30',
 };
 
 const categoryLabels: Record<string, string> = {

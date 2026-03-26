@@ -3,6 +3,10 @@ import type { Agent } from "@/lib/types"
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL || "https://agent-hub.vercel.app"
 
+function safeJsonLd(data: object): string {
+  return JSON.stringify(data).replace(/</g, "\\u003c").replace(/>/g, "\\u003e")
+}
+
 export function WebSiteJsonLd() {
   const jsonLd = {
     "@context": "https://schema.org",
@@ -21,7 +25,7 @@ export function WebSiteJsonLd() {
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}
     />
   )
 }
@@ -43,7 +47,7 @@ export function CollectionPageJsonLd({
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}
     />
   )
 }
@@ -71,7 +75,7 @@ export function AgentJsonLd({ agent }: { agent: Agent }) {
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}
     />
   )
 }

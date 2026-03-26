@@ -1,0 +1,105 @@
+name: Agent Submission
+description: Submit a new AI coding agent to AgentHub
+title: "[Agent Submission] "
+labels: ["agent-submission"]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Agent Name (slug)
+      description: Lowercase, hyphens only (e.g., my-agent)
+      placeholder: my-agent
+    validations:
+      required: true
+  - type: input
+    id: displayName
+    attributes:
+      label: Display Name
+      placeholder: My Agent
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Brief description of what the agent does (10-500 characters)
+      placeholder: "This agent..."
+    validations:
+      required: true
+  - type: textarea
+    id: longDescription
+    attributes:
+      label: Long Description
+      description: Detailed description (optional, max 2000 characters)
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - orchestrator
+        - specialist
+        - worker
+        - analyst
+    validations:
+      required: true
+  - type: dropdown
+    id: model
+    attributes:
+      label: Recommended Model
+      options:
+        - opus
+        - sonnet
+        - haiku
+        - gemini-pro
+        - gemini-flash
+        - gpt-4o
+        - gpt-4o-mini
+        - o3
+        - custom
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - claude
+        - gemini
+        - codex
+        - cursor
+        - windsurf
+        - aider
+        - universal
+    validations:
+      required: true
+  - type: input
+    id: author
+    attributes:
+      label: Author
+      placeholder: your-github-username
+    validations:
+      required: true
+  - type: input
+    id: githubUrl
+    attributes:
+      label: GitHub URL
+      description: Link to the agent's source code (must be a GitHub URL)
+      placeholder: https://github.com/user/repo
+  - type: input
+    id: capabilities
+    attributes:
+      label: Capabilities
+      description: Comma-separated list
+      placeholder: "Code review, TDD, Refactoring"
+  - type: input
+    id: tools
+    attributes:
+      label: Tools
+      description: Comma-separated list
+      placeholder: "Bash, Read, Write, Edit"
+  - type: input
+    id: tags
+    attributes:
+      label: Tags
+      description: Comma-separated list
+      placeholder: "testing, tdd, coverage"

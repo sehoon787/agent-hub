@@ -5,7 +5,6 @@
 - Node.js 20+
 - npm 10+
 - GitHub account (for OAuth)
-- Supabase account (optional, for submissions and analytics)
 
 ## Installation
 
@@ -23,9 +22,8 @@ cp .env.example .env.local
 | `AUTH_SECRET` | Yes | Auth.js session encryption key | Run: `openssl rand -base64 32` |
 | `GITHUB_ID` | For login | GitHub OAuth App Client ID | [Create OAuth App](#github-oauth-setup) |
 | `GITHUB_SECRET` | For login | GitHub OAuth App Client Secret | [Create OAuth App](#github-oauth-setup) |
-| `NEXT_PUBLIC_SUPABASE_URL` | For submit/analytics | Supabase project URL | [Supabase Setup](#supabase-setup) |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | For submit/analytics | Supabase anonymous key | [Supabase Setup](#supabase-setup) |
-| `GITHUB_TOKEN` | For verification | GitHub PAT for link checking | [GitHub Settings](https://github.com/settings/tokens) |
+| `GITHUB_TOKEN` | For verification/submit | GitHub PAT for link checking and submissions | [GitHub Settings](https://github.com/settings/tokens) |
+| `CRON_SECRET` | For auto-collect | Secret for cron endpoint auth | Generate with: openssl rand -hex 32 |
 | `NEXT_PUBLIC_SITE_URL` | For SEO | Production URL | Your Vercel domain |
 
 ### GitHub OAuth Setup
@@ -43,15 +41,7 @@ cp .env.example .env.local
 
 > For production (Vercel), create a second OAuth App with your production URL, or update the existing one.
 
-### Supabase Setup
-
-1. Go to https://supabase.com and create a new project
-2. Go to **Settings → API**
-3. Copy **Project URL** → paste as `NEXT_PUBLIC_SUPABASE_URL`
-4. Copy **anon/public key** → paste as `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-5. Go to **SQL Editor** and run the contents of `supabase/schema.sql`
-
-> Without Supabase, the app still works for browsing agents. Only the submit and visitor counting features require it.
+> **Note:** `GITHUB_TOKEN` is required for agent submissions. Submissions create GitHub Issues which are reviewed and processed into PRs via GitHub Actions.
 
 ### Generate AUTH_SECRET
 

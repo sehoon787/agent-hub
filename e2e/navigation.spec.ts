@@ -29,9 +29,9 @@ test.describe('Navigation', () => {
     await expect(page).toHaveURL(/\/about/)
     await expect(page.locator('h1')).toBeVisible()
 
-    // Submit
+    // Submit (redirects to /signin for unauthenticated users)
     await page.locator('nav a[href="/submit"]').click()
-    await expect(page).toHaveURL(/\/submit/)
+    await expect(page).toHaveURL(/\/signin/)
     await expect(page.locator('h1')).toBeVisible()
   })
 

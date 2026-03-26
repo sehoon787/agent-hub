@@ -57,12 +57,6 @@ test.describe('Homepage', () => {
     await expect(searchInput.first()).toBeVisible()
   })
 
-  test('should have visitor counter', async ({ page }) => {
-    await page.goto('/')
-    // VisitorCounter renders "total views" and "today" text
-    await expect(page.locator('text=total views')).toBeVisible({ timeout: 5000 })
-  })
-
   test('should have Browse Agents and Submit Yours buttons', async ({ page }) => {
     await page.goto('/')
     await expect(page.locator('a:has-text("Browse Agents")')).toBeVisible()

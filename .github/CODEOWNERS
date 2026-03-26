@@ -1,0 +1,4 @@
+# Protect critical data and workflow files
+src/lib/data/agents.json @sehoon787
+.github/workflows/ @sehoon787
+.github/CODEOWNERS @sehoon787

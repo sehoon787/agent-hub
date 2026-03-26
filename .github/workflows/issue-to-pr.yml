@@ -1,0 +1,159 @@
+name: Process Agent Submission
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: read
+
+jobs:
+  create-pr:
+    if: github.event.label.name == 'approved' && contains(github.event.issue.labels.*.name, 'agent-submission')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify approver permissions
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SENDER: ${{ github.event.sender.login }}
+        run: |
+          PERMISSION=$(gh api "repos/${{ github.repository }}/collaborators/$SENDER/permission" --jq '.permission')
+          if [[ "$PERMISSION" != "admin" && "$PERMISSION" != "maintain" && "$PERMISSION" != "write" ]]; then
+            echo "ERROR: User $SENDER does not have sufficient permissions ($PERMISSION)"
+            exit 1
+          fi
+          echo "Approved by $SENDER with $PERMISSION permission"
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Parse issue and create agent entry
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_AUTHOR: ${{ github.event.issue.user.login }}
+        run: |
+          node -e "
+            const fs = require('fs');
+            const body = process.env.ISSUE_BODY || '';
+
+            // Parse form fields from GitHub issue form template
+            function parseField(body, label) {
+              const regex = new RegExp('### ' + label.replace(/[.*+?\${}()|[\]\\\\]/g, '\\\\\\$&') + '\\\\s*\\n+([^\\n#]+)', 'i');
+              const match = body.match(regex);
+              return match ? match[1].trim() : '';
+            }
+
+            const name = parseField(body, 'Agent Name (slug)');
+            const displayName = parseField(body, 'Display Name');
+            const description = parseField(body, 'Description');
+            const longDescription = parseField(body, 'Long Description');
+            const category = parseField(body, 'Category').toLowerCase();
+            const model = parseField(body, 'Recommended Model').toLowerCase();
+            const platform = parseField(body, 'Platform').toLowerCase();
+            const author = parseField(body, 'Author') || process.env.ISSUE_AUTHOR;
+            const githubUrl = parseField(body, 'GitHub URL');
+            const capabilities = parseField(body, 'Capabilities');
+            const tools = parseField(body, 'Tools');
+            const tags = parseField(body, 'Tags');
+
+            // Validate required fields
+            const validCategories = ['orchestrator', 'specialist', 'worker', 'analyst'];
+            const validModels = ['opus', 'sonnet', 'haiku', 'gemini-pro', 'gemini-flash', 'gpt-4o', 'gpt-4o-mini', 'o3', 'custom'];
+            const validPlatforms = ['claude', 'gemini', 'codex', 'cursor', 'windsurf', 'aider', 'universal'];
+
+            const errors = [];
+            if (!name || name.length < 2) errors.push('Invalid name');
+            if (!displayName) errors.push('Missing displayName');
+            if (!description || description.length < 10) errors.push('Description too short');
+            if (!validCategories.includes(category)) errors.push('Invalid category: ' + category);
+            if (!validModels.includes(model)) errors.push('Invalid model: ' + model);
+            if (!validPlatforms.includes(platform)) errors.push('Invalid platform: ' + platform);
+
+            // Security check — detect malicious patterns
+            const allText = [name, displayName, description, longDescription, githubUrl, capabilities, tools, tags].join(' ');
+            const dangerousPatterns = [
+              /eval\s*\(/i, /exec\s*\(/i, /child_process/i, /require\s*\(\s*['\"]fs['\"]/i,
+              /process\.env/i, /<script/i, /javascript:/i, /on(load|error|click)\s*=/i,
+              /dangerouslySetInnerHTML/i, /data:/i, /<svg/i, /<iframe/i
+            ];
+            for (const pattern of dangerousPatterns) {
+              if (pattern.test(allText)) {
+                errors.push('Security: detected suspicious pattern ' + pattern.source);
+              }
+            }
+
+            if (errors.length > 0) {
+              console.error('Validation errors:', errors.join(', '));
+              process.exit(1);
+            }
+
+            // Create slug
+            const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-\$)/g, '');
+
+            // Read existing agents
+            const agents = JSON.parse(fs.readFileSync('src/lib/data/agents.json', 'utf8'));
+            if (agents.some(a => a.slug === slug)) {
+              console.error('Agent with slug ' + slug + ' already exists');
+              process.exit(1);
+            }
+
+            const today = new Date().toISOString().split('T')[0];
+            const newAgent = {
+              slug,
+              name: name.toLowerCase().replace(/[^a-z0-9_-]/g, '_'),
+              displayName,
+              description,
+              longDescription: longDescription || '',
+              category,
+              model,
+              source: 'community',
+              platform,
+              author,
+              githubUrl: githubUrl || '',
+              installCommand: '',
+              capabilities: capabilities ? capabilities.split(',').map(s => s.trim()).filter(Boolean) : [],
+              tools: tools ? tools.split(',').map(s => s.trim()).filter(Boolean) : [],
+              tags: tags ? tags.split(',').map(s => s.trim()).filter(Boolean) : [],
+              createdAt: today,
+              updatedAt: today,
+              stars: 0,
+              downloads: 0,
+              featured: false,
+              verified: false
+            };
+
+            agents.push(newAgent);
+            fs.writeFileSync('src/lib/data/agents.json', JSON.stringify(agents, null, 2) + '\n');
+            console.log('Added agent: ' + slug + ' (from issue #' + process.env.ISSUE_NUMBER + ')');
+          "
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "feat: add community agent from issue #${{ github.event.issue.number }}"
+          title: "[Agent] Add ${{ github.event.issue.title }}"
+          body: |
+            Adds a community-submitted agent from #${{ github.event.issue.number }}.
+
+            **Submitted by:** @${{ github.event.issue.user.login }}
+            **Approved by:** @${{ github.event.sender.login }}
+
+            > This agent is added with `verified: false` and `source: 'community'`.
+            > Review the changes to `agents.json` before merging.
+
+            Closes #${{ github.event.issue.number }}
+          branch: "agent/issue-${{ github.event.issue.number }}"
+          labels: agent-submission
+          delete-branch: true

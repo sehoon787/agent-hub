@@ -193,7 +193,7 @@ export default function AboutPage() {
             'Tailwind CSS v4',
             'shadcn/ui',
             'Lucide Icons',
-            'Supabase',
+            'Vercel Analytics',
             'Auth.js v5',
             'Vercel',
           ].map((tech) => (
