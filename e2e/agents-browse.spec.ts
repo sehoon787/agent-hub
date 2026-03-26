@@ -54,16 +54,17 @@ test.describe('Agents Browse Page', () => {
   test('should have platform filter with correct labels', async ({ page }) => {
     await page.goto('/agents')
     await expect(page.locator('aside button:has-text("Claude")')).toBeVisible({ timeout: 5000 })
-    await expect(page.locator('aside button:has-text("Gemini")')).toBeVisible()
+    await expect(page.locator('aside button', { hasText: /^Gemini$/ })).toBeVisible()
     await expect(page.locator('aside button:has-text("Codex")')).toBeVisible()
     await expect(page.locator('aside button:has-text("Universal")')).toBeVisible()
   })
 
   test('should have model filter with correct labels', async ({ page }) => {
     await page.goto('/agents')
-    await expect(page.locator('aside button:has-text("Opus (Deep Reasoning)")')).toBeVisible({ timeout: 5000 })
-    await expect(page.locator('aside button:has-text("Sonnet (Coding)")')).toBeVisible()
-    await expect(page.locator('aside button:has-text("Haiku (Fast)")')).toBeVisible()
+    await expect(page.locator('aside button:has-text("Sonnet (Coding)")')).toBeVisible({ timeout: 5000 })
+    await expect(page.locator('aside button:has-text("Opus (Deep Reasoning)")')).toBeVisible()
+    await expect(page.locator('aside button:has-text("Gemini Pro")')).toBeVisible()
+    await expect(page.locator('aside button:has-text("GPT-4o")')).toBeVisible()
   })
 
   test('should show platform badges on cards', async ({ page }) => {

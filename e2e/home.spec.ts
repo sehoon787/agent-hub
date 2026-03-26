@@ -16,7 +16,7 @@ test.describe('Homepage', () => {
     await expect(page.locator('text=Total Agents')).toBeVisible()
     await expect(page.locator('text=Categories')).toBeVisible()
     await expect(page.locator('text=Contributors')).toBeVisible()
-    await expect(page.locator('text=Verified Agents')).toBeVisible()
+    await expect(page.locator('p:has-text("Platforms")')).toBeVisible()
   })
 
   test('should display featured agents section', async ({ page }) => {

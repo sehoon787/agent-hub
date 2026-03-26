@@ -58,9 +58,12 @@ export function AgentsBrowse() {
     {
       title: 'Model',
       options: [
-        { value: 'opus', label: 'Opus (Deep Reasoning)' },
         { value: 'sonnet', label: 'Sonnet (Coding)' },
+        { value: 'opus', label: 'Opus (Deep Reasoning)' },
         { value: 'haiku', label: 'Haiku (Fast)' },
+        { value: 'gemini-pro', label: 'Gemini Pro' },
+        { value: 'gemini-flash', label: 'Gemini Flash' },
+        { value: 'gpt-4o', label: 'GPT-4o' },
       ],
       selected: model,
       onSelect: (v: string | null) => { setModel(v); setPage(1); },
