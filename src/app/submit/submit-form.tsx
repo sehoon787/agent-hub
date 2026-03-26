@@ -307,14 +307,16 @@ export function SubmitForm() {
           <select
             value={form.model}
             onChange={(e) => update('model', e.target.value)}
-            className="mt-1 w-full rounded-md border border-zinc-700 bg-zinc-800/50 px-3 py-2 text-sm text-zinc-300"
+            disabled={!form.platform}
+            className={`mt-1 w-full rounded-md border border-zinc-700 bg-zinc-800/50 px-3 py-2 text-sm text-zinc-300 ${!form.platform ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
-            {(form.platform && PLATFORM_MODELS[form.platform]
-              ? ALL_MODELS.filter((m) => PLATFORM_MODELS[form.platform].includes(m.value))
-              : ALL_MODELS
-            ).map((m) => (
-              <option key={m.value} value={m.value}>{m.label}</option>
-            ))}
+            {!form.platform ? (
+              <option value="">Select platform first</option>
+            ) : (
+              ALL_MODELS.filter((m) => PLATFORM_MODELS[form.platform].includes(m.value)).map((m) => (
+                <option key={m.value} value={m.value}>{m.label}</option>
+              ))
+            )}
           </select>
         </div>
         <div>
