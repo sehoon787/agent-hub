@@ -107,18 +107,52 @@ export default function AboutPage() {
 
       <div className="mt-12">
         <h2 className="text-2xl font-semibold text-zinc-100">Model Tiers</h2>
-        <div className="mt-4 grid gap-4 sm:grid-cols-3">
-          <div className="rounded-xl border border-violet-500/30 bg-violet-500/10 p-5">
-            <h3 className="font-semibold text-violet-300">Opus</h3>
-            <p className="mt-1 text-sm text-zinc-400">Deep reasoning, complex architecture, multi-step planning</p>
+        <p className="mt-2 text-sm text-zinc-400">
+          Each platform has its own model ecosystem. Agent definitions specify which model to use within their platform.
+        </p>
+        <div className="mt-4 space-y-4">
+          <div>
+            <h3 className="text-sm font-medium text-amber-300">Claude Code</h3>
+            <div className="mt-2 grid gap-3 sm:grid-cols-3">
+              <div className="rounded-lg border border-violet-500/20 bg-violet-500/5 p-3">
+                <span className="font-medium text-violet-300">Opus</span>
+                <p className="mt-1 text-xs text-zinc-500">Deep reasoning, complex architecture</p>
+              </div>
+              <div className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-3">
+                <span className="font-medium text-blue-300">Sonnet</span>
+                <p className="mt-1 text-xs text-zinc-500">Balanced coding, most tasks</p>
+              </div>
+              <div className="rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-3">
+                <span className="font-medium text-emerald-300">Haiku</span>
+                <p className="mt-1 text-xs text-zinc-500">Fast and lightweight</p>
+              </div>
+            </div>
           </div>
-          <div className="rounded-xl border border-blue-500/30 bg-blue-500/10 p-5">
-            <h3 className="font-semibold text-blue-300">Sonnet</h3>
-            <p className="mt-1 text-sm text-zinc-400">Balanced coding, orchestration, most development tasks</p>
+          <div>
+            <h3 className="text-sm font-medium text-blue-300">Gemini CLI</h3>
+            <div className="mt-2 grid gap-3 sm:grid-cols-2">
+              <div className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-3">
+                <span className="font-medium text-blue-300">Gemini 2.5 Pro</span>
+                <p className="mt-1 text-xs text-zinc-500">Deep reasoning and analysis</p>
+              </div>
+              <div className="rounded-lg border border-cyan-500/20 bg-cyan-500/5 p-3">
+                <span className="font-medium text-cyan-300">Gemini 2.5 Flash</span>
+                <p className="mt-1 text-xs text-zinc-500">Fast and efficient</p>
+              </div>
+            </div>
           </div>
-          <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-5">
-            <h3 className="font-semibold text-emerald-300">Haiku</h3>
-            <p className="mt-1 text-sm text-zinc-400">Fast and light, frequent invocation, worker agents</p>
+          <div>
+            <h3 className="text-sm font-medium text-emerald-300">Codex CLI</h3>
+            <div className="mt-2 grid gap-3 sm:grid-cols-2">
+              <div className="rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-3">
+                <span className="font-medium text-emerald-300">GPT-5.4</span>
+                <p className="mt-1 text-xs text-zinc-500">Strong coding and reasoning</p>
+              </div>
+              <div className="rounded-lg border border-green-500/20 bg-green-500/5 p-3">
+                <span className="font-medium text-green-300">GPT-5.4 Mini</span>
+                <p className="mt-1 text-xs text-zinc-500">Speed and efficiency</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

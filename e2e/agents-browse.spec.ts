@@ -63,8 +63,8 @@ test.describe('Agents Browse Page', () => {
     await page.goto('/agents')
     await expect(page.locator('aside button:has-text("Sonnet (Coding)")')).toBeVisible({ timeout: 5000 })
     await expect(page.locator('aside button:has-text("Opus (Deep Reasoning)")')).toBeVisible()
-    await expect(page.locator('aside button:has-text("Gemini Pro")')).toBeVisible()
-    await expect(page.locator('aside button:has-text("GPT-4o")')).toBeVisible()
+    await expect(page.locator('aside button:has-text("Gemini 2.5 Pro")')).toBeVisible()
+    await expect(page.locator('aside button:has-text("GPT-5.4")')).toBeVisible()
   })
 
   test('should show platform badges on cards', async ({ page }) => {

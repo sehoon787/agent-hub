@@ -1,5 +1,5 @@
 export type AgentCategory = 'orchestrator' | 'specialist' | 'worker' | 'analyst';
-export type AgentModel = 'opus' | 'sonnet' | 'haiku' | 'gemini-pro' | 'gemini-flash' | 'gpt-4o' | 'gpt-4o-mini' | 'o3' | 'custom';
+export type AgentModel = 'opus' | 'sonnet' | 'haiku' | 'gemini-2.5-pro' | 'gemini-2.5-flash' | 'gpt-5.4' | 'gpt-5.4-mini' | 'custom';
 export type AgentSource = 'official' | 'community' | 'plugin';
 export type AgentPlatform = 'claude' | 'gemini' | 'codex' | 'cursor' | 'windsurf' | 'aider' | 'universal';
 

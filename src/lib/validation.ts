@@ -1,5 +1,18 @@
 import { z } from "zod"
 
+// Platform-model compatibility map
+const PLATFORM_COMPATIBLE_MODELS: Record<string, string[]> = {
+  claude: ['opus', 'sonnet', 'haiku'],
+  gemini: ['gemini-2.5-pro', 'gemini-2.5-flash'],
+  codex: ['gpt-5.4', 'gpt-5.4-mini'],
+  cursor: ['opus', 'sonnet', 'haiku', 'gemini-2.5-pro', 'gemini-2.5-flash', 'gpt-5.4', 'gpt-5.4-mini', 'custom'],
+  windsurf: ['opus', 'sonnet', 'haiku', 'gemini-2.5-pro', 'gemini-2.5-flash', 'gpt-5.4', 'gpt-5.4-mini', 'custom'],
+  aider: ['opus', 'sonnet', 'haiku', 'gemini-2.5-pro', 'gemini-2.5-flash', 'gpt-5.4', 'gpt-5.4-mini', 'custom'],
+  universal: ['opus', 'sonnet', 'haiku', 'gemini-2.5-pro', 'gemini-2.5-flash', 'gpt-5.4', 'gpt-5.4-mini', 'custom'],
+};
+
+export { PLATFORM_COMPATIBLE_MODELS };
+
 export const agentSubmissionSchema = z.object({
   name: z
     .string()
@@ -21,7 +34,7 @@ export const agentSubmissionSchema = z.object({
   category: z.enum(["orchestrator", "specialist", "worker", "analyst"], {
     message: "Please select a category",
   }),
-  model: z.enum(["opus", "sonnet", "haiku", "gemini-pro", "gemini-flash", "gpt-4o", "gpt-4o-mini", "o3", "custom"], {
+  model: z.enum(["opus", "sonnet", "haiku", "gemini-2.5-pro", "gemini-2.5-flash", "gpt-5.4", "gpt-5.4-mini", "custom"], {
     message: "Please select a model",
   }),
   platform: z.enum(["claude", "gemini", "codex", "cursor", "windsurf", "aider", "universal"], {
@@ -47,6 +60,15 @@ export const agentSubmissionSchema = z.object({
   capabilities: z.string().max(1000).optional(),
   tools: z.string().max(1000).optional(),
   tags: z.string().max(500).optional(),
-})
+}).superRefine((data, ctx) => {
+  const compatible = PLATFORM_COMPATIBLE_MODELS[data.platform];
+  if (compatible && !compatible.includes(data.model)) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ['model'],
+      message: `Model "${data.model}" is not compatible with platform "${data.platform}". Compatible models: ${compatible.join(', ')}`,
+    });
+  }
+});
 
 export type AgentSubmission = z.infer<typeof agentSubmissionSchema>

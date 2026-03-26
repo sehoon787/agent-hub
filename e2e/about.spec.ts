@@ -13,9 +13,9 @@ test.describe('About Page', () => {
 
   test('should mention supported platforms', async ({ page }) => {
     await page.goto('/about')
-    await expect(page.locator('h3:has-text("Claude Code")')).toBeVisible()
-    await expect(page.locator('h3:has-text("Gemini CLI")')).toBeVisible()
-    await expect(page.locator('h3:has-text("Codex CLI")')).toBeVisible()
+    await expect(page.locator('h3.font-semibold:has-text("Claude Code")')).toBeVisible()
+    await expect(page.locator('h3.font-semibold:has-text("Gemini CLI")')).toBeVisible()
+    await expect(page.locator('h3.font-semibold:has-text("Codex CLI")')).toBeVisible()
   })
 
   test('should describe agent categories', async ({ page }) => {
@@ -34,9 +34,9 @@ test.describe('About Page', () => {
 
   test('should show model tiers', async ({ page }) => {
     await page.goto('/about')
-    await expect(page.locator('h3:has-text("Opus")')).toBeVisible()
-    await expect(page.locator('h3:has-text("Sonnet")')).toBeVisible()
-    await expect(page.locator('h3:has-text("Haiku")')).toBeVisible()
+    await expect(page.locator('text=Model Tiers')).toBeVisible()
+    await expect(page.locator('text=Gemini 2.5 Pro')).toBeVisible()
+    await expect(page.getByText('GPT-5.4', { exact: true })).toBeVisible()
   })
 
   test('should show How Auto-Collection Works section', async ({ page }) => {

@@ -23,15 +23,15 @@ AI coding agents are everywhere -- Claude Code ships subagents, Gemini CLI has b
 
 AgentHub is a unified registry that collects, verifies, and presents AI coding agents from across the ecosystem:
 
-| Platform | Agents | Format |
-|----------|--------|--------|
-| **Claude Code** | 80 agents | `.md` with YAML frontmatter |
-| **Gemini CLI** | 8 agents | `.md` with YAML frontmatter |
-| **Codex CLI** | 3 agents | `.toml` files |
-| **Universal** | 2 agents | Cross-platform |
-| **Cursor** | TBD | `.md` / `.cursorrules` |
-| **Windsurf** | TBD | `.md` rules |
-| **Aider** | TBD | Convention files |
+| Platform | Agents | Format | Status |
+|----------|--------|--------|--------|
+| **Claude Code** | 80 agents | `.md` with YAML frontmatter | ✅ Supported |
+| **Gemini CLI** | 8 agents | `.md` with YAML frontmatter | ✅ Supported |
+| **Codex CLI** | 3 agents | `.toml` files | ✅ Supported |
+| **Universal** | 2 agents | Cross-platform | ✅ Supported |
+| **Cursor** | — | `.cursor/rules/` | Rules only (no agents) |
+| **Windsurf** | — | `.windsurf/rules/` | Rules only (no agents) |
+| **Aider** | — | `CONVENTIONS.md` | Conventions only (no agents) |
 
 ### Key Features
 

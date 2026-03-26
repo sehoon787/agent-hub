@@ -8,6 +8,30 @@ import { FilterSidebar } from '@/components/filters/filter-sidebar';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
 import { SlidersHorizontal } from 'lucide-react';
 
+const BROWSE_PLATFORM_MODELS: Record<string, { value: string; label: string }[]> = {
+  claude: [
+    { value: 'sonnet', label: 'Sonnet (Coding)' },
+    { value: 'opus', label: 'Opus (Deep Reasoning)' },
+    { value: 'haiku', label: 'Haiku (Fast)' },
+  ],
+  gemini: [
+    { value: 'gemini-2.5-pro', label: 'Gemini 2.5 Pro' },
+    { value: 'gemini-2.5-flash', label: 'Gemini 2.5 Flash' },
+  ],
+  codex: [
+    { value: 'gpt-5.4', label: 'GPT-5.4' },
+  ],
+};
+
+const ALL_BROWSE_MODELS = [
+  { value: 'sonnet', label: 'Sonnet (Coding)' },
+  { value: 'opus', label: 'Opus (Deep Reasoning)' },
+  { value: 'haiku', label: 'Haiku (Fast)' },
+  { value: 'gemini-2.5-pro', label: 'Gemini 2.5 Pro' },
+  { value: 'gemini-2.5-flash', label: 'Gemini 2.5 Flash' },
+  { value: 'gpt-5.4', label: 'GPT-5.4' },
+];
+
 export function AgentsBrowse() {
   const [q, setQ] = useState('');
   const [category, setCategory] = useState<string | null>(null);
@@ -42,7 +66,17 @@ export function AgentsBrowse() {
         { value: 'universal', label: 'Universal' },
       ],
       selected: platform,
-      onSelect: (v: string | null) => { setPlatform(v); setPage(1); },
+      onSelect: (v: string | null) => {
+        setPlatform(v);
+        // Reset model if incompatible with new platform
+        if (v && BROWSE_PLATFORM_MODELS[v] && model) {
+          const compatibleValues = BROWSE_PLATFORM_MODELS[v].map(m => m.value);
+          if (!compatibleValues.includes(model)) {
+            setModel(null);
+          }
+        }
+        setPage(1);
+      },
     },
     {
       title: 'Category',
@@ -57,14 +91,9 @@ export function AgentsBrowse() {
     },
     {
       title: 'Model',
-      options: [
-        { value: 'sonnet', label: 'Sonnet (Coding)' },
-        { value: 'opus', label: 'Opus (Deep Reasoning)' },
-        { value: 'haiku', label: 'Haiku (Fast)' },
-        { value: 'gemini-pro', label: 'Gemini Pro' },
-        { value: 'gemini-flash', label: 'Gemini Flash' },
-        { value: 'gpt-4o', label: 'GPT-4o' },
-      ],
+      options: platform && BROWSE_PLATFORM_MODELS[platform]
+        ? BROWSE_PLATFORM_MODELS[platform]
+        : ALL_BROWSE_MODELS,
       selected: model,
       onSelect: (v: string | null) => { setModel(v); setPage(1); },
     },
