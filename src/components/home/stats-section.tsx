@@ -1,6 +1,6 @@
 'use client';
 
-import { Bot, Layers, Users, Download } from 'lucide-react';
+import { Bot, Layers, Users, ShieldCheck } from 'lucide-react';
 import { getStats } from '@/lib/data';
 import { StatCard } from '@/components/cards/stat-card';
 
@@ -12,7 +12,7 @@ export function StatsSection() {
         <StatCard label="Total Agents" value={stats.totalAgents} icon={Bot} color="bg-violet-500/20 text-violet-400" />
         <StatCard label="Categories" value={stats.totalCategories} icon={Layers} color="bg-blue-500/20 text-blue-400" />
         <StatCard label="Contributors" value={stats.totalContributors} icon={Users} color="bg-emerald-500/20 text-emerald-400" />
-        <StatCard label="Total Downloads" value={stats.totalDownloads} icon={Download} color="bg-amber-500/20 text-amber-400" />
+        <StatCard label="Verified Agents" value={stats.totalVerified} icon={ShieldCheck} color="bg-amber-500/20 text-amber-400" />
       </div>
     </section>
   );

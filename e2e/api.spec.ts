@@ -95,7 +95,7 @@ test.describe('API Routes', () => {
     expect(stats.totalAgents).toBeGreaterThan(90)
     expect(stats.totalCategories).toBe(4)
     expect(stats.totalContributors).toBeGreaterThan(0)
-    expect(stats.totalDownloads).toBeGreaterThan(0)
+    expect(stats.totalVerified).toBeGreaterThan(0)
   })
 
   test('GET /api/search should search agents', async ({ request }) => {

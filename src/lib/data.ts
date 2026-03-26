@@ -103,6 +103,6 @@ export function getStats(): Stats {
     totalAgents: agents.length,
     totalCategories: categories.size,
     totalContributors: contributors.size,
-    totalDownloads: agents.reduce((s, a) => s + a.downloads, 0),
+    totalVerified: agents.filter((a) => a.verified).length,
   };
 }

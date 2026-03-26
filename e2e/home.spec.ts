@@ -12,11 +12,11 @@ test.describe('Homepage', () => {
 
   test('should display stats section with agent counts', async ({ page }) => {
     await page.goto('/')
-    // StatsSection renders StatCards with labels: Total Agents, Categories, Contributors, Total Downloads
+    // StatsSection renders StatCards with labels: Total Agents, Categories, Contributors, Verified Agents
     await expect(page.locator('text=Total Agents')).toBeVisible()
     await expect(page.locator('text=Categories')).toBeVisible()
     await expect(page.locator('text=Contributors')).toBeVisible()
-    await expect(page.locator('text=Total Downloads')).toBeVisible()
+    await expect(page.locator('text=Verified Agents')).toBeVisible()
   })
 
   test('should display featured agents section', async ({ page }) => {

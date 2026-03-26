@@ -39,5 +39,5 @@ export interface Stats {
   totalAgents: number;
   totalCategories: number;
   totalContributors: number;
-  totalDownloads: number;
+  totalVerified: number;
 }
