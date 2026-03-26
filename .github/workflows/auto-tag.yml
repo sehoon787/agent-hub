@@ -90,6 +90,13 @@ jobs:
         run: |
           VERSION="${{ steps.bump.outputs.new_version }}"
           VERSION_NUM="${VERSION#v}"
+
+          CURRENT_VERSION=$(jq -r '.version' package.json)
+          if [ "$CURRENT_VERSION" = "$VERSION_NUM" ]; then
+            echo "package.json already at $VERSION_NUM, skipping"
+            exit 0
+          fi
+
           BRANCH="auto/bump-${VERSION}"
 
           git checkout -b "$BRANCH"
