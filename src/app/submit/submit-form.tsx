@@ -83,6 +83,22 @@ const stageLabels: Record<string, string> = {
   operate: 'Operate',
 };
 
+const modelColors: Record<string, string> = {
+  opus: 'bg-violet-500/20 text-violet-300 border-violet-500/30',
+  sonnet: 'bg-blue-500/20 text-blue-300 border-blue-500/30',
+  haiku: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+};
+
+const platformColors: Record<string, string> = {
+  claude: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
+  gemini: 'bg-blue-500/20 text-blue-300 border-blue-500/30',
+  codex: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+  universal: 'bg-purple-500/20 text-purple-300 border-purple-500/30',
+  cursor: 'bg-pink-500/20 text-pink-300 border-pink-500/30',
+  windsurf: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30',
+  aider: 'bg-orange-500/20 text-orange-300 border-orange-500/30',
+};
+
 export function SubmitForm() {
   const { data: session, status } = useSession();
   const [form, setForm] = useState<FormData>(initial);
@@ -108,10 +124,11 @@ export function SubmitForm() {
 
   // Auto-fill author from session
   useEffect(() => {
-    if (session?.user?.name && !form.author) {
-      update('author', session.user.name);
+    const name = session?.user?.name;
+    if (name) {
+      setForm((prev) => prev.author ? prev : { ...prev, author: name });
     }
-  }, [session]);
+  }, [session?.user?.name]);
 
   // Treat prolonged loading as unauthenticated (auth may not be configured)
   useEffect(() => {
@@ -419,18 +436,25 @@ export function SubmitForm() {
       <div>
         <h3 className="text-sm font-semibold text-zinc-300">Preview</h3>
         <div className="mt-3 rounded-xl border border-zinc-800 bg-zinc-900 p-5">
-          <div className="flex items-start justify-between">
-            <div className="flex items-center gap-2">
-              <Bot className="h-5 w-5 text-violet-400" />
-              <h3 className="font-semibold text-zinc-100">
+          <div className="flex items-start justify-between gap-2">
+            <div className="flex min-w-0 items-center gap-2">
+              <Bot className="h-5 w-5 shrink-0 text-violet-400" />
+              <h3 className="truncate font-semibold text-zinc-100">
                 {form.displayName || form.name || 'Your Agent'}
               </h3>
             </div>
-            {form.model && (
-              <Badge variant="outline" className="text-xs">
-                {form.model}
-              </Badge>
-            )}
+            <div className="flex shrink-0 items-center gap-1.5">
+              {form.platform && (
+                <Badge variant="outline" className={`text-xs ${platformColors[form.platform] ?? ''}`}>
+                  {form.platform}
+                </Badge>
+              )}
+              {form.model && (
+                <Badge variant="outline" className={`text-xs ${modelColors[form.model] ?? ''}`}>
+                  {form.model}
+                </Badge>
+              )}
+            </div>
           </div>
           <p className="mt-2 line-clamp-2 text-sm text-zinc-400">
             {form.description || 'Your description will appear here...'}
@@ -441,15 +465,16 @@ export function SubmitForm() {
                 {form.category}
               </Badge>
             )}
-            {form.platform && (
-              <Badge variant="outline" className="text-xs capitalize">
-                {form.platform}
+            {predictedStages.slice(0, 2).map((s) => (
+              <Badge key={s} variant="outline" className={`text-xs ${stageColors[s] ?? ''}`}>
+                {stageLabels[s] ?? s}
               </Badge>
-            )}
+            ))}
             {form.tags
               .split(',')
               .map((t) => t.trim())
               .filter(Boolean)
+              .slice(0, 2)
               .map((tag) => (
                 <Badge key={tag} variant="outline" className="border-zinc-700 text-xs text-zinc-500">
                   {tag}
@@ -458,7 +483,7 @@ export function SubmitForm() {
           </div>
           {predictedStages.length > 0 && (
             <div className="mt-3 border-t border-zinc-800 pt-3">
-              <p className="text-xs text-zinc-500 mb-1.5">Predicted Stages</p>
+              <p className="text-xs text-zinc-500 mb-1.5">All Predicted Stages</p>
               <div className="flex flex-wrap gap-1.5">
                 {predictedStages.map((s) => (
                   <Badge key={s} variant="outline" className={`text-xs ${stageColors[s] ?? ''}`}>

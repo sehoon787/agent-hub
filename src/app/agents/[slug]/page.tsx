@@ -88,12 +88,12 @@ export default async function AgentDetailPage({
 
       {/* Header */}
       <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <div className="flex items-center gap-3">
-            <Bot className="h-8 w-8 text-violet-400" />
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-3">
+            <Bot className="h-8 w-8 shrink-0 text-violet-400" />
             <h1 className="text-3xl font-bold text-zinc-100">{agent.displayName}</h1>
             {agent.verified && (
-              <BadgeCheck className="h-5 w-5 text-emerald-400" aria-label="Verified" />
+              <BadgeCheck className="h-5 w-5 shrink-0 text-emerald-400" aria-label="Verified" />
             )}
             <Badge variant="outline" className={platformColors[agent.platform]}>
               {agent.platform}
