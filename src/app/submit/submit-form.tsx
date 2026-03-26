@@ -38,8 +38,8 @@ const initial: FormData = {
 };
 
 const ALL_MODELS = [
-  { value: 'opus', label: 'Opus (Claude)' },
   { value: 'sonnet', label: 'Sonnet (Claude)' },
+  { value: 'opus', label: 'Opus (Claude)' },
   { value: 'haiku', label: 'Haiku (Claude)' },
   { value: 'gemini-pro', label: 'Gemini Pro' },
   { value: 'gemini-flash', label: 'Gemini Flash' },
@@ -50,7 +50,7 @@ const ALL_MODELS = [
 ];
 
 const PLATFORM_MODELS: Record<string, string[]> = {
-  claude: ['opus', 'sonnet', 'haiku'],
+  claude: ['sonnet', 'opus', 'haiku'],
   gemini: ['gemini-pro', 'gemini-flash'],
   codex: ['gpt-4o', 'gpt-4o-mini', 'o3'],
   cursor: ALL_MODELS.map((m) => m.value),
@@ -284,38 +284,38 @@ export function SubmitForm() {
             {fieldErrors.category && <p className="mt-1 text-xs text-red-400">{fieldErrors.category[0]}</p>}
           </div>
           <div>
-            <label className="text-sm font-medium text-zinc-300">Model</label>
+            <label className="text-sm font-medium text-zinc-300">Platform</label>
             <select
-              value={form.model}
-              onChange={(e) => update('model', e.target.value)}
+              value={form.platform}
+              onChange={(e) => handlePlatformChange(e.target.value)}
               className="mt-1 w-full rounded-md border border-zinc-700 bg-zinc-800/50 px-3 py-2 text-sm text-zinc-300"
             >
-              {(form.platform && PLATFORM_MODELS[form.platform]
-                ? ALL_MODELS.filter((m) => PLATFORM_MODELS[form.platform].includes(m.value))
-                : ALL_MODELS
-              ).map((m) => (
-                <option key={m.value} value={m.value}>{m.label}</option>
-              ))}
+              <option value="">Select platform</option>
+              <option value="claude">Claude Code</option>
+              <option value="gemini">Gemini CLI</option>
+              <option value="codex">Codex CLI</option>
+              <option value="cursor">Cursor</option>
+              <option value="windsurf">Windsurf</option>
+              <option value="aider">Aider</option>
+              <option value="universal">Universal</option>
             </select>
+            {fieldErrors.platform && <p className="mt-1 text-xs text-red-400">{fieldErrors.platform[0]}</p>}
           </div>
         </div>
         <div>
-          <label className="text-sm font-medium text-zinc-300">Platform</label>
+          <label className="text-sm font-medium text-zinc-300">Model</label>
           <select
-            value={form.platform}
-            onChange={(e) => handlePlatformChange(e.target.value)}
+            value={form.model}
+            onChange={(e) => update('model', e.target.value)}
             className="mt-1 w-full rounded-md border border-zinc-700 bg-zinc-800/50 px-3 py-2 text-sm text-zinc-300"
           >
-            <option value="">Select platform</option>
-            <option value="claude">Claude Code</option>
-            <option value="gemini">Gemini CLI</option>
-            <option value="codex">Codex CLI</option>
-            <option value="cursor">Cursor</option>
-            <option value="windsurf">Windsurf</option>
-            <option value="aider">Aider</option>
-            <option value="universal">Universal</option>
+            {(form.platform && PLATFORM_MODELS[form.platform]
+              ? ALL_MODELS.filter((m) => PLATFORM_MODELS[form.platform].includes(m.value))
+              : ALL_MODELS
+            ).map((m) => (
+              <option key={m.value} value={m.value}>{m.label}</option>
+            ))}
           </select>
-          {fieldErrors.platform && <p className="mt-1 text-xs text-red-400">{fieldErrors.platform[0]}</p>}
         </div>
         <div>
           <label className="text-sm font-medium text-zinc-300">Author</label>

@@ -34,6 +34,17 @@ export function AgentsBrowse() {
 
   const filterGroups = [
     {
+      title: 'Platform',
+      options: [
+        { value: 'claude', label: 'Claude' },
+        { value: 'gemini', label: 'Gemini' },
+        { value: 'codex', label: 'Codex' },
+        { value: 'universal', label: 'Universal' },
+      ],
+      selected: platform,
+      onSelect: (v: string | null) => { setPlatform(v); setPage(1); },
+    },
+    {
       title: 'Category',
       options: [
         { value: 'orchestrator', label: 'Orchestrator' },
@@ -47,9 +58,9 @@ export function AgentsBrowse() {
     {
       title: 'Model',
       options: [
-        { value: 'opus', label: 'Opus' },
-        { value: 'sonnet', label: 'Sonnet' },
-        { value: 'haiku', label: 'Haiku' },
+        { value: 'opus', label: 'Opus (Deep Reasoning)' },
+        { value: 'sonnet', label: 'Sonnet (Coding)' },
+        { value: 'haiku', label: 'Haiku (Fast)' },
       ],
       selected: model,
       onSelect: (v: string | null) => { setModel(v); setPage(1); },
@@ -63,20 +74,6 @@ export function AgentsBrowse() {
       ],
       selected: source,
       onSelect: (v: string | null) => { setSource(v); setPage(1); },
-    },
-    {
-      title: 'Platform',
-      options: [
-        { value: 'claude', label: 'Claude' },
-        { value: 'gemini', label: 'Gemini' },
-        { value: 'codex', label: 'Codex' },
-        { value: 'universal', label: 'Universal' },
-        { value: 'cursor', label: 'Cursor' },
-        { value: 'windsurf', label: 'Windsurf' },
-        { value: 'aider', label: 'Aider' },
-      ],
-      selected: platform,
-      onSelect: (v: string | null) => { setPlatform(v); setPage(1); },
     },
   ];
 

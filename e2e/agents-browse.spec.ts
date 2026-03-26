@@ -61,9 +61,9 @@ test.describe('Agents Browse Page', () => {
 
   test('should have model filter with correct labels', async ({ page }) => {
     await page.goto('/agents')
-    await expect(page.locator('aside button:has-text("Opus")')).toBeVisible({ timeout: 5000 })
-    await expect(page.locator('aside button:has-text("Sonnet")')).toBeVisible()
-    await expect(page.locator('aside button:has-text("Haiku")')).toBeVisible()
+    await expect(page.locator('aside button:has-text("Opus (Deep Reasoning)")')).toBeVisible({ timeout: 5000 })
+    await expect(page.locator('aside button:has-text("Sonnet (Coding)")')).toBeVisible()
+    await expect(page.locator('aside button:has-text("Haiku (Fast)")')).toBeVisible()
   })
 
   test('should show platform badges on cards', async ({ page }) => {
@@ -98,10 +98,4 @@ test.describe('Agents Browse Page', () => {
     await expect(sortSelect.locator('option:has-text("Name A-Z")')).toBeAttached()
   })
 
-  test('should have expanded platform filter options including Cursor, Windsurf, Aider', async ({ page }) => {
-    await page.goto('/agents')
-    await expect(page.locator('aside button:has-text("Cursor")')).toBeVisible({ timeout: 5000 })
-    await expect(page.locator('aside button:has-text("Windsurf")')).toBeVisible()
-    await expect(page.locator('aside button:has-text("Aider")')).toBeVisible()
-  })
 })
