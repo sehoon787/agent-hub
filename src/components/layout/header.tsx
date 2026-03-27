@@ -4,19 +4,22 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Bot, Menu, X } from 'lucide-react';
 import { useState } from 'react';
+import { useSession } from 'next-auth/react';
 import { cn } from '@/lib/utils';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
 import { AuthButton } from '@/components/auth/auth-button';
 
-const navLinks = [
+const navLinks: { href: string; label: string; auth?: boolean }[] = [
   { href: '/agents', label: 'Agents' },
   { href: '/submit', label: 'Submit' },
+  { href: '/my-submissions', label: 'My Submissions', auth: true },
   { href: '/about', label: 'About' },
 ];
 
 export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const { data: session } = useSession();
 
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-md">
@@ -30,7 +33,9 @@ export function Header() {
 
         {/* Desktop nav */}
         <nav className="hidden items-center gap-1 md:flex">
-          {navLinks.map((link) => (
+          {navLinks
+            .filter((link) => !link.auth || session?.user)
+            .map((link) => (
             <Link
               key={link.href}
               href={link.href}
@@ -67,7 +72,9 @@ export function Header() {
             <SheetContent side="right" className="w-64 border-zinc-800 bg-zinc-950">
               <SheetTitle className="sr-only">Navigation menu</SheetTitle>
               <nav className="mt-8 flex flex-col gap-2">
-                {navLinks.map((link) => (
+                {navLinks
+                  .filter((link) => !link.auth || session?.user)
+                  .map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}

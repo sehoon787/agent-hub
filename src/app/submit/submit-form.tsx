@@ -122,13 +122,13 @@ export function SubmitForm() {
     });
   }, [form.description, form.tags, form.capabilities, form.tools, form.model, form.category]);
 
-  // Auto-fill author from session
+  // Auto-fill author from GitHub login (username)
   useEffect(() => {
-    const name = session?.user?.name;
-    if (name) {
-      setForm((prev) => prev.author ? prev : { ...prev, author: name });
+    const login = session?.user?.login;
+    if (login) {
+      setForm((prev) => prev.author ? prev : { ...prev, author: login });
     }
-  }, [session?.user?.name]);
+  }, [session?.user?.login]);
 
   // Treat prolonged loading as unauthenticated (auth may not be configured)
   useEffect(() => {
@@ -372,12 +372,10 @@ export function SubmitForm() {
           <label className="text-sm font-medium text-zinc-300">Author</label>
           <Input
             value={form.author}
-            onChange={(e) => update('author', e.target.value)}
-            onBlur={(e) => validate('author', e.target.value)}
-            placeholder="e.g. your-username"
-            className="mt-1 border-zinc-700 bg-zinc-800/50 text-zinc-100"
+            readOnly
+            className="mt-1 border-zinc-700 bg-zinc-800/50 text-zinc-100 opacity-70 cursor-not-allowed"
           />
-          {clientErrors.author && <p className="mt-1 text-xs text-red-400">{clientErrors.author}</p>}
+          <p className="mt-1 text-xs text-zinc-500">Auto-filled from your GitHub account</p>
           {fieldErrors.author && <p className="mt-1 text-xs text-red-400">{fieldErrors.author[0]}</p>}
         </div>
         <div>
