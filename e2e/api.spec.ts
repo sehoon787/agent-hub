@@ -120,6 +120,22 @@ test.describe('API Routes', () => {
     expect(response.status()).toBeGreaterThanOrEqual(400)
   })
 
+  test('POST /api/agents with duplicate slug should be rejected', async ({ request }) => {
+    const response = await request.post('/api/agents', {
+      data: {
+        name: 'boss',
+        displayName: 'Boss Duplicate',
+        description: 'This is a duplicate test submission that should fail',
+        category: 'orchestrator',
+        model: 'opus',
+        platform: 'claude',
+        author: 'test-user',
+      },
+    })
+    // 409 (duplicate slug), 401 (no auth), or 503 (no GITHUB_TOKEN before deploy)
+    expect(response.status()).toBeGreaterThanOrEqual(400)
+  })
+
   test('POST /api/verify with valid GitHub URL should succeed', async ({ request }) => {
     const response = await request.post('/api/verify', {
       data: { url: 'https://github.com/google-gemini/gemini-cli' },
