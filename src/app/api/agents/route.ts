@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
 **capabilities:** ${data.capabilities ?? ''}
 **tools:** ${data.tools ?? ''}
 **tags:** ${data.tags ?? ''}
-**submittedBy:** ${session.user.email ?? session.user.name ?? 'unknown'}`;
+**submittedBy:** ${session.user.login ?? session.user.email ?? session.user.name ?? 'unknown'}`;
 
   const ghRes = await fetch('https://api.github.com/repos/sehoon787/agent-hub/issues', {
     method: 'POST',

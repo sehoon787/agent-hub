@@ -70,7 +70,7 @@ jobs:
 
             // Validate required fields
             const validCategories = ['orchestrator', 'specialist', 'worker', 'analyst'];
-            const validModels = ['opus', 'sonnet', 'haiku', 'gemini-pro', 'gemini-flash', 'gpt-4o', 'gpt-4o-mini', 'o3', 'custom'];
+            const validModels = ['opus', 'sonnet', 'haiku', 'gemini-2.5-pro', 'gemini-2.5-flash', 'gpt-5.4', 'gpt-5.4-mini', 'custom'];
             const validPlatforms = ['claude', 'gemini', 'codex', 'cursor', 'windsurf', 'aider', 'universal'];
 
             const errors = [];

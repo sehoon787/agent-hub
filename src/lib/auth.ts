@@ -6,16 +6,37 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     GitHub({
       clientId: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_SECRET,
+      profile(profile) {
+        return {
+          id: String(profile.id),
+          name: profile.name ?? profile.login,
+          email: profile.email,
+          image: profile.avatar_url,
+          login: profile.login,
+        }
+      },
     }),
   ],
   pages: {
     signIn: "/signin",
   },
   callbacks: {
+    jwt({ token, profile }) {
+      if (profile) {
+        token.login = (profile as { login?: string }).login
+      }
+      return token
+    },
+    session({ session, token }) {
+      if (token.login) {
+        session.user.login = token.login as string
+      }
+      return session
+    },
     redirect({ url, baseUrl }) {
-      if (url.startsWith(baseUrl)) return url;
-      if (url.startsWith("/")) return `${baseUrl}${url}`;
-      return baseUrl;
+      if (url.startsWith(baseUrl)) return url
+      if (url.startsWith("/")) return `${baseUrl}${url}`
+      return baseUrl
     },
   },
 })

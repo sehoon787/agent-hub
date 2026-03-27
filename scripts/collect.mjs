@@ -19,7 +19,7 @@ const KNOWN_REPOS = [
 ];
 
 const VALID_CATEGORIES = ['orchestrator', 'specialist', 'worker', 'analyst'];
-const VALID_MODELS = ['opus', 'sonnet', 'haiku', 'gemini-pro', 'gemini-flash', 'gpt-4o', 'gpt-4o-mini', 'o3', 'custom'];
+const VALID_MODELS = ['opus', 'sonnet', 'haiku', 'gemini-2.5-pro', 'gemini-2.5-flash', 'gpt-5.4', 'gpt-5.4-mini', 'custom'];
 const VALID_PLATFORMS = ['claude', 'gemini', 'codex', 'cursor', 'windsurf', 'aider', 'universal'];
 
 // Same patterns as src/lib/security.ts
@@ -54,10 +54,24 @@ function parseFrontmatter(content) {
   const match = content.match(/^---\n([\s\S]*?)\n---/);
   if (!match) return {};
   const fm = {};
-  for (const line of match[1].split('\n')) {
+  const lines = match[1].split('\n');
+  let currentKey = null;
+  for (const line of lines) {
     const idx = line.indexOf(':');
-    if (idx > 0) {
-      fm[line.slice(0, idx).trim()] = line.slice(idx + 1).trim();
+    if (idx > 0 && !line.startsWith(' ') && !line.startsWith('\t')) {
+      const key = line.slice(0, idx).trim();
+      const val = line.slice(idx + 1).trim();
+      if (val === '>' || val === '|') {
+        currentKey = key;
+        fm[key] = '';
+      } else {
+        currentKey = null;
+        fm[key] = val;
+      }
+    } else if (currentKey && (line.startsWith('  ') || line.startsWith('\t'))) {
+      fm[currentKey] += (fm[currentKey] ? ' ' : '') + line.trim();
+    } else {
+      currentKey = null;
     }
   }
   return fm;
