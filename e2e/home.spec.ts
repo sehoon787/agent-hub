@@ -28,9 +28,9 @@ test.describe('Homepage', () => {
     expect(count).toBeGreaterThan(0)
   })
 
-  test('should display recently added section', async ({ page }) => {
+  test('should display latest releases section', async ({ page }) => {
     await page.goto('/')
-    await expect(page.locator('text=Recently Added')).toBeVisible()
+    await expect(page.locator('text=Latest Releases').first()).toBeVisible()
   })
 
   test('should display top agents ranking section', async ({ page }) => {
@@ -50,11 +50,11 @@ test.describe('Homepage', () => {
     await expect(page.locator('button:has-text("claude")')).toBeVisible()
   })
 
-  test('should display 2-column ranking and recent agents layout', async ({ page }) => {
+  test('should display 2-column ranking and releases layout', async ({ page }) => {
     await page.goto('/')
     await expect(page.locator('text=Top by Stars')).toBeVisible()
-    const recentCards = page.locator('section .grid h3:has-text("Recently Added")')
-    await expect(recentCards.first()).toBeVisible()
+    const releases = page.locator('section .grid h3:has-text("Latest Releases")')
+    await expect(releases.first()).toBeVisible()
   })
 
   test('should display category section', async ({ page }) => {

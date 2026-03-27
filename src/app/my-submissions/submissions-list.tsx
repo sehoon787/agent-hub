@@ -175,6 +175,14 @@ export function SubmissionsList() {
               </p>
             </div>
             <div className="ml-4 flex shrink-0 items-center gap-2">
+              {sub.status === 'approved' && sub.slug && (
+                <a
+                  href={`/agents/${sub.slug}`}
+                  className="flex items-center gap-1.5 rounded-md border border-violet-500/30 bg-violet-500/10 px-3 py-1.5 text-xs text-violet-300 hover:bg-violet-500/20"
+                >
+                  View Agent
+                </a>
+              )}
               {sub.status !== 'rejected' && (
                 <button
                   onClick={() => handleDelete(sub)}
@@ -182,7 +190,7 @@ export function SubmissionsList() {
                   className="flex items-center gap-1.5 rounded-md border border-red-500/30 bg-red-500/10 px-3 py-1.5 text-xs text-red-300 hover:bg-red-500/20 disabled:opacity-50"
                 >
                   <Trash2 className="h-3 w-3" />
-                  {isLoading ? 'Deleting...' : sub.status === 'approved' ? 'Request Remove' : 'Delete'}
+                  {isLoading ? 'Processing...' : 'Remove'}
                 </button>
               )}
               <a
@@ -192,7 +200,7 @@ export function SubmissionsList() {
                 className="flex items-center gap-1.5 rounded-md border border-zinc-700 bg-zinc-800/50 px-3 py-1.5 text-xs text-zinc-300 hover:bg-zinc-800"
               >
                 <ExternalLink className="h-3 w-3" />
-                View
+                Issue
               </a>
             </div>
           </div>

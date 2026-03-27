@@ -25,9 +25,16 @@ interface CompactRankingProps {
 export function CompactRanking({ agents }: CompactRankingProps) {
   const [filter, setFilter] = useState<string>('all');
 
-  const filtered = filter === 'all'
-    ? agents.slice(0, 5)
-    : agents.filter((a) => a.platform === filter).slice(0, 5);
+  // Deduplicate by githubUrl — show one representative agent per repo
+  const deduplicated = agents.reduce<Agent[]>((acc, agent) => {
+    if (!acc.some((a) => a.githubUrl === agent.githubUrl)) {
+      acc.push(agent);
+    }
+    return acc;
+  }, []);
+
+  const base = filter === 'all' ? deduplicated : deduplicated.filter((a) => a.platform === filter);
+  const filtered = base.slice(0, 5);
 
   return (
     <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-5">
@@ -77,6 +84,12 @@ export function CompactRanking({ agents }: CompactRankingProps) {
                     <Link href={`/agents/${agent.slug}`} className="text-sm font-medium text-zinc-200 hover:text-white">
                       {agent.displayName}
                     </Link>
+                    {(() => {
+                      const sameRepoCount = agents.filter((a) => a.githubUrl === agent.githubUrl).length;
+                      return sameRepoCount > 1 ? (
+                        <span className="ml-1 text-xs text-zinc-500">+{sameRepoCount - 1}</span>
+                      ) : null;
+                    })()}
                   </td>
                   <td className="py-2 pr-2">
                     <Badge variant="outline" className={`text-xs ${platformColors[agent.platform] ?? ''}`}>

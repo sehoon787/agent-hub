@@ -3,6 +3,9 @@ name: Process Agent Submission
 on:
   issues:
     types: [labeled]
+  schedule:
+    - cron: '0 0,12 * * *'  # Twice daily at 00:00 and 12:00 UTC
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -11,13 +14,47 @@ permissions:
 
 jobs:
   create-pr:
-    if: github.event.label.name == 'approved' && contains(github.event.issue.labels.*.name, 'agent-submission')
+    # For label events: only when 'approved' label added to 'agent-submission' issues
+    # For schedule/dispatch: always run (early-exit check inside)
+    if: |
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.label.name == 'approved' && contains(github.event.issue.labels.*.name, 'agent-submission'))
     runs-on: ubuntu-latest
     steps:
-      - name: Verify approver permissions
+      - name: Determine issue to process
+        id: issue
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SENDER: ${{ github.event.sender.login }}
+        run: |
+          if [ "${{ github.event_name }}" = "issues" ]; then
+            echo "number=${{ github.event.issue.number }}" >> "$GITHUB_OUTPUT"
+            echo "author=${{ github.event.issue.user.login }}" >> "$GITHUB_OUTPUT"
+            echo "sender=${{ github.event.sender.login }}" >> "$GITHUB_OUTPUT"
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          else
+            # Scheduled/manual: find first pending approved submission
+            ISSUE=$(gh api "repos/${{ github.repository }}/issues?labels=approved,agent-submission&state=open&per_page=1" --jq '.[0] // empty')
+            if [ -z "$ISSUE" ]; then
+              echo "No pending submissions found"
+              echo "skip=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            echo "number=$(echo "$ISSUE" | jq -r '.number')" >> "$GITHUB_OUTPUT"
+            echo "author=$(echo "$ISSUE" | jq -r '.user.login')" >> "$GITHUB_OUTPUT"
+            echo "sender=github-actions[bot]" >> "$GITHUB_OUTPUT"
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Skip if no pending submissions
+        if: steps.issue.outputs.skip == 'true'
+        run: echo "No pending submissions, exiting cleanly"
+
+      - name: Verify approver permissions
+        if: steps.issue.outputs.skip != 'true' && github.event_name == 'issues'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SENDER: ${{ steps.issue.outputs.sender }}
         run: |
           PERMISSION=$(gh api "repos/${{ github.repository }}/collaborators/$SENDER/permission" --jq '.permission')
           if [[ "$PERMISSION" != "admin" && "$PERMISSION" != "maintain" && "$PERMISSION" != "write" ]]; then
@@ -27,22 +64,36 @@ jobs:
           echo "Approved by $SENDER with $PERMISSION permission"
 
       - name: Checkout
+        if: steps.issue.outputs.skip != 'true'
         uses: actions/checkout@v4
 
       - name: Setup Node.js
+        if: steps.issue.outputs.skip != 'true'
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
 
       - name: Install dependencies
+        if: steps.issue.outputs.skip != 'true'
         run: npm ci
 
-      - name: Parse issue and create agent entry
+      - name: Fetch issue body
+        if: steps.issue.outputs.skip != 'true'
+        id: body
         env:
-          ISSUE_BODY: ${{ github.event.issue.body }}
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
-          ISSUE_AUTHOR: ${{ github.event.issue.user.login }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BODY=$(gh api "repos/${{ github.repository }}/issues/${{ steps.issue.outputs.number }}" --jq '.body')
+          echo "ISSUE_BODY<<HEREDOC_EOF" >> "$GITHUB_ENV"
+          echo "$BODY" >> "$GITHUB_ENV"
+          echo "HEREDOC_EOF" >> "$GITHUB_ENV"
+
+      - name: Parse issue and create agent entry
+        if: steps.issue.outputs.skip != 'true'
+        env:
+          ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
+          ISSUE_AUTHOR: ${{ steps.issue.outputs.author }}
         run: |
           node -e "
             const fs = require('fs');
@@ -146,20 +197,21 @@ jobs:
           "
 
       - name: Create Pull Request
+        if: steps.issue.outputs.skip != 'true'
         uses: peter-evans/create-pull-request@v6
         with:
-          commit-message: "feat: add community agent from issue #${{ github.event.issue.number }}"
-          title: "[Agent] Add ${{ github.event.issue.title }}"
+          commit-message: "feat: add community agent from issue #${{ steps.issue.outputs.number }}"
+          title: "[Agent] Add from issue #${{ steps.issue.outputs.number }}"
           body: |
-            Adds a community-submitted agent from #${{ github.event.issue.number }}.
+            Adds a community-submitted agent from #${{ steps.issue.outputs.number }}.
 
-            **Submitted by:** @${{ github.event.issue.user.login }}
-            **Approved by:** @${{ github.event.sender.login }}
+            **Submitted by:** @${{ steps.issue.outputs.author }}
+            **Approved by:** @${{ steps.issue.outputs.sender }}
 
             > This agent is added with `verified: false` and `source: 'community'`.
             > Review the changes to `agents.json` before merging.
 
-            Closes #${{ github.event.issue.number }}
-          branch: "agent/issue-${{ github.event.issue.number }}"
+            Closes #${{ steps.issue.outputs.number }}
+          branch: "agent/issue-${{ steps.issue.outputs.number }}"
           labels: agent-submission
           delete-branch: true
