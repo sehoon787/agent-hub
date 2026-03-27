@@ -30,7 +30,7 @@ test.describe('Homepage', () => {
 
   test('should display recently added section', async ({ page }) => {
     await page.goto('/')
-    await expect(page.locator('text=Recently Added')).toBeVisible()
+    await expect(page.locator('text=Recently Added').first()).toBeVisible()
   })
 
   test('should display top agents ranking section', async ({ page }) => {
