@@ -190,6 +190,23 @@ export async function PATCH(
     return NextResponse.json({ error: 'Not authorized to edit this agent' }, { status: 403 });
   }
 
+  // Re-verify githubUrl ownership if changed
+  if (data.githubUrl && data.githubUrl !== agent.githubUrl) {
+    const { getAccessToken } = await import('@/lib/github-api');
+    const accessToken = await getAccessToken(request);
+    if (!accessToken) {
+      return NextResponse.json({ error: 'GitHub token expired. Please sign out and sign back in.' }, { status: 401 });
+    }
+    const { validateGithubUrlOwnership } = await import('@/lib/github-ownership');
+    const ownership = await validateGithubUrlOwnership(data.githubUrl, session.user.login!, accessToken);
+    if (!ownership.valid) {
+      return NextResponse.json(
+        { error: ownership.reason, details: { githubUrl: [ownership.reason!] } },
+        { status: 403 }
+      );
+    }
+  }
+
   // Merge updated fields
   const updatedAgent: AgentEntry = {
     ...agent,

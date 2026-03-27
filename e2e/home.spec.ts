@@ -35,12 +35,28 @@ test.describe('Homepage', () => {
 
   test('should display top agents ranking section', async ({ page }) => {
     await page.goto('/')
-    await expect(page.locator('text=Top Agents by Stars')).toBeVisible()
-    // Should have a table with agent rows
+    // Supports both old (RankingSection) and new (CompactRanking) layouts
+    const ranking = page.locator('text=Top by Stars').or(page.locator('text=Top Agents by Stars'))
+    await expect(ranking.first()).toBeVisible()
     const rankingRows = page.locator('table tbody tr')
     const count = await rankingRows.count()
     expect(count).toBeGreaterThan(0)
     expect(count).toBeLessThanOrEqual(10)
+  })
+
+  test.skip('should have platform filter tabs in compact ranking', async ({ page }) => {
+    // TODO: enable after 2-column layout deployment
+    await page.goto('/')
+    await expect(page.locator('button:has-text("All")')).toBeVisible()
+    await expect(page.locator('button:has-text("claude")')).toBeVisible()
+  })
+
+  test.skip('should display 2-column ranking and recent agents layout', async ({ page }) => {
+    // TODO: enable after 2-column layout deployment
+    await page.goto('/')
+    await expect(page.locator('text=Top by Stars')).toBeVisible()
+    const recentCards = page.locator('section .grid h3:has-text("Recently Added")')
+    await expect(recentCards.first()).toBeVisible()
   })
 
   test('should display category section', async ({ page }) => {

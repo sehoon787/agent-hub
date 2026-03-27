@@ -1,18 +1,27 @@
 import { HeroSection } from '@/components/home/hero-section';
 import { StatsSection } from '@/components/home/stats-section';
 import { FeaturedSection } from '@/components/home/featured-section';
-import { RankingSection } from '@/components/home/ranking-section';
 import { CategoriesSection } from '@/components/home/categories-section';
+import { CompactRanking } from '@/components/home/compact-ranking';
+import { RecentAgentsList } from '@/components/home/recent-agents-list';
 import { WebSiteJsonLd } from '@/components/seo/json-ld';
+import { getTopAgentsByStars } from '@/lib/data';
 
 export default function HomePage() {
+  const topAgents = getTopAgentsByStars(20);
+
   return (
     <>
       <WebSiteJsonLd />
       <HeroSection />
       <StatsSection />
+      <section className="py-8">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <CompactRanking agents={topAgents} />
+          <RecentAgentsList />
+        </div>
+      </section>
       <FeaturedSection />
-      <RankingSection />
       <CategoriesSection />
     </>
   );
