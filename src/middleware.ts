@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 
 const MUTATING_METHODS = new Set(["POST", "PUT", "DELETE", "PATCH"])
-const CSRF_EXEMPT = ["/api/auth/", "/api/collect"]
+const CSRF_EXEMPT = ["/api/auth/", "/api/cron/", "/api/collect"]
 
 export default auth((request) => {
   // CSRF origin check for mutating requests
@@ -16,7 +16,13 @@ export default auth((request) => {
       const siteUrl =
         process.env.NEXT_PUBLIC_SITE_URL || request.nextUrl.origin
 
-      if (origin && origin !== siteUrl && origin !== request.nextUrl.origin) {
+      if (!origin) {
+        return NextResponse.json(
+          { error: "Missing Origin header" },
+          { status: 403 }
+        )
+      }
+      if (origin !== siteUrl && origin !== request.nextUrl.origin) {
         return NextResponse.json(
           { error: "CSRF origin mismatch" },
           { status: 403 }

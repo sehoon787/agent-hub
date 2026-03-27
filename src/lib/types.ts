@@ -25,7 +25,7 @@ export interface Agent {
   createdAt: string;
   updatedAt: string;
   stars: number;
-  downloads: number;
+  forks: number;
   featured: boolean;
   verified: boolean;
 }

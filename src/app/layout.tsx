@@ -26,6 +26,10 @@ export const metadata: Metadata = {
   },
   description:
     'The open-source registry for discovering and sharing AI coding agents across Claude Code, Gemini CLI, and Codex CLI.',
+  keywords: ['AI coding agents', 'Claude Code', 'Gemini CLI', 'Codex CLI', 'AI tools', 'agent registry', 'developer tools'],
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+  },
   openGraph: {
     title: 'AgentHub',
     description: 'Discover & Share AI Coding Agents across Claude, Gemini, and Codex',

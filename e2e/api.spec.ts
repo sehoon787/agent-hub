@@ -56,17 +56,6 @@ test.describe('API Routes', () => {
     expect(data.total).toBeGreaterThan(5)
   })
 
-  test('GET /api/agents/boss should return boss agent', async ({ request }) => {
-    const response = await request.get('/api/agents/boss')
-    expect(response.ok()).toBeTruthy()
-    const agent = await response.json()
-    expect(agent.slug).toBe('boss')
-    expect(agent.platform).toBe('claude')
-    expect(agent.category).toBe('orchestrator')
-    expect(agent.model).toBe('opus')
-    expect(agent.verified).toBe(true)
-  })
-
   test('GET /api/agents/codebase-investigator should return Gemini agent', async ({ request }) => {
     const response = await request.get('/api/agents/codebase-investigator')
     expect(response.ok()).toBeTruthy()
@@ -123,13 +112,14 @@ test.describe('API Routes', () => {
   test('POST /api/agents with duplicate slug should be rejected', async ({ request }) => {
     const response = await request.post('/api/agents', {
       data: {
-        name: 'boss',
-        displayName: 'Boss Duplicate',
+        name: 'hephaestus',
+        displayName: 'Hephaestus Duplicate',
         description: 'This is a duplicate test submission that should fail',
-        category: 'orchestrator',
+        category: 'worker',
         model: 'opus',
         platform: 'claude',
         author: 'test-user',
+        githubUrl: 'https://github.com/test/repo',
       },
     })
     // 409 (duplicate slug), 401 (no auth), or 503 (no GITHUB_TOKEN before deploy)
@@ -140,8 +130,8 @@ test.describe('API Routes', () => {
     const response = await request.post('/api/verify', {
       data: { url: 'https://github.com/google-gemini/gemini-cli' },
     })
-    // Authenticated: 200 (valid) or 4xx (rate-limited/validation)
-    expect([200, 400, 429]).toContain(response.status())
+    // Authenticated: 200 (valid) or 4xx (rate-limited/validation/csrf)
+    expect([200, 400, 403, 429]).toContain(response.status())
   })
 
   test('POST /api/verify rejects non-GitHub URLs', async ({ request }) => {
@@ -191,7 +181,7 @@ test.describe('API Routes', () => {
     expect(response.ok()).toBeTruthy()
     const text = await response.text()
     expect(text).toContain('urlset')
-    expect(text).toContain('/agents/boss')
+    expect(text).toContain('/agents/hephaestus')
   })
 
   test('GET /robots.txt should return robots', async ({ request }) => {

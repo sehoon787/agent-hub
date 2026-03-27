@@ -1,5 +1,6 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
+import { githubApiUrl, getGithubHeaders, getAccessToken } from '@/lib/github-api';
 
 interface GitHubIssue {
   number: number;
@@ -12,31 +13,28 @@ interface GitHubIssue {
   body: string;
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   const session = await auth();
   if (!session?.user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   const login = session.user.login;
-  const email = session.user.email;
-  const name = session.user.name;
-
-  const token = session.accessToken || process.env.GITHUB_TOKEN;
-
-  const headers: Record<string, string> = {
-    Accept: 'application/vnd.github.v3+json',
-  };
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
+  if (!login) {
+    return NextResponse.json(
+      { error: 'Session missing GitHub login. Please sign out and sign back in.' },
+      { status: 401 }
+    );
   }
+
+  const accessToken = await getAccessToken(request);
 
   try {
     const res = await fetch(
-      'https://api.github.com/repos/sehoon787/agent-hub/issues?labels=agent-submission&state=all&per_page=100',
+      githubApiUrl('issues?labels=agent-submission&state=all&per_page=100'),
       {
-        headers,
-        next: { revalidate: 60 },
+        headers: getGithubHeaders(accessToken ?? undefined),
+        cache: 'no-store',
       }
     );
 
@@ -52,14 +50,9 @@ export async function GET() {
 
     const issues: GitHubIssue[] = await res.json();
 
-    // Filter by submitter identity (check body for submittedBy field)
     const userIssues = issues.filter((issue) => {
       const body = issue.body ?? '';
-      // Match by GitHub login, email, or name in the submittedBy field
-      if (login && body.includes(`**submittedBy:** ${login}`)) return true;
-      if (email && body.includes(`**submittedBy:** ${email}`)) return true;
-      if (name && body.includes(`**submittedBy:** ${name}`)) return true;
-      return false;
+      return body.includes(`**submittedBy:** ${login}`);
     });
 
     const submissions = userIssues.map((issue) => {

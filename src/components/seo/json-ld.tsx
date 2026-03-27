@@ -52,6 +52,40 @@ export function CollectionPageJsonLd({
   )
 }
 
+export function BreadcrumbJsonLd({ agent }: { agent: Agent }) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: siteUrl,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Agents",
+        item: `${siteUrl}/agents`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: agent.displayName,
+        item: `${siteUrl}/agents/${agent.slug}`,
+      },
+    ],
+  }
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}
+    />
+  )
+}
+
 export function AgentJsonLd({ agent }: { agent: Agent }) {
   const jsonLd = {
     "@context": "https://schema.org",

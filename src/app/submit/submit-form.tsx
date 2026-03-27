@@ -372,7 +372,7 @@ export function SubmitForm() {
           <p className="text-xs text-red-400">{fieldErrors.author[0]}</p>
         )}
         <div>
-          <label className="text-sm font-medium text-zinc-300">GitHub URL</label>
+          <label className="text-sm font-medium text-zinc-300">GitHub URL <span className="text-red-400">*</span></label>
           <Input
             value={form.githubUrl}
             onChange={(e) => { update('githubUrl', e.target.value); validate('githubUrl', e.target.value); }}
@@ -380,7 +380,7 @@ export function SubmitForm() {
             placeholder="https://github.com/..."
             className={`mt-1 bg-zinc-800/50 text-zinc-100 ${fieldErrors.githubUrl || clientErrors.githubUrl ? 'border-red-500' : 'border-zinc-700'}`}
           />
-          <p className="mt-1 text-xs text-zinc-500">Must be a GitHub URL (https://github.com/owner/repo)</p>
+          <p className="mt-1 text-xs text-zinc-500">Required. Must be a public GitHub repository (https://github.com/owner/repo)</p>
           {clientErrors.githubUrl && <p className="mt-1 text-xs text-red-400">{clientErrors.githubUrl}</p>}
           {fieldErrors.githubUrl && <p className="mt-1 text-xs text-red-400">{fieldErrors.githubUrl[0]}</p>}
         </div>

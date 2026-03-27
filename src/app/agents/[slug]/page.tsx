@@ -8,7 +8,7 @@ import { getAgent, getRelatedAgents, getAllAgentSlugs } from '@/lib/data';
 import { InstallCommand } from '@/components/detail/install-command';
 import { CapabilityList } from '@/components/detail/capability-list';
 import { RelatedAgents } from '@/components/detail/related-items';
-import { AgentJsonLd } from '@/components/seo/json-ld';
+import { AgentJsonLd, BreadcrumbJsonLd } from '@/components/seo/json-ld';
 
 const modelColors: Record<string, string> = {
   opus: 'bg-violet-500/20 text-violet-300 border-violet-500/30',
@@ -61,6 +61,7 @@ export async function generateMetadata({
     openGraph: {
       title: `${agent.displayName} — AgentHub`,
       description: agent.description,
+      type: 'article',
     },
   };
 }
@@ -79,6 +80,7 @@ export default async function AgentDetailPage({
   return (
     <div className="py-8">
       <AgentJsonLd agent={agent} />
+      <BreadcrumbJsonLd agent={agent} />
       {/* Breadcrumb */}
       <nav className="flex items-center gap-1 text-sm text-zinc-500">
         <Link href="/agents" className="hover:text-zinc-300">Agents</Link>

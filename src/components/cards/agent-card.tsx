@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Bot, Download, Star, BadgeCheck } from 'lucide-react';
+import { Bot, GitFork, Star, BadgeCheck } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import type { Agent } from '@/lib/types';
 import { InstallCommand } from '@/components/detail/install-command';
@@ -96,7 +96,7 @@ export function AgentCard({ agent }: { agent: Agent }) {
             <Star className="h-3 w-3" /> {agent.stars.toLocaleString()}
           </span>
           <span className="flex items-center gap-1">
-            <Download className="h-3 w-3" /> {agent.downloads.toLocaleString()}
+            <GitFork className="h-3 w-3" /> {agent.forks.toLocaleString()}
           </span>
         </div>
         <div className="mt-2">

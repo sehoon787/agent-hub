@@ -34,9 +34,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (token.login) {
         session.user.login = token.login as string
       }
-      if (token.accessToken) {
-        session.accessToken = token.accessToken as string
-      }
       return session
     },
     redirect({ url, baseUrl }) {

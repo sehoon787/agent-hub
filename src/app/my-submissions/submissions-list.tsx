@@ -125,6 +125,14 @@ export function SubmissionsList() {
     return (
       <div className="mt-12 rounded-xl border border-red-500/30 bg-red-500/10 p-8 text-center">
         <p className="text-sm text-red-300">{error}</p>
+        {error.toLowerCase().includes('sign') && (
+          <button
+            onClick={() => signIn('github', { callbackUrl: '/my-submissions' })}
+            className="mt-4 rounded-lg bg-violet-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-violet-500"
+          >
+            Sign in again
+          </button>
+        )}
       </div>
     );
   }

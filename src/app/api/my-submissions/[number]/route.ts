@@ -4,12 +4,7 @@ import { rateLimit, getClientIp } from '@/lib/rate-limit';
 import { agentSubmissionSchema } from '@/lib/validation';
 import { checkMaliciousContent } from '@/lib/security';
 import { isSubmissionOwner } from '@/lib/ownership';
-
-const headers = {
-  Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
-  Accept: 'application/vnd.github.v3+json',
-  'Content-Type': 'application/json',
-};
+import { githubApiUrl, getGithubHeaders, getAccessToken } from '@/lib/github-api';
 
 interface GitHubIssue {
   number: number;
@@ -63,10 +58,13 @@ export async function PATCH(
   }
 
   const { number } = await params;
+  if (!/^\d+$/.test(number)) {
+    return NextResponse.json({ error: 'Invalid issue number' }, { status: 400 });
+  }
 
   const issueRes = await fetch(
-    `https://api.github.com/repos/sehoon787/agent-hub/issues/${number}`,
-    { headers }
+    githubApiUrl(`issues/${number}`),
+    { headers: getGithubHeaders() }
   );
   if (!issueRes.ok) {
     return NextResponse.json({ error: 'Issue not found' }, { status: 404 });
@@ -87,6 +85,29 @@ export async function PATCH(
 
   if (!isSubmissionOwner(issue.body ?? '', session.user)) {
     return NextResponse.json({ error: 'Not the owner of this submission' }, { status: 403 });
+  }
+
+  // Verify GitHub URL ownership on edit
+  if (data.githubUrl) {
+    const accessToken = await getAccessToken(request);
+    if (!accessToken || !session.user.login) {
+      return NextResponse.json(
+        { error: 'GitHub token expired. Please sign out and sign back in.' },
+        { status: 401 }
+      );
+    }
+    const { validateGithubUrlOwnership } = await import('@/lib/github-ownership');
+    const ownership = await validateGithubUrlOwnership(
+      data.githubUrl,
+      session.user.login,
+      accessToken
+    );
+    if (!ownership.valid) {
+      return NextResponse.json(
+        { error: ownership.reason, details: { githubUrl: [ownership.reason!] } },
+        { status: 403 }
+      );
+    }
   }
 
   const slug = data.name
@@ -112,10 +133,10 @@ export async function PATCH(
 **submittedBy:** ${session.user.login ?? session.user.email ?? session.user.name ?? 'unknown'}`;
 
   const updateRes = await fetch(
-    `https://api.github.com/repos/sehoon787/agent-hub/issues/${number}`,
+    githubApiUrl(`issues/${number}`),
     {
       method: 'PATCH',
-      headers,
+      headers: getGithubHeaders(),
       body: JSON.stringify({
         title: `[Agent Submission] ${data.displayName} (${data.platform})`,
         body: issueBody,
@@ -124,8 +145,7 @@ export async function PATCH(
   );
 
   if (!updateRes.ok) {
-    const ghError = await updateRes.text();
-    return NextResponse.json({ error: `GitHub API error: ${ghError}` }, { status: 502 });
+    return NextResponse.json({ error: 'Failed to update submission. Please try again.' }, { status: 502 });
   }
 
   return NextResponse.json({ success: true });
@@ -151,10 +171,13 @@ export async function DELETE(
   }
 
   const { number } = await params;
+  if (!/^\d+$/.test(number)) {
+    return NextResponse.json({ error: 'Invalid issue number' }, { status: 400 });
+  }
 
   const issueRes = await fetch(
-    `https://api.github.com/repos/sehoon787/agent-hub/issues/${number}`,
-    { headers }
+    githubApiUrl(`issues/${number}`),
+    { headers: getGithubHeaders() }
   );
   if (!issueRes.ok) {
     return NextResponse.json({ error: 'Issue not found' }, { status: 404 });
@@ -178,17 +201,16 @@ export async function DELETE(
   }
 
   const closeRes = await fetch(
-    `https://api.github.com/repos/sehoon787/agent-hub/issues/${number}`,
+    githubApiUrl(`issues/${number}`),
     {
       method: 'PATCH',
-      headers,
+      headers: getGithubHeaders(),
       body: JSON.stringify({ state: 'closed' }),
     }
   );
 
   if (!closeRes.ok) {
-    const ghError = await closeRes.text();
-    return NextResponse.json({ error: `GitHub API error: ${ghError}` }, { status: 502 });
+    return NextResponse.json({ error: 'Failed to close submission. Please try again.' }, { status: 502 });
   }
 
   return NextResponse.json({ success: true });
