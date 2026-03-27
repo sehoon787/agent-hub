@@ -14,7 +14,7 @@ test.describe('Search', () => {
     await page.goto('/search?q=security')
     await page.waitForTimeout(500)
     // Shows "X result(s) for" text
-    await expect(page.locator('text=result')).toBeVisible()
+    await expect(page.locator('p').filter({ hasText: /\d+ results? for/ })).toBeVisible()
   })
 
   test('should show no results for nonsense query', async ({ page }) => {

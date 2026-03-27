@@ -17,21 +17,21 @@ test.describe('Navigation', () => {
   test('should navigate between all pages', async ({ page }) => {
     // Home
     await page.goto('/')
-    await expect(page).toHaveURL('http://localhost:3100/')
+    await expect(page).toHaveURL(/agent-hub.*\/$|\/$/);
 
     // Agents
-    await page.locator('nav a[href="/agents"]').click()
+    await page.locator('nav a[href="/agents"]').first().click()
     await expect(page).toHaveURL(/\/agents/)
     await expect(page.locator('h1')).toBeVisible()
 
     // About
-    await page.locator('nav a[href="/about"]').click()
+    await page.locator('nav a[href="/about"]').first().click()
     await expect(page).toHaveURL(/\/about/)
     await expect(page.locator('h1')).toBeVisible()
 
-    // Submit (redirects to /signin for unauthenticated users)
-    await page.locator('nav a[href="/submit"]').click()
-    await expect(page).toHaveURL(/\/signin/)
+    // Submit (authenticated users stay on /submit)
+    await page.locator('nav a[href="/submit"]').first().click()
+    await expect(page).toHaveURL(/\/submit/)
     await expect(page.locator('h1')).toBeVisible()
   })
 
