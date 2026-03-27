@@ -55,19 +55,23 @@ AgentHub is a unified registry that collects, verifies, and presents AI coding a
 
 ![Homepage](docs/screenshots/hero.png)
 
-**Homepage** — Search and discover agents
+**Homepage** — Search and discover agents across platforms
 
 ![Browse Agents](docs/screenshots/browse.png)
 
-**Browse** — Filter by category, platform, and model
+**Browse** — Filter by category, platform, model, and workflow stage
 
 ![Agent Detail](docs/screenshots/detail.png)
 
-**Detail** — Install commands, capabilities, and configuration
+**Detail** — Install commands, capabilities, tools, and related agents
 
-![Sign In](docs/screenshots/submit.png)
+![Submit](docs/screenshots/submit.png)
 
-**Submit** — Contribute your agents via GitHub OAuth
+**Submit** — Contribute your agents via GitHub OAuth with live preview
+
+![My Submissions](docs/screenshots/my-submissions.png)
+
+**My Submissions** — Track submission status (pending, approved, closed)
 
 ## Usage
 
