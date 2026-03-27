@@ -22,24 +22,31 @@ export async function GET() {
   const email = session.user.email;
   const name = session.user.name;
 
-  const token = (session as { accessToken?: string }).accessToken || process.env.GITHUB_TOKEN;
-  if (!token) {
-    return NextResponse.json({ error: 'GitHub integration not configured' }, { status: 503 });
+  const token = session.accessToken || process.env.GITHUB_TOKEN;
+
+  const headers: Record<string, string> = {
+    Accept: 'application/vnd.github.v3+json',
+  };
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
   }
 
   try {
     const res = await fetch(
       'https://api.github.com/repos/sehoon787/agent-hub/issues?labels=agent-submission&state=all&per_page=100',
       {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: 'application/vnd.github.v3+json',
-        },
+        headers,
         next: { revalidate: 60 },
       }
     );
 
     if (!res.ok) {
+      if (res.status === 403 || res.status === 401) {
+        return NextResponse.json(
+          { error: 'Session expired. Please sign out and sign back in.' },
+          { status: 401 }
+        );
+      }
       return NextResponse.json({ error: 'Failed to fetch submissions' }, { status: 502 });
     }
 
