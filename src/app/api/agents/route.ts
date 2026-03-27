@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getAgents } from '@/lib/data';
+import { getAgents, getAgent } from '@/lib/data';
 import { auth } from '@/lib/auth';
 import { rateLimit, getClientIp } from '@/lib/rate-limit';
 import { agentSubmissionSchema } from '@/lib/validation';
@@ -65,6 +65,15 @@ export async function POST(request: NextRequest) {
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)/g, '');
+
+  // Check for duplicate slug
+  const existing = getAgent(slug);
+  if (existing) {
+    return NextResponse.json(
+      { error: 'An agent with this name already exists', details: { name: [`Agent "${existing.displayName}" already uses the slug "${slug}"`] } },
+      { status: 409 }
+    );
+  }
 
   if (!process.env.GITHUB_TOKEN) {
     return NextResponse.json({ error: 'GitHub integration not configured' }, { status: 503 });
