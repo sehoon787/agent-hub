@@ -50,9 +50,9 @@ jobs:
 
             // Parse **key:** value format from issue body
             function parseField(body, key) {
-              const regex = new RegExp('\\*\\*' + key + ':\\*\\*\\s*(.+)', 'i');
-              const match = body.match(regex);
-              return match ? match[1].trim() : '';
+              const prefix = '**' + key + ':** ';
+              const line = body.split('\\n').find(function(l) { return l.startsWith(prefix); });
+              return line ? line.slice(prefix.length).trim() : '';
             }
 
             const name = parseField(body, 'name');
