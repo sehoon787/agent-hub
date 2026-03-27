@@ -54,9 +54,7 @@ export const agentSubmissionSchema = z.object({
     .regex(
       /^https:\/\/github\.com\/[a-zA-Z0-9._-]+\/[a-zA-Z0-9._-]+/,
       "Must be a GitHub repository URL (https://github.com/owner/repo)"
-    )
-    .optional()
-    .or(z.literal("")),
+    ),
   capabilities: z.string().max(1000).optional(),
   tools: z.string().max(1000).optional(),
   tags: z.string().max(500).optional(),

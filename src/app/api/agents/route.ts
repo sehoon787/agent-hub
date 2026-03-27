@@ -4,6 +4,7 @@ import { auth } from '@/lib/auth';
 import { rateLimit, getClientIp } from '@/lib/rate-limit';
 import { agentSubmissionSchema } from '@/lib/validation';
 import { checkMaliciousContent } from '@/lib/security';
+import { githubApiUrl, getGithubHeaders, getAccessToken } from '@/lib/github-api';
 
 export async function GET(request: NextRequest) {
   const sp = request.nextUrl.searchParams;
@@ -75,6 +76,27 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  // Verify GitHub URL ownership
+  const accessToken = await getAccessToken(request);
+  if (!accessToken) {
+    return NextResponse.json(
+      { error: 'GitHub token expired. Please sign out and sign back in.' },
+      { status: 401 }
+    );
+  }
+  const { validateGithubUrlOwnership } = await import('@/lib/github-ownership');
+  const ownership = await validateGithubUrlOwnership(
+    data.githubUrl,
+    session.user.login ?? '',
+    accessToken
+  );
+  if (!ownership.valid) {
+    return NextResponse.json(
+      { error: ownership.reason, details: { githubUrl: [ownership.reason!] } },
+      { status: 403 }
+    );
+  }
+
   if (!process.env.GITHUB_TOKEN) {
     return NextResponse.json({ error: 'GitHub integration not configured' }, { status: 503 });
   }
@@ -96,13 +118,9 @@ export async function POST(request: NextRequest) {
 **tags:** ${data.tags ?? ''}
 **submittedBy:** ${session.user.login ?? session.user.email ?? session.user.name ?? 'unknown'}`;
 
-  const ghRes = await fetch('https://api.github.com/repos/sehoon787/agent-hub/issues', {
+  const ghRes = await fetch(githubApiUrl('issues'), {
     method: 'POST',
-    headers: {
-      Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
-      Accept: 'application/vnd.github.v3+json',
-      'Content-Type': 'application/json',
-    },
+    headers: getGithubHeaders(),
     body: JSON.stringify({
       title: `[Agent Submission] ${data.displayName} (${data.platform})`,
       body: issueBody,
@@ -111,8 +129,7 @@ export async function POST(request: NextRequest) {
   });
 
   if (!ghRes.ok) {
-    const ghError = await ghRes.text();
-    return NextResponse.json({ error: `GitHub API error: ${ghError}` }, { status: 502 });
+    return NextResponse.json({ error: 'Failed to create submission. Please try again.' }, { status: 502 });
   }
 
   const ghData = await ghRes.json() as { html_url: string };

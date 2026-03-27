@@ -3,12 +3,7 @@ import { auth } from '@/lib/auth';
 import { rateLimit, getClientIp } from '@/lib/rate-limit';
 import { agentSubmissionSchema } from '@/lib/validation';
 import { checkMaliciousContent } from '@/lib/security';
-
-const headers = {
-  Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
-  Accept: 'application/vnd.github.v3+json',
-  'Content-Type': 'application/json',
-};
+import { githubApiUrl, getGithubHeaders } from '@/lib/github-api';
 
 interface AgentEntry {
   slug: string;
@@ -32,8 +27,8 @@ interface AgentEntry {
 
 async function readAgentsJson(): Promise<{ agents: AgentEntry[]; fileSha: string } | null> {
   const res = await fetch(
-    'https://api.github.com/repos/sehoon787/agent-hub/contents/src/lib/data/agents.json?ref=master',
-    { headers }
+    githubApiUrl('contents/src/lib/data/agents.json?ref=master'),
+    { headers: getGithubHeaders() }
   );
   if (!res.ok) return null;
 
@@ -52,8 +47,8 @@ async function createBranchAndPR(
 ): Promise<{ success: boolean; prUrl?: string; error?: string }> {
   // Get master ref SHA
   const refRes = await fetch(
-    'https://api.github.com/repos/sehoon787/agent-hub/git/ref/heads/master',
-    { headers }
+    githubApiUrl('git/ref/heads/master'),
+    { headers: getGithubHeaders() }
   );
   if (!refRes.ok) {
     return { success: false, error: 'Failed to get master ref' };
@@ -64,10 +59,10 @@ async function createBranchAndPR(
   // Create new branch
   const branchName = `${action}-agent/${slug}/${Date.now()}`;
   const branchRes = await fetch(
-    'https://api.github.com/repos/sehoon787/agent-hub/git/refs',
+    githubApiUrl('git/refs'),
     {
       method: 'POST',
-      headers,
+      headers: getGithubHeaders(),
       body: JSON.stringify({ ref: `refs/heads/${branchName}`, sha: masterSha }),
     }
   );
@@ -81,10 +76,10 @@ async function createBranchAndPR(
     : `feat: remove agent "${slug}" by @${login}`;
 
   const updateRes = await fetch(
-    'https://api.github.com/repos/sehoon787/agent-hub/contents/src/lib/data/agents.json',
+    githubApiUrl('contents/src/lib/data/agents.json'),
     {
       method: 'PUT',
-      headers,
+      headers: getGithubHeaders(),
       body: JSON.stringify({
         message: commitMessage,
         content: Buffer.from(JSON.stringify(updatedAgents, null, 2) + '\n').toString('base64'),
@@ -106,10 +101,10 @@ async function createBranchAndPR(
     : `Removes community agent \`${slug}\`.\n\n**Requested by:** @${login}\n\n> This PR was auto-generated from the My Submissions dashboard.`;
 
   const prRes = await fetch(
-    'https://api.github.com/repos/sehoon787/agent-hub/pulls',
+    githubApiUrl('pulls'),
     {
       method: 'POST',
-      headers,
+      headers: getGithubHeaders(),
       body: JSON.stringify({
         title: prTitle,
         body: prBody,
@@ -119,8 +114,7 @@ async function createBranchAndPR(
     }
   );
   if (!prRes.ok) {
-    const ghError = await prRes.text();
-    return { success: false, error: `Failed to create PR: ${ghError}` };
+    return { success: false, error: 'Failed to create pull request' };
   }
 
   const prData = await prRes.json();
@@ -131,8 +125,10 @@ export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ number: string }> }
 ) {
-  // number param unused for approved route but required by Next.js signature
-  await params;
+  const { number } = await params;
+  if (!/^\d+$/.test(number)) {
+    return NextResponse.json({ error: 'Invalid issue number' }, { status: 400 });
+  }
 
   const session = await auth();
   if (!session?.user) {
@@ -235,7 +231,10 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ number: string }> }
 ) {
-  await params;
+  const { number } = await params;
+  if (!/^\d+$/.test(number)) {
+    return NextResponse.json({ error: 'Invalid issue number' }, { status: 400 });
+  }
 
   const session = await auth();
   if (!session?.user) {

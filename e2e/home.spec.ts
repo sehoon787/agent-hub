@@ -33,6 +33,16 @@ test.describe('Homepage', () => {
     await expect(page.locator('text=Recently Added')).toBeVisible()
   })
 
+  test('should display top agents ranking section', async ({ page }) => {
+    await page.goto('/')
+    await expect(page.locator('text=Top Agents by Stars')).toBeVisible()
+    // Should have a table with agent rows
+    const rankingRows = page.locator('table tbody tr')
+    const count = await rankingRows.count()
+    expect(count).toBeGreaterThan(0)
+    expect(count).toBeLessThanOrEqual(10)
+  })
+
   test('should display category section', async ({ page }) => {
     await page.goto('/')
     // CategoriesSection heading and category labels (plural form: Orchestrators, Specialists, Workers, Analysts)

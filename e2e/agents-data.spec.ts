@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test'
 
 test.describe('Well-Known Agents Data Verification', () => {
   // Claude Code orchestrators (actual categories from agents.json)
-  const claudeOrchestrators = ['boss', 'sisyphus', 'atlas', 'prometheus']
+  const claudeOrchestrators = ['sisyphus', 'atlas', 'prometheus']
   for (const slug of claudeOrchestrators) {
     test(`Claude orchestrator "${slug}" should exist`, async ({ request }) => {
       const response = await request.get(`/api/agents/${slug}`)
@@ -81,7 +81,7 @@ test.describe('Well-Known Agents Data Verification', () => {
     const response = await request.get('/api/stats')
     expect(response.ok()).toBeTruthy()
     const stats = await response.json()
-    expect(stats.totalAgents).toBeGreaterThanOrEqual(93)
+    expect(stats.totalAgents).toBeGreaterThanOrEqual(90)
   })
 
   test('all four categories should be represented', async ({ request }) => {

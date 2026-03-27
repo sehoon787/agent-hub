@@ -21,7 +21,8 @@ export function getAgents(options?: {
   limit?: number;
 }): { items: Agent[]; total: number } {
   let filtered = [...agents];
-  const { q, category, model, source, platform, stage, sort, page = 1, limit = 12 } = options ?? {};
+  const { q, category, model, source, platform, stage, sort, page = 1, limit: rawLimit = 12 } = options ?? {};
+  const limit = Math.min(Math.max(1, rawLimit), 100);
 
   if (q) {
     const lower = q.toLowerCase();
@@ -44,7 +45,7 @@ export function getAgents(options?: {
   } else if (sort === 'recent') {
     filtered.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
   } else {
-    filtered.sort((a, b) => b.downloads - a.downloads);
+    filtered.sort((a, b) => b.stars - a.stars);
   }
 
   const total = filtered.length;
@@ -78,6 +79,10 @@ export function getRelatedAgents(slug: string, limit = 3): Agent[] {
 
 export function getAllAgentSlugs(): string[] {
   return agents.map((a) => a.slug);
+}
+
+export function getTopAgentsByStars(limit = 10): Agent[] {
+  return [...agents].sort((a, b) => b.stars - a.stars).slice(0, limit);
 }
 
 // --- Search ---

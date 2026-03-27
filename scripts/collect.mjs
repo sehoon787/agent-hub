@@ -106,7 +106,7 @@ function validateEntry(entry) {
 }
 
 async function fetchRepoEntries(owner, repo, path) {
-  const token = process.env.GITHUB_TOKEN;
+  const token = process.env.GITHUB_COLLECT_TOKEN || process.env.GITHUB_TOKEN;
   const headers = {
     Accept: 'application/vnd.github.v3+json',
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -156,7 +156,7 @@ async function fetchRepoEntries(owner, repo, path) {
       createdAt: today,
       updatedAt: today,
       stars: 0,
-      downloads: 0,
+      forks: 0,
       featured: false,
       verified: false,
     };

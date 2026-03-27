@@ -38,7 +38,7 @@ test.describe('Search', () => {
   })
 
   test('should have search input on search page', async ({ page }) => {
-    await page.goto('/search?q=boss')
+    await page.goto('/search?q=debug')
     await expect(page.locator('input[placeholder="Search agents..."]')).toBeVisible()
   })
 })

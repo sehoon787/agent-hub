@@ -35,11 +35,11 @@
     ],
     "createdAt": "2025-02-01",
     "updatedAt": "2025-03-18",
-    "stars": 2100,
-    "downloads": 11800,
+    "stars": 12922,
     "featured": true,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "atlas",
@@ -75,11 +75,11 @@
     ],
     "createdAt": "2025-01-20",
     "updatedAt": "2025-03-15",
-    "stars": 1950,
-    "downloads": 9800,
+    "stars": 32344,
     "featured": true,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 3528
   },
   {
     "slug": "hephaestus",
@@ -118,11 +118,11 @@
     ],
     "createdAt": "2025-01-25",
     "updatedAt": "2025-03-22",
-    "stars": 3200,
-    "downloads": 18500,
+    "stars": 12922,
     "featured": true,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "prometheus",
@@ -158,11 +158,11 @@
     ],
     "createdAt": "2025-02-05",
     "updatedAt": "2025-03-19",
-    "stars": 1800,
-    "downloads": 8900,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "architect",
@@ -197,11 +197,11 @@
     ],
     "createdAt": "2025-01-18",
     "updatedAt": "2025-03-20",
-    "stars": 2500,
-    "downloads": 12400,
+    "stars": 32344,
     "featured": true,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 3528
   },
   {
     "slug": "designer",
@@ -239,11 +239,11 @@
     ],
     "createdAt": "2025-02-10",
     "updatedAt": "2025-03-21",
-    "stars": 2300,
-    "downloads": 13600,
+    "stars": 12922,
     "featured": true,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "executor",
@@ -279,11 +279,11 @@
     ],
     "createdAt": "2025-01-22",
     "updatedAt": "2025-03-18",
-    "stars": 1600,
-    "downloads": 9200,
+    "stars": 32344,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 3528
   },
   {
     "slug": "code-reviewer",
@@ -318,11 +318,11 @@
     ],
     "createdAt": "2025-01-16",
     "updatedAt": "2025-03-20",
-    "stars": 2700,
-    "downloads": 14100,
+    "stars": 32344,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 3528
   },
   {
     "slug": "security-reviewer",
@@ -357,11 +357,11 @@
     ],
     "createdAt": "2025-01-17",
     "updatedAt": "2025-03-21",
-    "stars": 2400,
-    "downloads": 11200,
+    "stars": 32344,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 3528
   },
   {
     "slug": "debugger",
@@ -397,11 +397,11 @@
     ],
     "createdAt": "2025-01-19",
     "updatedAt": "2025-03-17",
-    "stars": 2100,
-    "downloads": 10800,
+    "stars": 32344,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 3528
   },
   {
     "slug": "test-engineer",
@@ -439,11 +439,11 @@
     ],
     "createdAt": "2025-01-21",
     "updatedAt": "2025-03-19",
-    "stars": 1900,
-    "downloads": 10200,
+    "stars": 32344,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 3528
   },
   {
     "slug": "tracer",
@@ -477,11 +477,11 @@
     ],
     "createdAt": "2025-02-08",
     "updatedAt": "2025-03-16",
-    "stars": 1400,
-    "downloads": 7200,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "verifier",
@@ -515,11 +515,11 @@
     ],
     "createdAt": "2025-02-12",
     "updatedAt": "2025-03-18",
-    "stars": 1200,
-    "downloads": 6500,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "writer",
@@ -553,11 +553,11 @@
     ],
     "createdAt": "2025-01-23",
     "updatedAt": "2025-03-15",
-    "stars": 1500,
-    "downloads": 8100,
+    "stars": 32344,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 3528
   },
   {
     "slug": "git-master",
@@ -591,11 +591,11 @@
     ],
     "createdAt": "2025-02-03",
     "updatedAt": "2025-03-20",
-    "stars": 1700,
-    "downloads": 9400,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "explore",
@@ -629,11 +629,11 @@
     ],
     "createdAt": "2025-01-24",
     "updatedAt": "2025-03-14",
-    "stars": 1300,
-    "downloads": 7800,
+    "stars": 32344,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 3528
   },
   {
     "slug": "analyst",
@@ -667,11 +667,11 @@
     ],
     "createdAt": "2025-01-26",
     "updatedAt": "2025-03-17",
-    "stars": 1600,
-    "downloads": 8400,
+    "stars": 32344,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 3528
   },
   {
     "slug": "metis",
@@ -704,11 +704,11 @@
     ],
     "createdAt": "2025-02-06",
     "updatedAt": "2025-03-19",
-    "stars": 1100,
-    "downloads": 5800,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "momus",
@@ -741,11 +741,11 @@
     ],
     "createdAt": "2025-02-07",
     "updatedAt": "2025-03-16",
-    "stars": 950,
-    "downloads": 4900,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "oracle",
@@ -779,11 +779,11 @@
     ],
     "createdAt": "2025-02-09",
     "updatedAt": "2025-03-20",
-    "stars": 1350,
-    "downloads": 6800,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "critic",
@@ -817,11 +817,11 @@
     ],
     "createdAt": "2025-02-11",
     "updatedAt": "2025-03-18",
-    "stars": 1250,
-    "downloads": 6200,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "scientist",
@@ -855,11 +855,11 @@
     ],
     "createdAt": "2025-02-13",
     "updatedAt": "2025-03-15",
-    "stars": 1100,
-    "downloads": 5600,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "planner",
@@ -894,11 +894,11 @@
     ],
     "createdAt": "2025-01-14",
     "updatedAt": "2025-03-21",
-    "stars": 2000,
-    "downloads": 10600,
+    "stars": 32344,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 3528
   },
   {
     "slug": "qa-tester",
@@ -932,11 +932,11 @@
     ],
     "createdAt": "2025-02-14",
     "updatedAt": "2025-03-17",
-    "stars": 980,
-    "downloads": 5100,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "librarian",
@@ -970,11 +970,11 @@
     ],
     "createdAt": "2025-02-15",
     "updatedAt": "2025-03-19",
-    "stars": 1050,
-    "downloads": 5400,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "multimodal-looker",
@@ -1007,11 +1007,11 @@
     ],
     "createdAt": "2025-02-16",
     "updatedAt": "2025-03-18",
-    "stars": 1150,
-    "downloads": 5900,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "document-specialist",
@@ -1044,11 +1044,11 @@
     ],
     "createdAt": "2025-02-17",
     "updatedAt": "2025-03-16",
-    "stars": 890,
-    "downloads": 4600,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "backend-architect",
@@ -1060,7 +1060,7 @@
     "model": "sonnet",
     "source": "plugin",
     "author": "community",
-    "githubUrl": "https://github.com/community/claude-agents",
+    "githubUrl": "",
     "installCommand": "curl -o ~/.claude/agents/backend-architect.md https://raw.githubusercontent.com/community/claude-agents/main/backend-architect.md",
     "capabilities": [
       "System design",
@@ -1083,11 +1083,11 @@
     ],
     "createdAt": "2025-02-20",
     "updatedAt": "2025-03-20",
-    "stars": 1800,
-    "downloads": 9100,
+    "stars": 0,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 0
   },
   {
     "slug": "frontend-developer",
@@ -1099,7 +1099,7 @@
     "model": "sonnet",
     "source": "plugin",
     "author": "community",
-    "githubUrl": "https://github.com/community/claude-agents",
+    "githubUrl": "",
     "installCommand": "curl -o ~/.claude/agents/frontend-developer.md https://raw.githubusercontent.com/community/claude-agents/main/frontend-developer.md",
     "capabilities": [
       "React/Vue/Angular",
@@ -1124,11 +1124,11 @@
     ],
     "createdAt": "2025-02-21",
     "updatedAt": "2025-03-21",
-    "stars": 2100,
-    "downloads": 11500,
+    "stars": 0,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 0
   },
   {
     "slug": "security-engineer",
@@ -1140,7 +1140,7 @@
     "model": "sonnet",
     "source": "plugin",
     "author": "community",
-    "githubUrl": "https://github.com/community/claude-agents",
+    "githubUrl": "",
     "installCommand": "curl -o ~/.claude/agents/security-engineer.md https://raw.githubusercontent.com/community/claude-agents/main/security-engineer.md",
     "capabilities": [
       "Threat modeling",
@@ -1162,11 +1162,11 @@
     ],
     "createdAt": "2025-02-22",
     "updatedAt": "2025-03-19",
-    "stars": 1650,
-    "downloads": 8300,
+    "stars": 0,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 0
   },
   {
     "slug": "mobile-app-builder",
@@ -1178,7 +1178,7 @@
     "model": "sonnet",
     "source": "plugin",
     "author": "community",
-    "githubUrl": "https://github.com/community/claude-agents",
+    "githubUrl": "",
     "installCommand": "curl -o ~/.claude/agents/mobile-app-builder.md https://raw.githubusercontent.com/community/claude-agents/main/mobile-app-builder.md",
     "capabilities": [
       "Flutter",
@@ -1203,11 +1203,11 @@
     ],
     "createdAt": "2025-02-23",
     "updatedAt": "2025-03-18",
-    "stars": 1450,
-    "downloads": 7600,
+    "stars": 0,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 0
   },
   {
     "slug": "devops-automator",
@@ -1219,7 +1219,7 @@
     "model": "sonnet",
     "source": "plugin",
     "author": "community",
-    "githubUrl": "https://github.com/community/claude-agents",
+    "githubUrl": "",
     "installCommand": "curl -o ~/.claude/agents/devops-automator.md https://raw.githubusercontent.com/community/claude-agents/main/devops-automator.md",
     "capabilities": [
       "CI/CD",
@@ -1243,11 +1243,11 @@
     ],
     "createdAt": "2025-02-24",
     "updatedAt": "2025-03-20",
-    "stars": 1550,
-    "downloads": 8000,
+    "stars": 0,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 0
   },
   {
     "slug": "database-optimizer",
@@ -1259,7 +1259,7 @@
     "model": "sonnet",
     "source": "plugin",
     "author": "community",
-    "githubUrl": "https://github.com/community/claude-agents",
+    "githubUrl": "",
     "installCommand": "curl -o ~/.claude/agents/database-optimizer.md https://raw.githubusercontent.com/community/claude-agents/main/database-optimizer.md",
     "capabilities": [
       "Schema design",
@@ -1283,11 +1283,11 @@
     ],
     "createdAt": "2025-02-25",
     "updatedAt": "2025-03-17",
-    "stars": 1300,
-    "downloads": 6900,
+    "stars": 0,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 0
   },
   {
     "slug": "data-engineer",
@@ -1299,7 +1299,7 @@
     "model": "sonnet",
     "source": "plugin",
     "author": "community",
-    "githubUrl": "https://github.com/community/claude-agents",
+    "githubUrl": "",
     "installCommand": "curl -o ~/.claude/agents/data-engineer.md https://raw.githubusercontent.com/community/claude-agents/main/data-engineer.md",
     "capabilities": [
       "Data pipelines",
@@ -1323,11 +1323,11 @@
     ],
     "createdAt": "2025-02-26",
     "updatedAt": "2025-03-18",
-    "stars": 1200,
-    "downloads": 6300,
+    "stars": 0,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 0
   },
   {
     "slug": "technical-writer",
@@ -1339,7 +1339,7 @@
     "model": "sonnet",
     "source": "plugin",
     "author": "community",
-    "githubUrl": "https://github.com/community/claude-agents",
+    "githubUrl": "",
     "installCommand": "curl -o ~/.claude/agents/technical-writer.md https://raw.githubusercontent.com/community/claude-agents/main/technical-writer.md",
     "capabilities": [
       "API documentation",
@@ -1362,11 +1362,11 @@
     ],
     "createdAt": "2025-02-27",
     "updatedAt": "2025-03-19",
-    "stars": 1050,
-    "downloads": 5500,
+    "stars": 0,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 0
   },
   {
     "slug": "software-architect",
@@ -1378,7 +1378,7 @@
     "model": "opus",
     "source": "plugin",
     "author": "community",
-    "githubUrl": "https://github.com/community/claude-agents",
+    "githubUrl": "",
     "installCommand": "curl -o ~/.claude/agents/software-architect.md https://raw.githubusercontent.com/community/claude-agents/main/software-architect.md",
     "capabilities": [
       "DDD",
@@ -1402,11 +1402,11 @@
     ],
     "createdAt": "2025-02-28",
     "updatedAt": "2025-03-20",
-    "stars": 1750,
-    "downloads": 8800,
+    "stars": 0,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 0
   },
   {
     "slug": "rapid-prototyper",
@@ -1418,7 +1418,7 @@
     "model": "sonnet",
     "source": "plugin",
     "author": "community",
-    "githubUrl": "https://github.com/community/claude-agents",
+    "githubUrl": "",
     "installCommand": "curl -o ~/.claude/agents/rapid-prototyper.md https://raw.githubusercontent.com/community/claude-agents/main/rapid-prototyper.md",
     "capabilities": [
       "MVP creation",
@@ -1442,11 +1442,11 @@
     ],
     "createdAt": "2025-03-01",
     "updatedAt": "2025-03-21",
-    "stars": 1400,
-    "downloads": 7400,
+    "stars": 0,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 0
   },
   {
     "slug": "ai-engineer",
@@ -1458,7 +1458,7 @@
     "model": "sonnet",
     "source": "plugin",
     "author": "community",
-    "githubUrl": "https://github.com/community/claude-agents",
+    "githubUrl": "",
     "installCommand": "curl -o ~/.claude/agents/ai-engineer.md https://raw.githubusercontent.com/community/claude-agents/main/ai-engineer.md",
     "capabilities": [
       "ML training",
@@ -1483,11 +1483,11 @@
     ],
     "createdAt": "2025-03-02",
     "updatedAt": "2025-03-22",
-    "stars": 1600,
-    "downloads": 8200,
+    "stars": 0,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 0
   },
   {
     "slug": "solidity-engineer",
@@ -1499,7 +1499,7 @@
     "model": "sonnet",
     "source": "plugin",
     "author": "community",
-    "githubUrl": "https://github.com/community/claude-agents",
+    "githubUrl": "",
     "installCommand": "curl -o ~/.claude/agents/solidity-engineer.md https://raw.githubusercontent.com/community/claude-agents/main/solidity-engineer.md",
     "capabilities": [
       "Solidity development",
@@ -1524,11 +1524,11 @@
     ],
     "createdAt": "2025-03-03",
     "updatedAt": "2025-03-20",
-    "stars": 1350,
-    "downloads": 7000,
+    "stars": 0,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 0
   },
   {
     "slug": "performance-engineer",
@@ -1540,7 +1540,7 @@
     "model": "sonnet",
     "source": "plugin",
     "author": "community",
-    "githubUrl": "https://github.com/community/claude-agents",
+    "githubUrl": "",
     "installCommand": "curl -o ~/.claude/agents/performance-engineer.md https://raw.githubusercontent.com/community/claude-agents/main/performance-engineer.md",
     "capabilities": [
       "Profiling",
@@ -1563,11 +1563,11 @@
     ],
     "createdAt": "2025-03-04",
     "updatedAt": "2025-03-21",
-    "stars": 1150,
-    "downloads": 5800,
+    "stars": 0,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 0
   },
   {
     "slug": "accessibility-expert",
@@ -1579,7 +1579,7 @@
     "model": "sonnet",
     "source": "plugin",
     "author": "community",
-    "githubUrl": "https://github.com/community/claude-agents",
+    "githubUrl": "",
     "installCommand": "curl -o ~/.claude/agents/accessibility-expert.md https://raw.githubusercontent.com/community/claude-agents/main/accessibility-expert.md",
     "capabilities": [
       "WCAG compliance",
@@ -1602,11 +1602,11 @@
     ],
     "createdAt": "2025-03-05",
     "updatedAt": "2025-03-19",
-    "stars": 980,
-    "downloads": 5100,
+    "stars": 0,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 0
   },
   {
     "slug": "api-designer",
@@ -1618,7 +1618,7 @@
     "model": "sonnet",
     "source": "plugin",
     "author": "community",
-    "githubUrl": "https://github.com/community/claude-agents",
+    "githubUrl": "",
     "installCommand": "curl -o ~/.claude/agents/api-designer.md https://raw.githubusercontent.com/community/claude-agents/main/api-designer.md",
     "capabilities": [
       "REST design",
@@ -1641,11 +1641,11 @@
     ],
     "createdAt": "2025-03-06",
     "updatedAt": "2025-03-20",
-    "stars": 1250,
-    "downloads": 6500,
+    "stars": 0,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 0
   },
   {
     "slug": "geographer",
@@ -1679,11 +1679,11 @@
     ],
     "createdAt": "2025-06-10",
     "updatedAt": "2025-12-15",
-    "stars": 320,
-    "downloads": 1800,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "anthropologist",
@@ -1717,11 +1717,11 @@
     ],
     "createdAt": "2025-07-02",
     "updatedAt": "2025-12-10",
-    "stars": 280,
-    "downloads": 1500,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "historian",
@@ -1755,11 +1755,11 @@
     ],
     "createdAt": "2025-07-15",
     "updatedAt": "2025-12-18",
-    "stars": 350,
-    "downloads": 2100,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "narratologist",
@@ -1793,11 +1793,11 @@
     ],
     "createdAt": "2025-08-01",
     "updatedAt": "2026-01-05",
-    "stars": 410,
-    "downloads": 2400,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "psychologist",
@@ -1831,11 +1831,11 @@
     ],
     "createdAt": "2025-08-12",
     "updatedAt": "2026-01-10",
-    "stars": 480,
-    "downloads": 3200,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "brand-guardian",
@@ -1869,11 +1869,11 @@
     ],
     "createdAt": "2025-09-01",
     "updatedAt": "2026-01-15",
-    "stars": 290,
-    "downloads": 1600,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "image-prompt-engineer",
@@ -1907,11 +1907,11 @@
     ],
     "createdAt": "2025-09-15",
     "updatedAt": "2026-01-20",
-    "stars": 520,
-    "downloads": 4100,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "ui-designer",
@@ -1946,11 +1946,11 @@
     ],
     "createdAt": "2025-10-01",
     "updatedAt": "2026-02-01",
-    "stars": 680,
-    "downloads": 5200,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "ux-architect",
@@ -1985,11 +1985,11 @@
     ],
     "createdAt": "2025-10-08",
     "updatedAt": "2026-02-05",
-    "stars": 440,
-    "downloads": 3100,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "ux-researcher",
@@ -2023,11 +2023,11 @@
     ],
     "createdAt": "2025-10-15",
     "updatedAt": "2026-02-08",
-    "stars": 370,
-    "downloads": 2300,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "content-creator",
@@ -2062,11 +2062,11 @@
     ],
     "createdAt": "2025-10-22",
     "updatedAt": "2026-02-12",
-    "stars": 550,
-    "downloads": 4500,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "growth-hacker",
@@ -2101,11 +2101,11 @@
     ],
     "createdAt": "2025-11-01",
     "updatedAt": "2026-02-15",
-    "stars": 460,
-    "downloads": 3400,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "seo-specialist",
@@ -2140,11 +2140,11 @@
     ],
     "createdAt": "2025-11-08",
     "updatedAt": "2026-02-18",
-    "stars": 390,
-    "downloads": 2800,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "social-media-strategist",
@@ -2178,11 +2178,11 @@
     ],
     "createdAt": "2025-11-15",
     "updatedAt": "2026-02-20",
-    "stars": 310,
-    "downloads": 1900,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "product-manager",
@@ -2217,11 +2217,11 @@
     ],
     "createdAt": "2025-11-22",
     "updatedAt": "2026-02-22",
-    "stars": 720,
-    "downloads": 5800,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "sprint-prioritizer",
@@ -2255,11 +2255,11 @@
     ],
     "createdAt": "2025-12-01",
     "updatedAt": "2026-02-25",
-    "stars": 340,
-    "downloads": 2000,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "trend-researcher",
@@ -2293,11 +2293,11 @@
     ],
     "createdAt": "2025-12-08",
     "updatedAt": "2026-02-28",
-    "stars": 380,
-    "downloads": 2500,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "project-shepherd",
@@ -2332,11 +2332,11 @@
     ],
     "createdAt": "2025-12-15",
     "updatedAt": "2026-03-01",
-    "stars": 420,
-    "downloads": 3000,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "analytics-reporter",
@@ -2371,11 +2371,11 @@
     ],
     "createdAt": "2025-12-22",
     "updatedAt": "2026-03-05",
-    "stars": 490,
-    "downloads": 3600,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "finance-tracker",
@@ -2410,11 +2410,11 @@
     ],
     "createdAt": "2026-01-05",
     "updatedAt": "2026-03-08",
-    "stars": 260,
-    "downloads": 1400,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "legal-compliance-checker",
@@ -2448,11 +2448,11 @@
     ],
     "createdAt": "2026-01-12",
     "updatedAt": "2026-03-10",
-    "stars": 310,
-    "downloads": 1800,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "accessibility-auditor",
@@ -2487,11 +2487,11 @@
     ],
     "createdAt": "2026-01-18",
     "updatedAt": "2026-03-12",
-    "stars": 450,
-    "downloads": 3300,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "performance-benchmarker",
@@ -2526,11 +2526,11 @@
     ],
     "createdAt": "2026-01-25",
     "updatedAt": "2026-03-14",
-    "stars": 530,
-    "downloads": 4200,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "workflow-optimizer",
@@ -2565,11 +2565,11 @@
     ],
     "createdAt": "2026-02-01",
     "updatedAt": "2026-03-16",
-    "stars": 380,
-    "downloads": 2600,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "api-tester",
@@ -2604,11 +2604,11 @@
     ],
     "createdAt": "2026-02-05",
     "updatedAt": "2026-03-18",
-    "stars": 470,
-    "downloads": 3500,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "evidence-collector",
@@ -2643,11 +2643,11 @@
     ],
     "createdAt": "2026-02-10",
     "updatedAt": "2026-03-19",
-    "stars": 290,
-    "downloads": 1700,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "reality-checker",
@@ -2682,11 +2682,11 @@
     ],
     "createdAt": "2026-02-14",
     "updatedAt": "2026-03-20",
-    "stars": 350,
-    "downloads": 2200,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "game-designer",
@@ -2720,11 +2720,11 @@
     ],
     "createdAt": "2026-02-18",
     "updatedAt": "2026-03-21",
-    "stars": 620,
-    "downloads": 4800,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "level-designer",
@@ -2758,11 +2758,11 @@
     ],
     "createdAt": "2026-02-20",
     "updatedAt": "2026-03-22",
-    "stars": 340,
-    "downloads": 2100,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "narrative-designer",
@@ -2796,11 +2796,11 @@
     ],
     "createdAt": "2026-02-22",
     "updatedAt": "2026-03-23",
-    "stars": 380,
-    "downloads": 2400,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "mcp-builder",
@@ -2836,11 +2836,11 @@
     ],
     "createdAt": "2026-02-25",
     "updatedAt": "2026-03-24",
-    "stars": 890,
-    "downloads": 7200,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "document-generator",
@@ -2875,11 +2875,11 @@
     ],
     "createdAt": "2026-02-28",
     "updatedAt": "2026-03-24",
-    "stars": 560,
-    "downloads": 4300,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "blockchain-security-auditor",
@@ -2914,11 +2914,11 @@
     ],
     "createdAt": "2026-03-01",
     "updatedAt": "2026-03-24",
-    "stars": 740,
-    "downloads": 5500,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "compliance-auditor",
@@ -2952,11 +2952,11 @@
     ],
     "createdAt": "2026-03-05",
     "updatedAt": "2026-03-25",
-    "stars": 420,
-    "downloads": 3100,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "developer-advocate",
@@ -2991,11 +2991,11 @@
     ],
     "createdAt": "2026-03-08",
     "updatedAt": "2026-03-25",
-    "stars": 380,
-    "downloads": 2500,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "salesforce-architect",
@@ -3030,11 +3030,11 @@
     ],
     "createdAt": "2026-03-10",
     "updatedAt": "2026-03-25",
-    "stars": 280,
-    "downloads": 1500,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "workflow-architect",
@@ -3069,11 +3069,11 @@
     ],
     "createdAt": "2026-03-12",
     "updatedAt": "2026-03-25",
-    "stars": 350,
-    "downloads": 2100,
+    "stars": 12922,
     "featured": false,
     "verified": true,
-    "platform": "claude"
+    "platform": "claude",
+    "forks": 852
   },
   {
     "slug": "codebase-investigator",
@@ -3109,10 +3109,10 @@
     ],
     "createdAt": "2025-06-25",
     "updatedAt": "2025-08-10",
-    "stars": 3200,
-    "downloads": 45000,
+    "stars": 99233,
     "featured": false,
-    "verified": true
+    "verified": true,
+    "forks": 12654
   },
   {
     "slug": "cli-help",
@@ -3145,10 +3145,10 @@
     ],
     "createdAt": "2025-06-25",
     "updatedAt": "2025-08-10",
-    "stars": 2800,
-    "downloads": 38000,
+    "stars": 99233,
     "featured": false,
-    "verified": true
+    "verified": true,
+    "forks": 12654
   },
   {
     "slug": "gemini-generalist",
@@ -3185,10 +3185,10 @@
     ],
     "createdAt": "2025-06-25",
     "updatedAt": "2025-08-10",
-    "stars": 3100,
-    "downloads": 42000,
+    "stars": 99233,
     "featured": false,
-    "verified": true
+    "verified": true,
+    "forks": 12654
   },
   {
     "slug": "browser-agent",
@@ -3224,10 +3224,10 @@
     ],
     "createdAt": "2025-06-25",
     "updatedAt": "2025-08-10",
-    "stars": 2600,
-    "downloads": 31000,
+    "stars": 99233,
     "featured": false,
-    "verified": true
+    "verified": true,
+    "forks": 12654
   },
   {
     "slug": "memory-manager",
@@ -3262,10 +3262,10 @@
     ],
     "createdAt": "2025-06-25",
     "updatedAt": "2025-08-10",
-    "stars": 2400,
-    "downloads": 28000,
+    "stars": 99233,
     "featured": false,
-    "verified": true
+    "verified": true,
+    "forks": 12654
   },
   {
     "slug": "maestro-gemini",
@@ -3303,10 +3303,10 @@
     ],
     "createdAt": "2025-07-15",
     "updatedAt": "2025-09-01",
-    "stars": 1800,
-    "downloads": 12000,
+    "stars": 240,
     "featured": false,
-    "verified": false
+    "verified": false,
+    "forks": 10
   },
   {
     "slug": "gemini-security",
@@ -3342,10 +3342,10 @@
     ],
     "createdAt": "2025-07-01",
     "updatedAt": "2025-09-05",
-    "stars": 2200,
-    "downloads": 18000,
+    "stars": 99233,
     "featured": false,
-    "verified": true
+    "verified": true,
+    "forks": 12654
   },
   {
     "slug": "gemini-conductor",
@@ -3382,10 +3382,10 @@
     ],
     "createdAt": "2025-07-01",
     "updatedAt": "2025-09-05",
-    "stars": 2000,
-    "downloads": 15000,
+    "stars": 99233,
     "featured": false,
-    "verified": true
+    "verified": true,
+    "forks": 12654
   },
   {
     "slug": "codex-default",
@@ -3420,10 +3420,10 @@
     ],
     "createdAt": "2025-05-16",
     "updatedAt": "2025-08-20",
-    "stars": 4500,
-    "downloads": 52000,
+    "stars": 67849,
     "featured": false,
-    "verified": true
+    "verified": true,
+    "forks": 9093
   },
   {
     "slug": "codex-worker",
@@ -3459,10 +3459,10 @@
     ],
     "createdAt": "2025-05-16",
     "updatedAt": "2025-08-20",
-    "stars": 4200,
-    "downloads": 48000,
+    "stars": 67849,
     "featured": false,
-    "verified": true
+    "verified": true,
+    "forks": 9093
   },
   {
     "slug": "codex-explorer",
@@ -3496,10 +3496,10 @@
     ],
     "createdAt": "2025-05-16",
     "updatedAt": "2025-08-20",
-    "stars": 3800,
-    "downloads": 41000,
+    "stars": 67849,
     "featured": false,
-    "verified": true
+    "verified": true,
+    "forks": 9093
   },
   {
     "slug": "skill-creator",
@@ -3534,10 +3534,10 @@
     ],
     "createdAt": "2025-08-01",
     "updatedAt": "2025-10-15",
-    "stars": 1500,
-    "downloads": 9500,
+    "stars": 15461,
     "featured": false,
-    "verified": false
+    "verified": false,
+    "forks": 916
   },
   {
     "slug": "pr-reviewer",
@@ -3550,7 +3550,7 @@
     "source": "community",
     "platform": "universal",
     "author": "community",
-    "githubUrl": "https://github.com/community/pr-reviewer-agent",
+    "githubUrl": "",
     "installCommand": "Copy pr-reviewer.md to your agents directory",
     "capabilities": [
       "Code review",
@@ -3572,10 +3572,10 @@
     ],
     "createdAt": "2025-09-01",
     "updatedAt": "2025-11-10",
-    "stars": 1200,
-    "downloads": 7800,
+    "stars": 0,
     "featured": false,
-    "verified": false
+    "verified": false,
+    "forks": 0
   },
   {
     "slug": "boss",
@@ -3614,8 +3614,8 @@
     "createdAt": "2026-03-27",
     "updatedAt": "2026-03-27",
     "stars": 0,
-    "downloads": 0,
     "featured": false,
-    "verified": false
+    "verified": false,
+    "forks": 0
   }
 ]
