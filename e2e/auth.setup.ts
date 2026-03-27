@@ -7,7 +7,8 @@ setup('authenticate', async ({ page }) => {
   await page.goto('/');
 
   // Check if already logged in by looking for the user menu button (avatar)
-  const userMenu = page.locator('button[aria-label="User menu"]');
+  // Use .first() — desktop + mobile both render AuthButton
+  const userMenu = page.locator('button[aria-label="User menu"]').first();
   const isLoggedIn = await userMenu.isVisible({ timeout: 5000 }).catch(() => false);
 
   if (!isLoggedIn) {
@@ -19,7 +20,7 @@ setup('authenticate', async ({ page }) => {
     await page.pause();
 
     // Verify login succeeded after resume
-    await expect(page.locator('button[aria-label="User menu"]')).toBeVisible({ timeout: 30000 });
+    await expect(userMenu).toBeVisible({ timeout: 30000 });
   }
 
   // Save auth state to disk
