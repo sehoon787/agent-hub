@@ -34,7 +34,7 @@ test.describe('Profile dropdown — authenticated', () => {
     await page.goto('/');
 
     // Click user menu avatar
-    const userMenu = page.locator('button[aria-label="User menu"]');
+    const userMenu = page.locator('button[aria-label="User menu"]').first();
     await expect(userMenu).toBeVisible({ timeout: 10000 });
     await userMenu.click();
 
@@ -46,7 +46,7 @@ test.describe('Profile dropdown — authenticated', () => {
   test('"My Submissions" dropdown link navigates correctly', async ({ page }) => {
     await page.goto('/');
 
-    const userMenu = page.locator('button[aria-label="User menu"]');
+    const userMenu = page.locator('button[aria-label="User menu"]').first();
     await expect(userMenu).toBeVisible({ timeout: 10000 });
     await userMenu.click();
 
