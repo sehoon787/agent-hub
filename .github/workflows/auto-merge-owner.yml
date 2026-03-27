@@ -1,0 +1,67 @@
+name: Auto-Merge Owner PRs
+
+on:
+  check_suite:
+    types: [completed]
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-merge:
+    if: github.event.sender.login == 'sehoon787' || github.actor == 'sehoon787'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Find open PRs from owner
+        id: find-prs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Get open PRs authored by repo owner
+          PRS=$(gh api "repos/${{ github.repository }}/pulls?state=open&per_page=20" \
+            --jq '[.[] | select(.user.login == "sehoon787") | .number] | join(" ")')
+
+          if [ -z "$PRS" ]; then
+            echo "No open PRs from owner"
+            echo "prs=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "Found owner PRs: $PRS"
+          echo "prs=$PRS" >> "$GITHUB_OUTPUT"
+
+      - name: Auto-merge passing PRs
+        if: steps.find-prs.outputs.prs != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for PR_NUM in ${{ steps.find-prs.outputs.prs }}; do
+            echo "Checking PR #$PR_NUM..."
+
+            # Check if all required checks passed
+            STATE=$(gh pr view "$PR_NUM" --repo "${{ github.repository }}" --json statusCheckRollup \
+              --jq '[.statusCheckRollup[] | select(.status == "COMPLETED" and .conclusion == "SUCCESS")] | length')
+            TOTAL=$(gh pr view "$PR_NUM" --repo "${{ github.repository }}" --json statusCheckRollup \
+              --jq '.statusCheckRollup | length')
+
+            if [ "$TOTAL" -eq 0 ]; then
+              echo "PR #$PR_NUM has no checks yet, skipping"
+              continue
+            fi
+
+            # Check mergeable state
+            MERGEABLE=$(gh pr view "$PR_NUM" --repo "${{ github.repository }}" --json mergeable --jq '.mergeable')
+
+            if [ "$STATE" -eq "$TOTAL" ] && [ "$MERGEABLE" = "MERGEABLE" ]; then
+              echo "All $TOTAL checks passed for PR #$PR_NUM, merging..."
+              gh pr merge "$PR_NUM" --repo "${{ github.repository }}" --squash --delete-branch \
+                --body "Auto-merged: all CI checks passed (owner PR)"
+              echo "PR #$PR_NUM merged and branch deleted"
+            else
+              echo "PR #$PR_NUM: $STATE/$TOTAL checks passed, mergeable=$MERGEABLE — skipping"
+            fi
+          done
