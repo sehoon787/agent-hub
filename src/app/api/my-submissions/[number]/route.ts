@@ -115,22 +115,36 @@ export async function PATCH(
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)/g, '');
 
+  // Check for slug collision on edit
+  const { getAgent } = await import('@/lib/data');
+  const existingAgent = getAgent(slug);
+  if (existingAgent) {
+    return NextResponse.json(
+      { error: `Agent with slug "${slug}" already exists`, details: { name: [`An agent already uses the slug "${slug}"`] } },
+      { status: 409 }
+    );
+  }
+
+  function sanitizeLine(val: string): string {
+    return val.replace(/[\r\n]+/g, ' ').trim();
+  }
+
   const issueBody = `## Agent Submission
 
-**name:** ${data.name}
-**displayName:** ${data.displayName}
-**slug:** ${slug}
-**description:** ${data.description}
-**longDescription:** ${data.longDescription ?? ''}
-**category:** ${data.category}
-**model:** ${data.model}
-**platform:** ${data.platform}
-**author:** ${data.author}
-**githubUrl:** ${data.githubUrl ?? ''}
-**capabilities:** ${data.capabilities ?? ''}
-**tools:** ${data.tools ?? ''}
-**tags:** ${data.tags ?? ''}
-**submittedBy:** ${session.user.login ?? session.user.email ?? session.user.name ?? 'unknown'}`;
+**name:** ${sanitizeLine(data.name)}
+**displayName:** ${sanitizeLine(data.displayName)}
+**slug:** ${sanitizeLine(slug)}
+**description:** ${sanitizeLine(data.description)}
+**longDescription:** ${sanitizeLine(data.longDescription ?? '')}
+**category:** ${sanitizeLine(data.category)}
+**model:** ${sanitizeLine(data.model)}
+**platform:** ${sanitizeLine(data.platform)}
+**author:** ${sanitizeLine(data.author)}
+**githubUrl:** ${sanitizeLine(data.githubUrl ?? '')}
+**capabilities:** ${sanitizeLine(data.capabilities ?? '')}
+**tools:** ${sanitizeLine(data.tools ?? '')}
+**tags:** ${sanitizeLine(data.tags ?? '')}
+**submittedBy:** ${sanitizeLine(session.user.login ?? session.user.email ?? session.user.name ?? 'unknown')}`;
 
   const updateRes = await fetch(
     githubApiUrl(`issues/${number}`),

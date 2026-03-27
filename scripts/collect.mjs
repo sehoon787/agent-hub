@@ -137,6 +137,7 @@ async function fetchRepoEntries(owner, repo, path) {
 
     // Build entry with defaults
     const today = new Date().toISOString().split('T')[0];
+    const platform = (fm.platform || 'claude').toLowerCase();
     const entry = {
       slug,
       name: rawName.toLowerCase().replace(/[^a-z0-9_-]/g, '_'),
@@ -146,10 +147,10 @@ async function fetchRepoEntries(owner, repo, path) {
       category: (fm.category || '').toLowerCase(),
       model: (fm.model || '').toLowerCase(),
       source: 'community',
-      platform: (fm.platform || 'claude').toLowerCase(),
+      platform,
       author: fm.author || `${owner}`,
       githubUrl: file.html_url || '',
-      installCommand: '',
+      installCommand: platform === 'claude' ? `npx claude-code --agent ${slug}` : (platform === 'codex' ? `codex --agent ${slug}` : ''),
       capabilities: fm.capabilities ? fm.capabilities.split(',').map((s) => s.trim()).filter(Boolean) : [],
       tools: fm.tools ? fm.tools.split(',').map((s) => s.trim()).filter(Boolean) : [],
       tags: fm.tags ? fm.tags.split(',').map((s) => s.trim()).filter(Boolean) : [],

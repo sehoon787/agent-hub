@@ -11,6 +11,7 @@ interface InstallCommandProps {
 
 export function InstallCommand({ command, compact }: InstallCommandProps) {
   const [copied, setCopied] = useState(false);
+  if (!command) return null;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(command);

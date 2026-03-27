@@ -68,6 +68,12 @@ jobs:
             const tools = parseField(body, 'tools');
             const tags = parseField(body, 'tags');
 
+            const submittedBy = parseField(body, 'submittedBy');
+            if (submittedBy && submittedBy !== process.env.ISSUE_AUTHOR) {
+              console.error('submittedBy mismatch: body=' + submittedBy + ' author=' + process.env.ISSUE_AUTHOR);
+              process.exit(1);
+            }
+
             // Validate required fields
             const validCategories = ['orchestrator', 'specialist', 'worker', 'analyst'];
             const validModels = ['opus', 'sonnet', 'haiku', 'gemini-2.5-pro', 'gemini-2.5-flash', 'gpt-5.4', 'gpt-5.4-mini', 'custom'];
@@ -122,14 +128,14 @@ jobs:
               platform,
               author,
               githubUrl: githubUrl || '',
-              installCommand: '',
+              installCommand: platform === 'claude' ? 'npx claude-code --agent ' + slug : (platform === 'codex' ? 'codex --agent ' + slug : ''),
               capabilities: capabilities ? capabilities.split(',').map(s => s.trim()).filter(Boolean) : [],
               tools: tools ? tools.split(',').map(s => s.trim()).filter(Boolean) : [],
               tags: tags ? tags.split(',').map(s => s.trim()).filter(Boolean) : [],
               createdAt: today,
               updatedAt: today,
               stars: 0,
-              downloads: 0,
+              forks: 0,
               featured: false,
               verified: false
             };

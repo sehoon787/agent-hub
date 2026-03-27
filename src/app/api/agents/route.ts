@@ -76,6 +76,18 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  // Check for duplicate githubUrl from different authors
+  const allAgents = getAgents({ limit: 100 }).items;
+  const existingWithSameUrl = allAgents.filter(
+    (a) => a.githubUrl === data.githubUrl && a.author !== (session.user.login || data.author)
+  );
+  if (existingWithSameUrl.length > 0) {
+    return NextResponse.json(
+      { error: 'This repository is already registered by another user', details: { githubUrl: ['Repository URL already in use by another author'] } },
+      { status: 409 }
+    );
+  }
+
   // Verify GitHub URL ownership
   const accessToken = await getAccessToken(request);
   if (!accessToken) {
@@ -101,22 +113,26 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'GitHub integration not configured' }, { status: 503 });
   }
 
+  function sanitizeLine(val: string): string {
+    return val.replace(/[\r\n]+/g, ' ').trim();
+  }
+
   const issueBody = `## Agent Submission
 
-**name:** ${data.name}
-**displayName:** ${data.displayName}
-**slug:** ${slug}
-**description:** ${data.description}
-**longDescription:** ${data.longDescription ?? ''}
-**category:** ${data.category}
-**model:** ${data.model}
-**platform:** ${data.platform}
-**author:** ${data.author}
-**githubUrl:** ${data.githubUrl ?? ''}
-**capabilities:** ${data.capabilities ?? ''}
-**tools:** ${data.tools ?? ''}
-**tags:** ${data.tags ?? ''}
-**submittedBy:** ${session.user.login ?? session.user.email ?? session.user.name ?? 'unknown'}`;
+**name:** ${sanitizeLine(data.name)}
+**displayName:** ${sanitizeLine(data.displayName)}
+**slug:** ${sanitizeLine(slug)}
+**description:** ${sanitizeLine(data.description)}
+**longDescription:** ${sanitizeLine(data.longDescription ?? '')}
+**category:** ${sanitizeLine(data.category)}
+**model:** ${sanitizeLine(data.model)}
+**platform:** ${sanitizeLine(data.platform)}
+**author:** ${sanitizeLine(session.user.login || data.author)}
+**githubUrl:** ${sanitizeLine(data.githubUrl ?? '')}
+**capabilities:** ${sanitizeLine(data.capabilities ?? '')}
+**tools:** ${sanitizeLine(data.tools ?? '')}
+**tags:** ${sanitizeLine(data.tags ?? '')}
+**submittedBy:** ${sanitizeLine(session.user.login ?? session.user.email ?? session.user.name ?? 'unknown')}`;
 
   const ghRes = await fetch(githubApiUrl('issues'), {
     method: 'POST',

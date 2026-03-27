@@ -25,11 +25,19 @@ export const agentSubmissionSchema = z.object({
   displayName: z
     .string()
     .min(2, "Display name must be at least 2 characters")
-    .max(100, "Display name must be at most 100 characters"),
+    .max(100, "Display name must be at most 100 characters")
+    .refine(
+      (v) => !/\*\*\w+:\*\*/.test(v),
+      'Display name cannot contain **key:** patterns'
+    ),
   description: z
     .string()
     .min(10, "Description must be at least 10 characters")
-    .max(500, "Description must be at most 500 characters"),
+    .max(500, "Description must be at most 500 characters")
+    .refine(
+      (v) => !/\*\*\w+:\*\*/.test(v),
+      'Description cannot contain **key:** patterns'
+    ),
   longDescription: z.string().max(2000).optional(),
   category: z.enum(["orchestrator", "specialist", "worker", "analyst"], {
     message: "Please select a category",

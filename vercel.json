@@ -1,5 +1,15 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
-  "regions": ["icn1"]
+  "regions": ["icn1"],
+  "crons": [
+    {
+      "path": "/api/cron/sync-stars",
+      "schedule": "0 */6 * * *"
+    },
+    {
+      "path": "/api/cron/sync-news",
+      "schedule": "30 */6 * * *"
+    }
+  ]
 }

@@ -4,5 +4,6 @@ export function isSubmissionOwner(
 ): boolean {
   const { login } = user;
   if (!login) return false;
-  return issueBody.includes(`**submittedBy:** ${login}`);
+  const escaped = login.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp(`\\*\\*submittedBy:\\*\\* ${escaped}\\s*$`, 'm').test(issueBody);
 }

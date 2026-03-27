@@ -109,6 +109,7 @@ export function SubmitForm() {
   const [loading, setLoading] = useState(false);
   const [issueUrl, setIssueUrl] = useState('');
   const [loadingTimedOut, setLoadingTimedOut] = useState(false);
+  const [autoFilling, setAutoFilling] = useState(false);
 
   const predictedStages = useMemo(() => {
     if (!form.description) return [];
@@ -167,6 +168,46 @@ export function SubmitForm() {
       }
       return { ...prev, [field]: msg };
     });
+  };
+
+  const handleGithubUrlBlur = async (url: string) => {
+    validate('githubUrl', url);
+    if (!url || !/^https:\/\/github\.com\/[a-zA-Z0-9._-]+\/[a-zA-Z0-9._-]+/.test(url)) return;
+
+    setAutoFilling(true);
+    try {
+      const res = await fetch(`/api/github/repo-info?url=${encodeURIComponent(url)}`);
+      if (!res.ok) return;
+      const data = await res.json();
+
+      setForm((prev) => {
+        const next = { ...prev };
+        // Only fill empty fields
+        if (!prev.name && data.name) {
+          next.name = data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        }
+        if (!prev.displayName && data.name) {
+          next.displayName = data.name.replace(/[-_]/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase());
+        }
+        if (!prev.description && data.description) {
+          next.description = data.description.slice(0, 500);
+        }
+        if (!prev.tags && data.topics?.length) {
+          next.tags = data.topics.slice(0, 5).join(', ');
+        }
+        if (!prev.platform && data.suggestedPlatform) {
+          next.platform = data.suggestedPlatform;
+        }
+        if (!prev.category && data.suggestedCategory) {
+          next.category = data.suggestedCategory;
+        }
+        return next;
+      });
+    } catch {
+      // Silently fail — user can fill manually
+    } finally {
+      setAutoFilling(false);
+    }
   };
 
   const handlePlatformChange = (platform: string) => {
@@ -368,19 +409,27 @@ export function SubmitForm() {
             )}
           </select>
         </div>
-        {fieldErrors.author && (
-          <p className="text-xs text-red-400">{fieldErrors.author[0]}</p>
-        )}
+        <div>
+          <label className="text-sm font-medium text-zinc-300">Author</label>
+          <Input
+            value={form.author}
+            readOnly
+            className="mt-1 border-zinc-700 bg-zinc-800/50 text-zinc-400 cursor-not-allowed"
+          />
+          <p className="mt-1 text-xs text-zinc-500">Auto-filled from your GitHub login</p>
+          {fieldErrors.author && <p className="mt-1 text-xs text-red-400">{fieldErrors.author[0]}</p>}
+        </div>
         <div>
           <label className="text-sm font-medium text-zinc-300">GitHub URL <span className="text-red-400">*</span></label>
           <Input
             value={form.githubUrl}
             onChange={(e) => { update('githubUrl', e.target.value); validate('githubUrl', e.target.value); }}
-            onBlur={(e) => validate('githubUrl', e.target.value)}
+            onBlur={(e) => handleGithubUrlBlur(e.target.value)}
             placeholder="https://github.com/..."
             className={`mt-1 bg-zinc-800/50 text-zinc-100 ${fieldErrors.githubUrl || clientErrors.githubUrl ? 'border-red-500' : 'border-zinc-700'}`}
           />
           <p className="mt-1 text-xs text-zinc-500">Required. Must be a public GitHub repository (https://github.com/owner/repo)</p>
+          {autoFilling && <p className="mt-1 text-xs text-violet-400">Auto-detecting repository info...</p>}
           {clientErrors.githubUrl && <p className="mt-1 text-xs text-red-400">{clientErrors.githubUrl}</p>}
           {fieldErrors.githubUrl && <p className="mt-1 text-xs text-red-400">{fieldErrors.githubUrl[0]}</p>}
         </div>
