@@ -103,7 +103,7 @@ jobs:
           git checkout -b "$BRANCH"
           npm version "$VERSION_NUM" --no-git-tag-version
           git add package.json package-lock.json
-          git commit -m "chore: bump version to ${VERSION} [skip ci]"
+          git commit -m "chore: bump version to ${VERSION}"
           git push origin "$BRANCH"
 
           gh pr create \
