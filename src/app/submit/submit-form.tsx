@@ -122,11 +122,11 @@ export function SubmitForm() {
     });
   }, [form.description, form.tags, form.capabilities, form.tools, form.model, form.category]);
 
-  // Auto-fill author from GitHub login (username)
+  // Auto-fill author from GitHub login (username) on mount
   useEffect(() => {
     const login = session?.user?.login;
     if (login) {
-      setForm((prev) => prev.author ? prev : { ...prev, author: login });
+      setForm((prev) => ({ ...prev, author: login }));
     }
   }, [session?.user?.login]);
 
@@ -368,16 +368,9 @@ export function SubmitForm() {
             )}
           </select>
         </div>
-        <div>
-          <label className="text-sm font-medium text-zinc-300">Author</label>
-          <Input
-            value={form.author}
-            readOnly
-            className="mt-1 border-zinc-700 bg-zinc-800/50 text-zinc-100 opacity-70 cursor-not-allowed"
-          />
-          <p className="mt-1 text-xs text-zinc-500">Auto-filled from your GitHub account</p>
-          {fieldErrors.author && <p className="mt-1 text-xs text-red-400">{fieldErrors.author[0]}</p>}
-        </div>
+        {fieldErrors.author && (
+          <p className="text-xs text-red-400">{fieldErrors.author[0]}</p>
+        )}
         <div>
           <label className="text-sm font-medium text-zinc-300">GitHub URL</label>
           <Input

@@ -9,5 +9,6 @@ declare module "next-auth" {
       image?: string | null
       login?: string
     }
+    accessToken?: string
   }
 }

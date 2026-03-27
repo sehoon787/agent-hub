@@ -1,11 +1,25 @@
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import { useSession, signIn, signOut } from "next-auth/react"
-import { LogIn, LogOut } from "lucide-react"
+import { LogIn, LogOut, FileText } from "lucide-react"
+import { useState, useRef, useEffect } from "react"
 
 export function AuthButton() {
   const { data: session, status } = useSession()
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false)
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
 
   if (status === "loading") {
     return (
@@ -15,26 +29,54 @@ export function AuthButton() {
 
   if (session?.user) {
     return (
-      <div className="flex items-center gap-2">
-        {session.user.image && (
-          <Image
-            src={session.user.image}
-            alt={session.user.name ?? "User"}
-            width={28}
-            height={28}
-            className="h-7 w-7 rounded-full"
-          />
-        )}
-        <span className="hidden text-sm text-zinc-300 sm:inline">
-          {session.user.name}
-        </span>
+      <div className="relative" ref={ref}>
         <button
-          onClick={() => signOut()}
-          className="rounded-md p-1.5 text-zinc-400 hover:text-zinc-100"
-          aria-label="Sign out"
+          onClick={() => setOpen((prev) => !prev)}
+          className="flex items-center gap-2 rounded-full p-0.5 hover:ring-2 hover:ring-zinc-600 transition-all"
+          aria-label="User menu"
         >
-          <LogOut className="h-4 w-4" />
+          {session.user.image ? (
+            <Image
+              src={session.user.image}
+              alt={session.user.name ?? "User"}
+              width={32}
+              height={32}
+              className="h-8 w-8 rounded-full"
+            />
+          ) : (
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-violet-600 text-sm font-medium text-white">
+              {(session.user.name ?? "U")[0].toUpperCase()}
+            </div>
+          )}
         </button>
+
+        {open && (
+          <div className="absolute right-0 mt-2 w-56 rounded-xl border border-zinc-800 bg-zinc-950 py-1 shadow-xl z-50">
+            <div className="border-b border-zinc-800 px-4 py-3">
+              <p className="text-sm font-medium text-zinc-100 truncate">
+                {session.user.name}
+              </p>
+              <p className="text-xs text-zinc-500 truncate">
+                {session.user.login ?? session.user.email}
+              </p>
+            </div>
+            <Link
+              href="/my-submissions"
+              onClick={() => setOpen(false)}
+              className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-zinc-300 hover:bg-zinc-800/50 transition-colors"
+            >
+              <FileText className="h-4 w-4 text-zinc-500" />
+              My Submissions
+            </Link>
+            <button
+              onClick={() => { setOpen(false); signOut(); }}
+              className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-zinc-300 hover:bg-zinc-800/50 transition-colors"
+            >
+              <LogOut className="h-4 w-4 text-zinc-500" />
+              Sign out
+            </button>
+          </div>
+        )}
       </div>
     )
   }

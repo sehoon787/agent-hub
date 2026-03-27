@@ -21,15 +21,21 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     signIn: "/signin",
   },
   callbacks: {
-    jwt({ token, profile }) {
+    jwt({ token, profile, account }) {
       if (profile) {
         token.login = (profile as { login?: string }).login
+      }
+      if (account) {
+        token.accessToken = account.access_token
       }
       return token
     },
     session({ session, token }) {
       if (token.login) {
         session.user.login = token.login as string
+      }
+      if (token.accessToken) {
+        session.accessToken = token.accessToken as string
       }
       return session
     },

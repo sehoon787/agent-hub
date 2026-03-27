@@ -22,7 +22,8 @@ export async function GET() {
   const email = session.user.email;
   const name = session.user.name;
 
-  if (!process.env.GITHUB_TOKEN) {
+  const token = (session as { accessToken?: string }).accessToken || process.env.GITHUB_TOKEN;
+  if (!token) {
     return NextResponse.json({ error: 'GitHub integration not configured' }, { status: 503 });
   }
 
@@ -31,7 +32,7 @@ export async function GET() {
       'https://api.github.com/repos/sehoon787/agent-hub/issues?labels=agent-submission&state=all&per_page=100',
       {
         headers: {
-          Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+          Authorization: `Bearer ${token}`,
           Accept: 'application/vnd.github.v3+json',
         },
         next: { revalidate: 60 },
