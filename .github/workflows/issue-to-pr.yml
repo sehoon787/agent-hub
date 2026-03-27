@@ -48,25 +48,25 @@ jobs:
             const fs = require('fs');
             const body = process.env.ISSUE_BODY || '';
 
-            // Parse form fields from GitHub issue form template
-            function parseField(body, label) {
-              const regex = new RegExp('### ' + label.replace(/[.*+?\${}()|[\]\\\\]/g, '\\\\\\$&') + '\\\\s*\\n+([^\\n#]+)', 'i');
+            // Parse **key:** value format from issue body
+            function parseField(body, key) {
+              const regex = new RegExp('\\*\\*' + key + ':\\*\\*\\s*(.+)', 'i');
               const match = body.match(regex);
               return match ? match[1].trim() : '';
             }
 
-            const name = parseField(body, 'Agent Name (slug)');
-            const displayName = parseField(body, 'Display Name');
-            const description = parseField(body, 'Description');
-            const longDescription = parseField(body, 'Long Description');
-            const category = parseField(body, 'Category').toLowerCase();
-            const model = parseField(body, 'Recommended Model').toLowerCase();
-            const platform = parseField(body, 'Platform').toLowerCase();
-            const author = parseField(body, 'Author') || process.env.ISSUE_AUTHOR;
-            const githubUrl = parseField(body, 'GitHub URL');
-            const capabilities = parseField(body, 'Capabilities');
-            const tools = parseField(body, 'Tools');
-            const tags = parseField(body, 'Tags');
+            const name = parseField(body, 'name');
+            const displayName = parseField(body, 'displayName');
+            const description = parseField(body, 'description');
+            const longDescription = parseField(body, 'longDescription');
+            const category = parseField(body, 'category').toLowerCase();
+            const model = parseField(body, 'model').toLowerCase();
+            const platform = parseField(body, 'platform').toLowerCase();
+            const author = parseField(body, 'author') || process.env.ISSUE_AUTHOR;
+            const githubUrl = parseField(body, 'githubUrl');
+            const capabilities = parseField(body, 'capabilities');
+            const tools = parseField(body, 'tools');
+            const tags = parseField(body, 'tags');
 
             // Validate required fields
             const validCategories = ['orchestrator', 'specialist', 'worker', 'analyst'];
