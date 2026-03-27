@@ -60,7 +60,7 @@ const PLATFORM_MODELS: Record<string, string[]> = {
 };
 
 const NAME_RE = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/;
-const GITHUB_URL_RE = /^https:\/\/github\.com\/[a-zA-Z0-9._-]+\/[a-zA-Z0-9._-]+/;
+const GITHUB_URL_RE = /^https:\/\/github/i;
 const AUTHOR_RE = /^[a-zA-Z0-9](?:[a-zA-Z0-9._-]*[a-zA-Z0-9])?$/;
 
 const stageColors: Record<string, string> = {
@@ -155,7 +155,7 @@ export function SubmitForm() {
     if (field === 'name' && value && !NAME_RE.test(value)) {
       msg = 'Must be lowercase alphanumeric with hyphens, cannot start/end with a hyphen.';
     } else if (field === 'githubUrl' && value && !GITHUB_URL_RE.test(value)) {
-      msg = 'Must start with https://github.com/owner/repo';
+      msg = 'Must start with https://github';
     } else if (field === 'author' && value && !AUTHOR_RE.test(value)) {
       msg = 'Must be alphanumeric, may include dots, hyphens, or underscores.';
     }
@@ -280,7 +280,7 @@ export function SubmitForm() {
             onChange={(e) => update('name', e.target.value)}
             onBlur={(e) => validate('name', e.target.value)}
             placeholder="e.g. my-agent (lowercase, hyphens only)"
-            className="mt-1 border-zinc-700 bg-zinc-800/50 text-zinc-100"
+            className={`mt-1 bg-zinc-800/50 text-zinc-100 ${fieldErrors.name || clientErrors.name ? 'border-red-500' : 'border-zinc-700'}`}
           />
           {clientErrors.name && <p className="mt-1 text-xs text-red-400">{clientErrors.name}</p>}
           {fieldErrors.name && <p className="mt-1 text-xs text-red-400">{fieldErrors.name[0]}</p>}
@@ -291,7 +291,7 @@ export function SubmitForm() {
             value={form.displayName}
             onChange={(e) => update('displayName', e.target.value)}
             placeholder="e.g. My Agent"
-            className="mt-1 border-zinc-700 bg-zinc-800/50 text-zinc-100"
+            className={`mt-1 bg-zinc-800/50 text-zinc-100 ${fieldErrors.displayName ? 'border-red-500' : 'border-zinc-700'}`}
           />
           {fieldErrors.displayName && <p className="mt-1 text-xs text-red-400">{fieldErrors.displayName[0]}</p>}
         </div>
@@ -301,7 +301,7 @@ export function SubmitForm() {
             value={form.description}
             onChange={(e) => update('description', e.target.value)}
             placeholder="Brief description of what the agent does..."
-            className="mt-1 border-zinc-700 bg-zinc-800/50 text-zinc-100"
+            className={`mt-1 bg-zinc-800/50 text-zinc-100 ${fieldErrors.description ? 'border-red-500' : 'border-zinc-700'}`}
             rows={2}
           />
           {fieldErrors.description && <p className="mt-1 text-xs text-red-400">{fieldErrors.description[0]}</p>}
@@ -322,7 +322,7 @@ export function SubmitForm() {
             <select
               value={form.category}
               onChange={(e) => update('category', e.target.value)}
-              className="mt-1 w-full rounded-md border border-zinc-700 bg-zinc-800/50 px-3 py-2 text-sm text-zinc-300"
+              className={`mt-1 w-full rounded-md border bg-zinc-800/50 px-3 py-2 text-sm text-zinc-300 ${fieldErrors.category ? 'border-red-500' : 'border-zinc-700'}`}
             >
               <option value="">Select category</option>
               <option value="orchestrator">Orchestrator</option>
@@ -337,7 +337,7 @@ export function SubmitForm() {
             <select
               value={form.platform}
               onChange={(e) => handlePlatformChange(e.target.value)}
-              className="mt-1 w-full rounded-md border border-zinc-700 bg-zinc-800/50 px-3 py-2 text-sm text-zinc-300"
+              className={`mt-1 w-full rounded-md border bg-zinc-800/50 px-3 py-2 text-sm text-zinc-300 ${fieldErrors.platform ? 'border-red-500' : 'border-zinc-700'}`}
             >
               <option value="">Select platform</option>
               <option value="claude">Claude Code</option>
@@ -378,7 +378,7 @@ export function SubmitForm() {
             onChange={(e) => { update('githubUrl', e.target.value); validate('githubUrl', e.target.value); }}
             onBlur={(e) => validate('githubUrl', e.target.value)}
             placeholder="https://github.com/..."
-            className="mt-1 border-zinc-700 bg-zinc-800/50 text-zinc-100"
+            className={`mt-1 bg-zinc-800/50 text-zinc-100 ${fieldErrors.githubUrl || clientErrors.githubUrl ? 'border-red-500' : 'border-zinc-700'}`}
           />
           <p className="mt-1 text-xs text-zinc-500">Must be a GitHub URL (https://github.com/owner/repo)</p>
           {clientErrors.githubUrl && <p className="mt-1 text-xs text-red-400">{clientErrors.githubUrl}</p>}
