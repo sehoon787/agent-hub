@@ -3576,5 +3576,46 @@
     "downloads": 7800,
     "featured": false,
     "verified": false
+  },
+  {
+    "slug": "boss",
+    "name": "boss",
+    "displayName": "Boss",
+    "description": "Dynamic meta-orchestrator that classifies intent, selects optimal models, and delegates to specialized sub-agents with full context management.",
+    "longDescription": "Boss is the ultimate meta-orchestrator for Claude Code workflows. It dynamically classifies user intent and delegates to specialized sub-agents.",
+    "category": "orchestrator",
+    "model": "opus",
+    "source": "community",
+    "platform": "claude",
+    "author": "sehoon787",
+    "githubUrl": "https://github.com/anthropics/claude-code",
+    "installCommand": "",
+    "capabilities": [
+      "Intent classification",
+      "Model routing",
+      "Sub-agent delegation",
+      "Context management"
+    ],
+    "tools": [
+      "Task",
+      "Bash",
+      "Read",
+      "Write",
+      "Edit",
+      "Grep",
+      "Glob"
+    ],
+    "tags": [
+      "orchestrator",
+      "meta-agent",
+      "delegation",
+      "multi-model"
+    ],
+    "createdAt": "2026-03-27",
+    "updatedAt": "2026-03-27",
+    "stars": 0,
+    "downloads": 0,
+    "featured": false,
+    "verified": false
   }
 ]
