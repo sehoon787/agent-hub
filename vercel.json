@@ -5,11 +5,11 @@
   "crons": [
     {
       "path": "/api/cron/sync-stars",
-      "schedule": "0 */6 * * *"
+      "schedule": "0 0 * * *"
     },
     {
       "path": "/api/cron/sync-news",
-      "schedule": "30 */6 * * *"
+      "schedule": "0 12 * * *"
     }
   ]
 }

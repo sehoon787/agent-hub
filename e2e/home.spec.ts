@@ -44,15 +44,13 @@ test.describe('Homepage', () => {
     expect(count).toBeLessThanOrEqual(10)
   })
 
-  test.skip('should have platform filter tabs in compact ranking', async ({ page }) => {
-    // TODO: enable after 2-column layout deployment
+  test('should have platform filter tabs in compact ranking', async ({ page }) => {
     await page.goto('/')
     await expect(page.locator('button:has-text("All")')).toBeVisible()
     await expect(page.locator('button:has-text("claude")')).toBeVisible()
   })
 
-  test.skip('should display 2-column ranking and recent agents layout', async ({ page }) => {
-    // TODO: enable after 2-column layout deployment
+  test('should display 2-column ranking and recent agents layout', async ({ page }) => {
     await page.goto('/')
     await expect(page.locator('text=Top by Stars')).toBeVisible()
     const recentCards = page.locator('section .grid h3:has-text("Recently Added")')
