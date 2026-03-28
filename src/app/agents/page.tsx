@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { AgentsBrowse } from './agents-browse';
 import { CollectionPageJsonLd } from '@/components/seo/json-ld';
@@ -13,7 +14,9 @@ export default function AgentsPage() {
   return (
     <>
       <CollectionPageJsonLd count={stats.totalAgents} />
-      <AgentsBrowse />
+      <Suspense fallback={<div className="py-8 text-center text-zinc-500">Loading...</div>}>
+        <AgentsBrowse />
+      </Suspense>
     </>
   );
 }

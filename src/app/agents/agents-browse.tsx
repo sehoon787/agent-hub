@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { getAgents } from '@/lib/data';
 import { AgentCard } from '@/components/cards/agent-card';
 import { SearchInput } from '@/components/search/search-input';
@@ -33,14 +34,16 @@ const ALL_BROWSE_MODELS = [
 ];
 
 export function AgentsBrowse() {
+  const searchParams = useSearchParams();
   const [q, setQ] = useState('');
   const [category, setCategory] = useState<string | null>(null);
   const [stage, setStage] = useState<string | null>(null);
   const [model, setModel] = useState<string | null>(null);
   const [source, setSource] = useState<string | null>(null);
-  const [platform, setPlatform] = useState<string | null>(null);
-  const [sort, setSort] = useState('popular');
+  const [platform, setPlatform] = useState<string | null>(searchParams.get('platform'));
+  const [sort, setSort] = useState(searchParams.get('sort') === 'stars' ? 'popular' : 'popular');
   const [page, setPage] = useState(1);
+  const [repo, setRepo] = useState<string | null>(searchParams.get('repo'));
 
   const { items, total } = useMemo(() => {
     return getAgents({
@@ -50,11 +53,12 @@ export function AgentsBrowse() {
       model: model || undefined,
       source: source || undefined,
       platform: platform || undefined,
+      repo: repo || undefined,
       sort,
       page,
       limit: 12,
     });
-  }, [q, category, stage, model, source, platform, sort, page]);
+  }, [q, category, stage, model, source, platform, sort, page, repo]);
 
   const totalPages = Math.ceil(total / 12);
 
@@ -143,6 +147,16 @@ export function AgentsBrowse() {
           placeholder="Search agents..."
         />
       </div>
+
+      {repo && (
+        <div className="mt-4 flex items-center gap-2">
+          <span className="text-sm text-zinc-400">Repository:</span>
+          <span className="flex items-center gap-1.5 rounded-full bg-violet-600/20 px-3 py-1 text-sm text-violet-300">
+            {repo.split('/')[1]}
+            <button onClick={() => setRepo(null)} className="ml-1 text-violet-400 hover:text-white">✕</button>
+          </span>
+        </div>
+      )}
 
       <div className="mt-6 flex items-center justify-between">
         <p className="text-sm text-zinc-500">

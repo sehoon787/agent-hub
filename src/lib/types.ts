@@ -48,3 +48,13 @@ export interface Stats {
   totalPlatforms: number;
   totalStages: number;
 }
+
+export interface RepoSummary {
+  repoKey: string;       // "Yeachan-Heo/oh-my-claudecode"
+  repoName: string;      // "oh-my-claudecode"
+  githubUrl: string;     // "https://github.com/Yeachan-Heo/oh-my-claudecode"
+  stars: number;
+  forks: number;
+  agentCount: number;
+  platforms: AgentPlatform[];
+}

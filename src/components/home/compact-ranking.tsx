@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Star, Trophy } from 'lucide-react';
+import { Star, Trophy, Users } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import type { Agent } from '@/lib/types';
+import type { AgentPlatform, RepoSummary } from '@/lib/types';
 
 const platformColors: Record<string, string> = {
   claude: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
@@ -19,21 +19,13 @@ const platformColors: Record<string, string> = {
 const FILTER_TABS = ['all', 'claude', 'gemini', 'codex', 'universal'] as const;
 
 interface CompactRankingProps {
-  agents: Agent[];
+  repos: RepoSummary[];
 }
 
-export function CompactRanking({ agents }: CompactRankingProps) {
+export function CompactRanking({ repos }: CompactRankingProps) {
   const [filter, setFilter] = useState<string>('all');
 
-  // Deduplicate by githubUrl — show one representative agent per repo
-  const deduplicated = agents.reduce<Agent[]>((acc, agent) => {
-    if (!acc.some((a) => a.githubUrl === agent.githubUrl)) {
-      acc.push(agent);
-    }
-    return acc;
-  }, []);
-
-  const base = filter === 'all' ? deduplicated : deduplicated.filter((a) => a.platform === filter);
+  const base = filter === 'all' ? repos : repos.filter((r) => r.platforms.includes(filter as AgentPlatform));
   const filtered = base.slice(0, 5);
 
   return (
@@ -41,7 +33,7 @@ export function CompactRanking({ agents }: CompactRankingProps) {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Trophy className="h-5 w-5 text-yellow-400" />
-          <h3 className="font-semibold text-zinc-100">Top by Stars</h3>
+          <h3 className="font-semibold text-zinc-100">Top Repositories</h3>
         </div>
         <Link
           href="/agents?sort=stars"
@@ -69,37 +61,37 @@ export function CompactRanking({ agents }: CompactRankingProps) {
 
       <div className="mt-3">
         {filtered.length === 0 ? (
-          <p className="py-4 text-center text-xs text-zinc-500">No agents for this platform</p>
+          <p className="py-4 text-center text-xs text-zinc-500">No repositories for this platform</p>
         ) : (
           <table className="w-full">
             <tbody>
-              {filtered.map((agent, i) => (
-                <tr key={agent.slug} className="border-b border-zinc-800/50 last:border-0">
+              {filtered.map((repo, i) => (
+                <tr key={repo.repoKey} className="border-b border-zinc-800/50 last:border-0">
                   <td className="py-2 pr-2">
                     <span className={`text-sm font-bold ${i < 3 ? 'text-yellow-400' : 'text-zinc-500'}`}>
                       {i + 1}
                     </span>
                   </td>
                   <td className="py-2 pr-2">
-                    <Link href={`/agents/${agent.slug}`} className="text-sm font-medium text-zinc-200 hover:text-white">
-                      {agent.displayName}
+                    <Link href={`/agents?repo=${repo.repoKey}`} className="text-sm font-medium text-zinc-200 hover:text-white">
+                      {repo.repoName}
                     </Link>
-                    {(() => {
-                      const sameRepoCount = agents.filter((a) => a.githubUrl === agent.githubUrl).length;
-                      return sameRepoCount > 1 ? (
-                        <span className="ml-1 text-xs text-zinc-500">+{sameRepoCount - 1}</span>
-                      ) : null;
-                    })()}
                   </td>
                   <td className="py-2 pr-2">
-                    <Badge variant="outline" className={`text-xs ${platformColors[agent.platform] ?? ''}`}>
-                      {agent.platform}
+                    <Badge variant="outline" className={`text-xs ${platformColors[repo.platforms[0]] ?? ''}`}>
+                      {repo.platforms[0]}
                     </Badge>
                   </td>
-                  <td className="py-2 text-right">
+                  <td className="py-2 pr-2 text-right">
                     <span className="flex items-center justify-end gap-1 text-sm text-zinc-300">
                       <Star className="h-3 w-3 text-yellow-400" />
-                      {agent.stars.toLocaleString()}
+                      {repo.stars.toLocaleString()}
+                    </span>
+                  </td>
+                  <td className="py-2 text-right">
+                    <span className="flex items-center justify-end gap-1 text-xs text-zinc-500">
+                      <Users className="h-3 w-3" />
+                      {repo.agentCount}
                     </span>
                   </td>
                 </tr>
