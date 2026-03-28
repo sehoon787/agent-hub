@@ -179,7 +179,13 @@ jobs:
               platform,
               author,
               githubUrl: githubUrl || '',
-              installCommand: platform === 'claude' ? 'npx claude-code --agent ' + slug : (platform === 'codex' ? 'codex --agent ' + slug : ''),
+              installCommand: (function() {
+                if (platform === 'claude' && githubUrl) {
+                  var m = githubUrl.match(/github\\.com\\/([^/]+)\\/([^/]+)/);
+                  if (m) return 'curl -o ~/.claude/agents/' + slug + '.md https://raw.githubusercontent.com/' + m[1] + '/' + m[2] + '/main/agents/' + slug + '.md';
+                }
+                return '';
+              })(),
               capabilities: capabilities ? capabilities.split(',').map(s => s.trim()).filter(Boolean) : [],
               tools: tools ? tools.split(',').map(s => s.trim()).filter(Boolean) : [],
               tags: tags ? tags.split(',').map(s => s.trim()).filter(Boolean) : [],

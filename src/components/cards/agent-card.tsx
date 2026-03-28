@@ -75,7 +75,7 @@ export function AgentCard({ agent }: { agent: Agent }) {
       <p className="mt-2 line-clamp-2 text-sm text-zinc-400">
         {agent.description}
       </p>
-      <div className="mt-3 flex flex-wrap gap-1.5">
+      <div className="mt-3 flex flex-wrap items-start gap-1.5">
         <Badge variant="secondary" className="text-xs">
           {categoryLabels[agent.category]}
         </Badge>

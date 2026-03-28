@@ -150,7 +150,9 @@ async function fetchRepoEntries(owner, repo, path) {
       platform,
       author: fm.author || `${owner}`,
       githubUrl: file.html_url || '',
-      installCommand: platform === 'claude' ? `npx claude-code --agent ${slug}` : (platform === 'codex' ? `codex --agent ${slug}` : ''),
+      installCommand: platform === 'claude' && file.download_url
+        ? `curl -o ~/.claude/agents/${slug}.md ${file.download_url}`
+        : '',
       capabilities: fm.capabilities ? fm.capabilities.split(',').map((s) => s.trim()).filter(Boolean) : [],
       tools: fm.tools ? fm.tools.split(',').map((s) => s.trim()).filter(Boolean) : [],
       tags: fm.tags ? fm.tags.split(',').map((s) => s.trim()).filter(Boolean) : [],

@@ -5,10 +5,10 @@ import { CategoriesSection } from '@/components/home/categories-section';
 import { CompactRanking } from '@/components/home/compact-ranking';
 import { LatestReleases } from '@/components/home/latest-releases';
 import { WebSiteJsonLd } from '@/components/seo/json-ld';
-import { getTopAgentsByStars } from '@/lib/data';
+import { getTopRepositories } from '@/lib/data';
 
 export default function HomePage() {
-  const topAgents = getTopAgentsByStars(20);
+  const topRepos = getTopRepositories(10);
 
   return (
     <>
@@ -17,7 +17,7 @@ export default function HomePage() {
       <StatsSection />
       <section className="py-8">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <CompactRanking agents={topAgents} />
+          <CompactRanking repos={topRepos} />
           <LatestReleases />
         </div>
       </section>

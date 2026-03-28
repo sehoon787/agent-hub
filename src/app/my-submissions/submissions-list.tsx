@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useSession, signIn } from 'next-auth/react';
-import { ExternalLink, Clock, CheckCircle2, XCircle, Loader2, LogIn, Trash2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Clock, CheckCircle2, XCircle, Loader2, LogIn, Trash2, Pencil } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 interface Submission {
@@ -27,6 +28,7 @@ export function SubmissionsList() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [actionLoading, setActionLoading] = useState<number | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     if (authStatus !== 'authenticated') return;
@@ -160,7 +162,10 @@ export function SubmissionsList() {
         return (
           <div
             key={sub.number}
-            className="flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-900 p-4"
+            onClick={() => sub.status === 'approved' && sub.slug && router.push(`/agents/${sub.slug}`)}
+            className={`flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-900 p-4 ${
+              sub.status === 'approved' && sub.slug ? 'cursor-pointer hover:border-zinc-700' : ''
+            }`}
           >
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2">
@@ -178,14 +183,25 @@ export function SubmissionsList() {
               {sub.status === 'approved' && sub.slug && (
                 <a
                   href={`/agents/${sub.slug}`}
+                  onClick={(e) => e.stopPropagation()}
                   className="flex items-center gap-1.5 rounded-md border border-violet-500/30 bg-violet-500/10 px-3 py-1.5 text-xs text-violet-300 hover:bg-violet-500/20"
                 >
                   View Agent
                 </a>
               )}
+              <a
+                href={sub.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="flex items-center gap-1.5 rounded-md border border-zinc-700 bg-zinc-800/50 px-3 py-1.5 text-xs text-zinc-300 hover:bg-zinc-800"
+              >
+                <Pencil className="h-3 w-3" />
+                Edit
+              </a>
               {sub.status !== 'rejected' && (
                 <button
-                  onClick={() => handleDelete(sub)}
+                  onClick={(e) => { e.stopPropagation(); handleDelete(sub); }}
                   disabled={isLoading}
                   className="flex items-center gap-1.5 rounded-md border border-red-500/30 bg-red-500/10 px-3 py-1.5 text-xs text-red-300 hover:bg-red-500/20 disabled:opacity-50"
                 >
@@ -193,15 +209,6 @@ export function SubmissionsList() {
                   {isLoading ? 'Processing...' : 'Remove'}
                 </button>
               )}
-              <a
-                href={sub.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 rounded-md border border-zinc-700 bg-zinc-800/50 px-3 py-1.5 text-xs text-zinc-300 hover:bg-zinc-800"
-              >
-                <ExternalLink className="h-3 w-3" />
-                Issue
-              </a>
             </div>
           </div>
         );

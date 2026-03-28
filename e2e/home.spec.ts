@@ -36,7 +36,7 @@ test.describe('Homepage', () => {
   test('should display top agents ranking section', async ({ page }) => {
     await page.goto('/')
     // Supports both old (RankingSection) and new (CompactRanking) layouts
-    const ranking = page.locator('text=Top by Stars').or(page.locator('text=Top Agents by Stars'))
+    const ranking = page.locator('text=Top Repositories').or(page.locator('text=Top Agents by Stars'))
     await expect(ranking.first()).toBeVisible()
     const rankingRows = page.locator('table tbody tr')
     const count = await rankingRows.count()
@@ -52,7 +52,7 @@ test.describe('Homepage', () => {
 
   test('should display 2-column ranking and releases layout', async ({ page }) => {
     await page.goto('/')
-    await expect(page.locator('text=Top by Stars')).toBeVisible()
+    await expect(page.locator('text=Top Repositories')).toBeVisible()
     const releases = page.locator('section .grid h3:has-text("Latest Releases")')
     await expect(releases.first()).toBeVisible()
   })
