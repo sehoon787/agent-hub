@@ -83,24 +83,9 @@ jobs:
           tag_name: ${{ steps.bump.outputs.new_version }}
           generate_release_notes: true
 
-      - name: Close previous bump PRs
+      - name: Bump package.json version
         if: steps.bump.outputs.skip != 'true'
         continue-on-error: true
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          # Close any open auto/bump PRs before creating a new one
-          OPEN_BUMPS=$(gh pr list --state open --json number,headRefName --jq '.[] | select(.headRefName | startswith("auto/bump-")) | .number')
-          for PR in $OPEN_BUMPS; do
-            echo "Closing superseded bump PR #$PR"
-            gh pr close "$PR" --delete-branch --comment "Superseded by ${{ steps.bump.outputs.new_version }}"
-          done
-
-      - name: Bump package.json version via PR
-        if: steps.bump.outputs.skip != 'true'
-        continue-on-error: true
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           VERSION="${{ steps.bump.outputs.new_version }}"
           VERSION_NUM="${VERSION#v}"
@@ -111,19 +96,9 @@ jobs:
             exit 0
           fi
 
-          BRANCH="auto/bump-${VERSION}"
-
-          git checkout -b "$BRANCH"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           npm version "$VERSION_NUM" --no-git-tag-version
           git add package.json package-lock.json
-          git commit -m "chore: bump version to ${VERSION}"
-          git push origin "$BRANCH"
-
-          gh pr create \
-            --title "chore: bump version to ${VERSION}" \
-            --body "Automated version bump to \`${VERSION}\` after release." \
-            --label "auto-sync" \
-            --base master \
-            --head "$BRANCH"
-
-          gh pr merge "$BRANCH" --squash --auto --delete-branch
+          git commit -m "chore: bump version to ${VERSION} [skip ci]"
+          git push origin master
