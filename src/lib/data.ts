@@ -1,6 +1,7 @@
-import type { Agent, AgentPlatform, AgentStage, RawAgent, RepoSummary, Stats, SearchResult } from './types';
+import type { Agent, AgentPlatform, AgentStage, RawAgent, RepoSummary, Stats, SearchResult, NewsItem } from './types';
 import { inferStages } from './stage-classifier';
 import agentsData from './data/agents.json';
+import newsData from './data/news.json';
 
 const agents: Agent[] = (agentsData as RawAgent[]).map((a) => ({
   ...a,
@@ -137,6 +138,14 @@ export function searchAll(q: string): SearchResult[] {
       displayName: a.displayName,
       description: a.description,
     }));
+}
+
+// --- News / Releases ---
+
+export function getNews(): NewsItem[] {
+  return (newsData as NewsItem[]).sort(
+    (a, b) => b.publishedAt.localeCompare(a.publishedAt)
+  );
 }
 
 // --- Stats ---

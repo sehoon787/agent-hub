@@ -1,16 +1,7 @@
+import Link from 'next/link';
 import { Newspaper, ExternalLink } from 'lucide-react';
 import newsData from '@/lib/data/news.json';
-
-interface NewsItem {
-  id: string;
-  repo: string;
-  repoUrl: string;
-  tagName: string;
-  title: string;
-  body: string;
-  publishedAt: string;
-  url: string;
-}
+import type { NewsItem } from '@/lib/types';
 
 function relativeDate(dateStr: string): string {
   const diff = Date.now() - new Date(dateStr).getTime();
@@ -32,6 +23,12 @@ export function LatestReleases() {
           <Newspaper className="h-5 w-5 text-violet-400" />
           <h3 className="font-semibold text-zinc-100">Latest Releases</h3>
         </div>
+        <Link
+          href="/releases"
+          className="text-xs text-violet-400 hover:text-violet-300"
+        >
+          View all &rarr;
+        </Link>
       </div>
 
       <div className="mt-3 space-y-0">

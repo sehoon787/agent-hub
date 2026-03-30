@@ -49,6 +49,17 @@ export interface Stats {
   totalStages: number;
 }
 
+export interface NewsItem {
+  id: string;
+  repo: string;
+  repoUrl: string;
+  tagName: string;
+  title: string;
+  body: string;
+  publishedAt: string;
+  url: string;
+}
+
 export interface RepoSummary {
   repoKey: string;       // "Yeachan-Heo/oh-my-claudecode"
   repoName: string;      // "oh-my-claudecode"
