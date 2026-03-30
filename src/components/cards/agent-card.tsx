@@ -66,7 +66,7 @@ export function AgentCard({ agent }: { agent: Agent }) {
         )}
       </div>
       {/* Row 2: platform + model badges */}
-      <div className="mt-1 flex items-center gap-1.5 pl-7">
+      <div className="mt-1 flex items-center gap-1.5 pl-0">
         <Badge variant="outline" className={platformColors[agent.platform]}>
           {agent.platform}
         </Badge>

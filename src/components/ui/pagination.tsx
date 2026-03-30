@@ -31,7 +31,7 @@ function getPageWindow(current: number, total: number): (number | '...')[] {
   return pages;
 }
 
-const BASE_BTN = 'flex h-8 min-w-[2rem] items-center justify-center rounded-md px-2 text-sm transition-colors';
+const BASE_BTN = 'flex h-9 min-w-[2rem] items-center justify-center rounded-md px-3 text-sm transition-colors';
 const ACTIVE_BTN = `${BASE_BTN} bg-violet-600 text-white font-medium`;
 const IDLE_BTN = `${BASE_BTN} bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-zinc-100`;
 const DISABLED_BTN = `${BASE_BTN} bg-zinc-900 text-zinc-600 cursor-default`;
@@ -84,10 +84,17 @@ export function Pagination({ currentPage, totalPages, onPageChange, baseUrl }: P
   }
 
   return (
-    <div className="flex items-center justify-center gap-1.5">
-      <NavBtn page={currentPage - 1} label="←" />
-      {pageWindow.map((p, i) => <PageItem key={i} page={p} />)}
-      <NavBtn page={currentPage + 1} label="→" />
+    <div className="flex items-center justify-center gap-2">
+      <NavBtn page={currentPage - 1} label="← Previous" />
+      {/* Mobile: page info only */}
+      <span className="text-sm text-zinc-400 md:hidden">
+        Page {currentPage} of {totalPages}
+      </span>
+      {/* Desktop: page buttons */}
+      <div className="hidden items-center gap-1.5 md:flex">
+        {pageWindow.map((p, i) => <PageItem key={i} page={p} />)}
+      </div>
+      <NavBtn page={currentPage + 1} label="Next →" />
     </div>
   );
 }

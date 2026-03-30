@@ -160,11 +160,11 @@ export function AgentsBrowse() {
         </div>
       )}
 
-      <div className="mt-6 flex items-center justify-between">
+      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm text-zinc-500">
-          Showing {(page - 1) * perPage + 1}–{Math.min(page * perPage, total)} of {total} agents
+          {(page - 1) * perPage + 1}–{Math.min(page * perPage, total)} of {total}
         </p>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <select
             value={perPage}
             onChange={(e) => { setPerPage(Number(e.target.value)); setPage(1); }}
