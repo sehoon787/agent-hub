@@ -126,4 +126,4 @@ jobs:
             --base master \
             --head "$BRANCH"
 
-          gh pr merge "$BRANCH" --squash --admin --delete-branch
+          gh pr merge "$BRANCH" --squash --auto --delete-branch
