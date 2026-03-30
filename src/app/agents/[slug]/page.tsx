@@ -9,6 +9,7 @@ import { InstallCommand } from '@/components/detail/install-command';
 import { CapabilityList } from '@/components/detail/capability-list';
 import { RelatedAgents } from '@/components/detail/related-items';
 import { AgentJsonLd, BreadcrumbJsonLd } from '@/components/seo/json-ld';
+import { AgentDisplayName } from '@/components/ui/agent-display-name';
 
 const modelColors: Record<string, string> = {
   opus: 'bg-violet-500/20 text-violet-300 border-violet-500/30',
@@ -95,7 +96,7 @@ export default async function AgentDetailPage({
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-3">
             <Bot className="h-8 w-8 shrink-0 text-violet-400" />
-            <h1 className="text-3xl font-bold text-zinc-100">{agent.displayName}</h1>
+            <h1 className="text-3xl font-bold text-zinc-100"><AgentDisplayName displayName={agent.displayName} /></h1>
             {agent.verified && (
               <BadgeCheck className="h-5 w-5 shrink-0 text-emerald-400" aria-label="Verified" />
             )}

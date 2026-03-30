@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Star, GitFork, Trophy } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { getTopAgentsByStars } from '@/lib/data';
+import { AgentDisplayName } from '@/components/ui/agent-display-name';
 
 const platformColors: Record<string, string> = {
   claude: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
@@ -61,7 +62,7 @@ export function RankingSection() {
                 </td>
                 <td className="py-3 pr-4">
                   <Link href={`/agents/${agent.slug}`} className="text-sm font-medium text-zinc-200 hover:text-white">
-                    {agent.displayName}
+                    <AgentDisplayName displayName={agent.displayName} />
                   </Link>
                 </td>
                 <td className="py-3 pr-4">

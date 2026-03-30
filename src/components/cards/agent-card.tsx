@@ -3,6 +3,7 @@ import { Bot, GitFork, Star, BadgeCheck } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import type { Agent } from '@/lib/types';
 import { InstallCommand } from '@/components/detail/install-command';
+import { AgentDisplayName } from '@/components/ui/agent-display-name';
 
 const modelColors: Record<string, string> = {
   opus: 'bg-violet-500/20 text-violet-300 border-violet-500/30',
@@ -47,6 +48,7 @@ const stageLabels: Record<string, string> = {
   operate: 'Operate',
 };
 
+
 export function AgentCard({ agent }: { agent: Agent }) {
   return (
     <Link
@@ -57,7 +59,7 @@ export function AgentCard({ agent }: { agent: Agent }) {
       <div className="flex items-center gap-2">
         <Bot className="h-5 w-5 shrink-0 text-zinc-400" />
         <h3 className="truncate font-semibold text-zinc-100 group-hover:text-white">
-          {agent.displayName}
+          <AgentDisplayName displayName={agent.displayName} />
         </h3>
         {agent.verified && (
           <BadgeCheck className="h-4 w-4 shrink-0 text-emerald-400" aria-label="Verified" />

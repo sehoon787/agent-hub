@@ -6,6 +6,7 @@ import { Bot, Search } from 'lucide-react';
 import { SearchInput } from '@/components/search/search-input';
 import { searchAll } from '@/lib/data';
 import type { SearchResult } from '@/lib/types';
+import { AgentDisplayName } from '@/components/ui/agent-display-name';
 
 function ResultItem({ result }: { result: SearchResult }) {
   return (
@@ -15,7 +16,7 @@ function ResultItem({ result }: { result: SearchResult }) {
     >
       <Bot className="mt-0.5 h-5 w-5 shrink-0 text-violet-400" />
       <div className="min-w-0 flex-1">
-        <h3 className="font-semibold text-zinc-100">{result.displayName}</h3>
+        <h3 className="font-semibold text-zinc-100"><AgentDisplayName displayName={result.displayName} /></h3>
         <p className="mt-1 line-clamp-2 text-sm text-zinc-400">{result.description}</p>
       </div>
     </Link>
