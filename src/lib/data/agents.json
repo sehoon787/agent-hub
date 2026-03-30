@@ -1085,7 +1085,7 @@
     "updatedAt": "2025-03-20",
     "stars": 0,
     "featured": false,
-    "verified": true,
+    "verified": false,
     "platform": "claude",
     "forks": 0
   },
@@ -1126,7 +1126,7 @@
     "updatedAt": "2025-03-21",
     "stars": 0,
     "featured": false,
-    "verified": true,
+    "verified": false,
     "platform": "claude",
     "forks": 0
   },
@@ -1164,7 +1164,7 @@
     "updatedAt": "2025-03-19",
     "stars": 0,
     "featured": false,
-    "verified": true,
+    "verified": false,
     "platform": "claude",
     "forks": 0
   },
@@ -1205,7 +1205,7 @@
     "updatedAt": "2025-03-18",
     "stars": 0,
     "featured": false,
-    "verified": true,
+    "verified": false,
     "platform": "claude",
     "forks": 0
   },
@@ -1245,7 +1245,7 @@
     "updatedAt": "2025-03-20",
     "stars": 0,
     "featured": false,
-    "verified": true,
+    "verified": false,
     "platform": "claude",
     "forks": 0
   },
@@ -1285,7 +1285,7 @@
     "updatedAt": "2025-03-17",
     "stars": 0,
     "featured": false,
-    "verified": true,
+    "verified": false,
     "platform": "claude",
     "forks": 0
   },
@@ -1325,7 +1325,7 @@
     "updatedAt": "2025-03-18",
     "stars": 0,
     "featured": false,
-    "verified": true,
+    "verified": false,
     "platform": "claude",
     "forks": 0
   },
@@ -1364,7 +1364,7 @@
     "updatedAt": "2025-03-19",
     "stars": 0,
     "featured": false,
-    "verified": true,
+    "verified": false,
     "platform": "claude",
     "forks": 0
   },
@@ -1404,7 +1404,7 @@
     "updatedAt": "2025-03-20",
     "stars": 0,
     "featured": false,
-    "verified": true,
+    "verified": false,
     "platform": "claude",
     "forks": 0
   },
@@ -1444,7 +1444,7 @@
     "updatedAt": "2025-03-21",
     "stars": 0,
     "featured": false,
-    "verified": true,
+    "verified": false,
     "platform": "claude",
     "forks": 0
   },
@@ -1485,7 +1485,7 @@
     "updatedAt": "2025-03-22",
     "stars": 0,
     "featured": false,
-    "verified": true,
+    "verified": false,
     "platform": "claude",
     "forks": 0
   },
@@ -1526,7 +1526,7 @@
     "updatedAt": "2025-03-20",
     "stars": 0,
     "featured": false,
-    "verified": true,
+    "verified": false,
     "platform": "claude",
     "forks": 0
   },
@@ -1565,7 +1565,7 @@
     "updatedAt": "2025-03-21",
     "stars": 0,
     "featured": false,
-    "verified": true,
+    "verified": false,
     "platform": "claude",
     "forks": 0
   },
@@ -1604,7 +1604,7 @@
     "updatedAt": "2025-03-19",
     "stars": 0,
     "featured": false,
-    "verified": true,
+    "verified": false,
     "platform": "claude",
     "forks": 0
   },
@@ -1643,7 +1643,7 @@
     "updatedAt": "2025-03-20",
     "stars": 0,
     "featured": false,
-    "verified": true,
+    "verified": false,
     "platform": "claude",
     "forks": 0
   },
@@ -3305,7 +3305,7 @@
     "updatedAt": "2025-09-01",
     "stars": 254,
     "featured": false,
-    "verified": false,
+    "verified": true,
     "forks": 12
   },
   {
@@ -3577,7 +3577,7 @@
     "updatedAt": "2026-03-27",
     "stars": 5,
     "featured": false,
-    "verified": false,
+    "verified": true,
     "forks": 0
   }
 ]
