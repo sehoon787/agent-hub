@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Newspaper } from 'lucide-react';
-import Link from 'next/link';
 import { getNewsPaginated } from '@/lib/data';
+import { Pagination } from '@/components/ui/pagination';
 
 export const metadata: Metadata = {
   title: 'Latest Releases',
@@ -18,7 +18,7 @@ function relativeDate(dateStr: string): string {
   return `${Math.floor(days / 30)}mo ago`;
 }
 
-const ITEMS_PER_PAGE = 20;
+const ITEMS_PER_PAGE = 12;
 
 export default async function ReleasesPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
   const params = await searchParams;
@@ -82,35 +82,9 @@ export default async function ReleasesPage({ searchParams }: { searchParams: Pro
       )}
 
       {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="mt-6 flex items-center justify-center gap-4 text-sm">
-          {safePage > 1 ? (
-            <Link
-              href={`/releases?page=${safePage - 1}`}
-              className="text-zinc-400 transition-colors hover:text-zinc-100"
-            >
-              &larr; Previous
-            </Link>
-          ) : (
-            <span className="text-zinc-600">&larr; Previous</span>
-          )}
-
-          <span className="text-zinc-400">
-            Page {safePage} of {totalPages}
-          </span>
-
-          {safePage < totalPages ? (
-            <Link
-              href={`/releases?page=${safePage + 1}`}
-              className="text-zinc-400 transition-colors hover:text-zinc-100"
-            >
-              Next &rarr;
-            </Link>
-          ) : (
-            <span className="text-zinc-600">Next &rarr;</span>
-          )}
-        </div>
-      )}
+      <div className="mt-6">
+        <Pagination currentPage={safePage} totalPages={totalPages} baseUrl="/releases" />
+      </div>
     </section>
   );
 }

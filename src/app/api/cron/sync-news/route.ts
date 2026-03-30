@@ -102,7 +102,7 @@ export async function GET(request: NextRequest) {
 
     for (const [repoKey, repoUrl] of repoSet) {
       const releasesRes = await fetch(
-        `https://api.github.com/repos/${repoKey}/releases?per_page=3`,
+        `https://api.github.com/repos/${repoKey}/releases?per_page=5`,
         { headers, cache: 'no-store' }
       );
 
@@ -116,7 +116,7 @@ export async function GET(request: NextRequest) {
       // If no releases, try tags as fallback
       if (releases.length === 0) {
         const tagsRes = await fetch(
-          `https://api.github.com/repos/${repoKey}/tags?per_page=3`,
+          `https://api.github.com/repos/${repoKey}/tags?per_page=5`,
           { headers, cache: 'no-store' }
         );
         if (tagsRes.ok) {
@@ -167,10 +167,10 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    // 4. Merge, sort by date, keep max 20
+    // 4. Merge, sort by date, keep max 100
     const merged = [...existingNews, ...newItems]
       .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
-      .slice(0, 20);
+      .slice(0, 100);
 
     // 5. Commit news.json
     const updatedContent = Buffer.from(

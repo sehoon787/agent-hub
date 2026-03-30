@@ -7,6 +7,7 @@ import { AgentCard } from '@/components/cards/agent-card';
 import { SearchInput } from '@/components/search/search-input';
 import { FilterSidebar } from '@/components/filters/filter-sidebar';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
+import { Pagination } from '@/components/ui/pagination';
 import { SlidersHorizontal } from 'lucide-react';
 
 const BROWSE_PLATFORM_MODELS: Record<string, { value: string; label: string }[]> = {
@@ -43,6 +44,7 @@ export function AgentsBrowse() {
   const [platform, setPlatform] = useState<string | null>(searchParams.get('platform'));
   const [sort, setSort] = useState(searchParams.get('sort') === 'stars' ? 'popular' : 'popular');
   const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(12);
   const [repo, setRepo] = useState<string | null>(searchParams.get('repo'));
 
   const { items, total } = useMemo(() => {
@@ -56,11 +58,11 @@ export function AgentsBrowse() {
       repo: repo || undefined,
       sort,
       page,
-      limit: 12,
+      limit: perPage,
     });
-  }, [q, category, stage, model, source, platform, sort, page, repo]);
+  }, [q, category, stage, model, source, platform, sort, page, perPage, repo]);
 
-  const totalPages = Math.ceil(total / 12);
+  const totalPages = Math.ceil(total / perPage);
 
   const filterGroups = [
     {
@@ -160,9 +162,18 @@ export function AgentsBrowse() {
 
       <div className="mt-6 flex items-center justify-between">
         <p className="text-sm text-zinc-500">
-          Showing {items.length} of {total} agents
+          Showing {(page - 1) * perPage + 1}–{Math.min(page * perPage, total)} of {total} agents
         </p>
         <div className="flex items-center gap-3">
+          <select
+            value={perPage}
+            onChange={(e) => { setPerPage(Number(e.target.value)); setPage(1); }}
+            className="rounded-md border border-zinc-700 bg-zinc-800 px-3 py-1.5 text-sm text-zinc-300"
+          >
+            {[12, 24, 48].map((n) => (
+              <option key={n} value={n}>{n} / page</option>
+            ))}
+          </select>
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value)}
@@ -201,23 +212,9 @@ export function AgentsBrowse() {
               ))}
             </div>
           )}
-          {totalPages > 1 && (
-            <div className="mt-8 flex items-center justify-center gap-2">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-                <button
-                  key={p}
-                  onClick={() => setPage(p)}
-                  className={`rounded-md px-3 py-1 text-sm ${
-                    p === page
-                      ? 'bg-violet-600 text-white'
-                      : 'bg-zinc-800 text-zinc-400 hover:text-zinc-200'
-                  }`}
-                >
-                  {p}
-                </button>
-              ))}
-            </div>
-          )}
+          <div className="mt-8">
+            <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
+          </div>
         </div>
       </div>
     </div>

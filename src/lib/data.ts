@@ -154,7 +154,7 @@ export function getNewsPaginated(options?: {
   limit?: number;
   maxAgeMonths?: number;
 }): { items: NewsItem[]; total: number } {
-  const { page = 1, limit = 20, maxAgeMonths = 3 } = options ?? {};
+  const { page = 1, limit = 20, maxAgeMonths = 6 } = options ?? {};
 
   const cutoff = new Date();
   cutoff.setMonth(cutoff.getMonth() - maxAgeMonths);

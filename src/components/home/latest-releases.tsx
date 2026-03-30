@@ -14,7 +14,7 @@ function relativeDate(dateStr: string): string {
 }
 
 export function LatestReleases() {
-  const news = (newsData as NewsItem[]).slice(0, 5);
+  const news = (newsData as NewsItem[]).slice(0, 6);
 
   return (
     <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-5">

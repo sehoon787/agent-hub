@@ -44,10 +44,10 @@ const REPOS = [
   { owner: 'gensecaihq', repo: 'MCP-Developer-SubAgent', path: '.claude/agents', recursive: false },
   { owner: 'gensecaihq', repo: 'Claude-Code-Subagents-Collection', path: 'subagents', recursive: true },
   // === NEW: High-star repos ===
-  { owner: 'msitarzewski', repo: 'agency-agents', path: '', recursive: true },
+  { owner: 'msitarzewski', repo: 'agency-agents', path: '', recursive: true, platform: 'universal' },
   { owner: 'wshobson', repo: 'agents', path: 'agents', recursive: true },
   { owner: 'VoltAgent', repo: 'awesome-claude-code-subagents', path: 'categories', recursive: true },
-  { owner: 'alirezarezvani', repo: 'claude-skills', path: 'agents', recursive: true },
+  { owner: 'alirezarezvani', repo: 'claude-skills', path: 'agents', recursive: true, platform: 'universal' },
   { owner: 'rohitg00', repo: 'awesome-claude-code-toolkit', path: 'agents', recursive: false },
   { owner: '0xfurai', repo: 'claude-code-subagents', path: 'agents', recursive: false },
   { owner: 'stretchcloud', repo: 'claude-code-unified-agents', path: 'claude-code-unified-agents/.claude/agents', recursive: true },
@@ -191,7 +191,7 @@ async function main() {
   const newAgents = [];
   let totalSkipped = 0;
 
-  for (const { owner, repo, path, recursive } of REPOS) {
+  for (const { owner, repo, path, recursive, platform: repoPlatform } of REPOS) {
     console.log(`\nScanning ${owner}/${repo} (path: ${path || '/'})...`);
 
     const mdFiles = await listMdFiles(owner, repo, path, recursive);
@@ -259,7 +259,7 @@ async function main() {
         category,
         model,
         source: 'community',
-        platform: 'claude',
+        platform: repoPlatform || 'claude',
         author: fm.author || owner,
         githubUrl: file.html_url || `https://github.com/${owner}/${repo}`,
         installCommand: file.download_url
