@@ -35,11 +35,11 @@
     ],
     "createdAt": "2025-02-01",
     "updatedAt": "2025-03-18",
-    "stars": 12922,
+    "stars": 16095,
     "featured": true,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "atlas",
@@ -75,11 +75,11 @@
     ],
     "createdAt": "2025-01-20",
     "updatedAt": "2025-03-15",
-    "stars": 32344,
+    "stars": 32525,
     "featured": true,
     "verified": true,
     "platform": "claude",
-    "forks": 3528
+    "forks": 3545
   },
   {
     "slug": "hephaestus",
@@ -118,11 +118,11 @@
     ],
     "createdAt": "2025-01-25",
     "updatedAt": "2025-03-22",
-    "stars": 12922,
+    "stars": 16095,
     "featured": true,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "prometheus",
@@ -158,11 +158,11 @@
     ],
     "createdAt": "2025-02-05",
     "updatedAt": "2025-03-19",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "architect",
@@ -197,11 +197,11 @@
     ],
     "createdAt": "2025-01-18",
     "updatedAt": "2025-03-20",
-    "stars": 32344,
+    "stars": 32525,
     "featured": true,
     "verified": true,
     "platform": "claude",
-    "forks": 3528
+    "forks": 3545
   },
   {
     "slug": "designer",
@@ -239,11 +239,11 @@
     ],
     "createdAt": "2025-02-10",
     "updatedAt": "2025-03-21",
-    "stars": 12922,
+    "stars": 16095,
     "featured": true,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "executor",
@@ -279,11 +279,11 @@
     ],
     "createdAt": "2025-01-22",
     "updatedAt": "2025-03-18",
-    "stars": 32344,
+    "stars": 32525,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 3528
+    "forks": 3545
   },
   {
     "slug": "code-reviewer",
@@ -318,11 +318,11 @@
     ],
     "createdAt": "2025-01-16",
     "updatedAt": "2025-03-20",
-    "stars": 32344,
+    "stars": 32525,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 3528
+    "forks": 3545
   },
   {
     "slug": "security-reviewer",
@@ -357,11 +357,11 @@
     ],
     "createdAt": "2025-01-17",
     "updatedAt": "2025-03-21",
-    "stars": 32344,
+    "stars": 32525,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 3528
+    "forks": 3545
   },
   {
     "slug": "debugger",
@@ -397,11 +397,11 @@
     ],
     "createdAt": "2025-01-19",
     "updatedAt": "2025-03-17",
-    "stars": 32344,
+    "stars": 32525,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 3528
+    "forks": 3545
   },
   {
     "slug": "test-engineer",
@@ -439,11 +439,11 @@
     ],
     "createdAt": "2025-01-21",
     "updatedAt": "2025-03-19",
-    "stars": 32344,
+    "stars": 32525,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 3528
+    "forks": 3545
   },
   {
     "slug": "tracer",
@@ -477,11 +477,11 @@
     ],
     "createdAt": "2025-02-08",
     "updatedAt": "2025-03-16",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "verifier",
@@ -515,11 +515,11 @@
     ],
     "createdAt": "2025-02-12",
     "updatedAt": "2025-03-18",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "writer",
@@ -553,11 +553,11 @@
     ],
     "createdAt": "2025-01-23",
     "updatedAt": "2025-03-15",
-    "stars": 32344,
+    "stars": 32525,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 3528
+    "forks": 3545
   },
   {
     "slug": "git-master",
@@ -591,11 +591,11 @@
     ],
     "createdAt": "2025-02-03",
     "updatedAt": "2025-03-20",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "explore",
@@ -629,11 +629,11 @@
     ],
     "createdAt": "2025-01-24",
     "updatedAt": "2025-03-14",
-    "stars": 32344,
+    "stars": 32525,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 3528
+    "forks": 3545
   },
   {
     "slug": "analyst",
@@ -667,11 +667,11 @@
     ],
     "createdAt": "2025-01-26",
     "updatedAt": "2025-03-17",
-    "stars": 32344,
+    "stars": 32525,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 3528
+    "forks": 3545
   },
   {
     "slug": "metis",
@@ -704,11 +704,11 @@
     ],
     "createdAt": "2025-02-06",
     "updatedAt": "2025-03-19",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "momus",
@@ -741,11 +741,11 @@
     ],
     "createdAt": "2025-02-07",
     "updatedAt": "2025-03-16",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "oracle",
@@ -779,11 +779,11 @@
     ],
     "createdAt": "2025-02-09",
     "updatedAt": "2025-03-20",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "critic",
@@ -817,11 +817,11 @@
     ],
     "createdAt": "2025-02-11",
     "updatedAt": "2025-03-18",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "scientist",
@@ -855,11 +855,11 @@
     ],
     "createdAt": "2025-02-13",
     "updatedAt": "2025-03-15",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "planner",
@@ -894,11 +894,11 @@
     ],
     "createdAt": "2025-01-14",
     "updatedAt": "2025-03-21",
-    "stars": 32344,
+    "stars": 32525,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 3528
+    "forks": 3545
   },
   {
     "slug": "qa-tester",
@@ -932,11 +932,11 @@
     ],
     "createdAt": "2025-02-14",
     "updatedAt": "2025-03-17",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "librarian",
@@ -970,11 +970,11 @@
     ],
     "createdAt": "2025-02-15",
     "updatedAt": "2025-03-19",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "multimodal-looker",
@@ -1007,11 +1007,11 @@
     ],
     "createdAt": "2025-02-16",
     "updatedAt": "2025-03-18",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "document-specialist",
@@ -1044,11 +1044,11 @@
     ],
     "createdAt": "2025-02-17",
     "updatedAt": "2025-03-16",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "backend-architect",
@@ -1679,11 +1679,11 @@
     ],
     "createdAt": "2025-06-10",
     "updatedAt": "2025-12-15",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "anthropologist",
@@ -1717,11 +1717,11 @@
     ],
     "createdAt": "2025-07-02",
     "updatedAt": "2025-12-10",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "historian",
@@ -1755,11 +1755,11 @@
     ],
     "createdAt": "2025-07-15",
     "updatedAt": "2025-12-18",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "narratologist",
@@ -1793,11 +1793,11 @@
     ],
     "createdAt": "2025-08-01",
     "updatedAt": "2026-01-05",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "psychologist",
@@ -1831,11 +1831,11 @@
     ],
     "createdAt": "2025-08-12",
     "updatedAt": "2026-01-10",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "brand-guardian",
@@ -1869,11 +1869,11 @@
     ],
     "createdAt": "2025-09-01",
     "updatedAt": "2026-01-15",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "image-prompt-engineer",
@@ -1907,11 +1907,11 @@
     ],
     "createdAt": "2025-09-15",
     "updatedAt": "2026-01-20",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "ui-designer",
@@ -1946,11 +1946,11 @@
     ],
     "createdAt": "2025-10-01",
     "updatedAt": "2026-02-01",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "ux-architect",
@@ -1985,11 +1985,11 @@
     ],
     "createdAt": "2025-10-08",
     "updatedAt": "2026-02-05",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "ux-researcher",
@@ -2023,11 +2023,11 @@
     ],
     "createdAt": "2025-10-15",
     "updatedAt": "2026-02-08",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "content-creator",
@@ -2062,11 +2062,11 @@
     ],
     "createdAt": "2025-10-22",
     "updatedAt": "2026-02-12",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "growth-hacker",
@@ -2101,11 +2101,11 @@
     ],
     "createdAt": "2025-11-01",
     "updatedAt": "2026-02-15",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "seo-specialist",
@@ -2140,11 +2140,11 @@
     ],
     "createdAt": "2025-11-08",
     "updatedAt": "2026-02-18",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "social-media-strategist",
@@ -2178,11 +2178,11 @@
     ],
     "createdAt": "2025-11-15",
     "updatedAt": "2026-02-20",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "product-manager",
@@ -2217,11 +2217,11 @@
     ],
     "createdAt": "2025-11-22",
     "updatedAt": "2026-02-22",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "sprint-prioritizer",
@@ -2255,11 +2255,11 @@
     ],
     "createdAt": "2025-12-01",
     "updatedAt": "2026-02-25",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "trend-researcher",
@@ -2293,11 +2293,11 @@
     ],
     "createdAt": "2025-12-08",
     "updatedAt": "2026-02-28",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "project-shepherd",
@@ -2332,11 +2332,11 @@
     ],
     "createdAt": "2025-12-15",
     "updatedAt": "2026-03-01",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "analytics-reporter",
@@ -2371,11 +2371,11 @@
     ],
     "createdAt": "2025-12-22",
     "updatedAt": "2026-03-05",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "finance-tracker",
@@ -2410,11 +2410,11 @@
     ],
     "createdAt": "2026-01-05",
     "updatedAt": "2026-03-08",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "legal-compliance-checker",
@@ -2448,11 +2448,11 @@
     ],
     "createdAt": "2026-01-12",
     "updatedAt": "2026-03-10",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "accessibility-auditor",
@@ -2487,11 +2487,11 @@
     ],
     "createdAt": "2026-01-18",
     "updatedAt": "2026-03-12",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "performance-benchmarker",
@@ -2526,11 +2526,11 @@
     ],
     "createdAt": "2026-01-25",
     "updatedAt": "2026-03-14",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "workflow-optimizer",
@@ -2565,11 +2565,11 @@
     ],
     "createdAt": "2026-02-01",
     "updatedAt": "2026-03-16",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "api-tester",
@@ -2604,11 +2604,11 @@
     ],
     "createdAt": "2026-02-05",
     "updatedAt": "2026-03-18",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "evidence-collector",
@@ -2643,11 +2643,11 @@
     ],
     "createdAt": "2026-02-10",
     "updatedAt": "2026-03-19",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "reality-checker",
@@ -2682,11 +2682,11 @@
     ],
     "createdAt": "2026-02-14",
     "updatedAt": "2026-03-20",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "game-designer",
@@ -2720,11 +2720,11 @@
     ],
     "createdAt": "2026-02-18",
     "updatedAt": "2026-03-21",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "level-designer",
@@ -2758,11 +2758,11 @@
     ],
     "createdAt": "2026-02-20",
     "updatedAt": "2026-03-22",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "narrative-designer",
@@ -2796,11 +2796,11 @@
     ],
     "createdAt": "2026-02-22",
     "updatedAt": "2026-03-23",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "mcp-builder",
@@ -2836,11 +2836,11 @@
     ],
     "createdAt": "2026-02-25",
     "updatedAt": "2026-03-24",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "document-generator",
@@ -2875,11 +2875,11 @@
     ],
     "createdAt": "2026-02-28",
     "updatedAt": "2026-03-24",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "blockchain-security-auditor",
@@ -2914,11 +2914,11 @@
     ],
     "createdAt": "2026-03-01",
     "updatedAt": "2026-03-24",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "compliance-auditor",
@@ -2952,11 +2952,11 @@
     ],
     "createdAt": "2026-03-05",
     "updatedAt": "2026-03-25",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "developer-advocate",
@@ -2991,11 +2991,11 @@
     ],
     "createdAt": "2026-03-08",
     "updatedAt": "2026-03-25",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "salesforce-architect",
@@ -3030,11 +3030,11 @@
     ],
     "createdAt": "2026-03-10",
     "updatedAt": "2026-03-25",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "workflow-architect",
@@ -3069,11 +3069,11 @@
     ],
     "createdAt": "2026-03-12",
     "updatedAt": "2026-03-25",
-    "stars": 12922,
+    "stars": 16095,
     "featured": false,
     "verified": true,
     "platform": "claude",
-    "forks": 852
+    "forks": 1116
   },
   {
     "slug": "codebase-investigator",
@@ -3109,10 +3109,10 @@
     ],
     "createdAt": "2025-06-25",
     "updatedAt": "2025-08-10",
-    "stars": 99233,
+    "stars": 99465,
     "featured": false,
     "verified": true,
-    "forks": 12654
+    "forks": 12722
   },
   {
     "slug": "cli-help",
@@ -3145,10 +3145,10 @@
     ],
     "createdAt": "2025-06-25",
     "updatedAt": "2025-08-10",
-    "stars": 99233,
+    "stars": 99465,
     "featured": false,
     "verified": true,
-    "forks": 12654
+    "forks": 12722
   },
   {
     "slug": "gemini-generalist",
@@ -3185,10 +3185,10 @@
     ],
     "createdAt": "2025-06-25",
     "updatedAt": "2025-08-10",
-    "stars": 99233,
+    "stars": 99465,
     "featured": false,
     "verified": true,
-    "forks": 12654
+    "forks": 12722
   },
   {
     "slug": "browser-agent",
@@ -3224,10 +3224,10 @@
     ],
     "createdAt": "2025-06-25",
     "updatedAt": "2025-08-10",
-    "stars": 99233,
+    "stars": 99465,
     "featured": false,
     "verified": true,
-    "forks": 12654
+    "forks": 12722
   },
   {
     "slug": "memory-manager",
@@ -3262,10 +3262,10 @@
     ],
     "createdAt": "2025-06-25",
     "updatedAt": "2025-08-10",
-    "stars": 99233,
+    "stars": 99465,
     "featured": false,
     "verified": true,
-    "forks": 12654
+    "forks": 12722
   },
   {
     "slug": "maestro-gemini",
@@ -3303,10 +3303,10 @@
     ],
     "createdAt": "2025-07-15",
     "updatedAt": "2025-09-01",
-    "stars": 240,
+    "stars": 254,
     "featured": false,
     "verified": false,
-    "forks": 10
+    "forks": 12
   },
   {
     "slug": "gemini-security",
@@ -3342,10 +3342,10 @@
     ],
     "createdAt": "2025-07-01",
     "updatedAt": "2025-09-05",
-    "stars": 99233,
+    "stars": 99465,
     "featured": false,
     "verified": true,
-    "forks": 12654
+    "forks": 12722
   },
   {
     "slug": "gemini-conductor",
@@ -3382,10 +3382,10 @@
     ],
     "createdAt": "2025-07-01",
     "updatedAt": "2025-09-05",
-    "stars": 99233,
+    "stars": 99465,
     "featured": false,
     "verified": true,
-    "forks": 12654
+    "forks": 12722
   },
   {
     "slug": "codex-default",
@@ -3420,10 +3420,10 @@
     ],
     "createdAt": "2025-05-16",
     "updatedAt": "2025-08-20",
-    "stars": 67849,
+    "stars": 68275,
     "featured": false,
     "verified": true,
-    "forks": 9093
+    "forks": 9145
   },
   {
     "slug": "codex-worker",
@@ -3459,10 +3459,10 @@
     ],
     "createdAt": "2025-05-16",
     "updatedAt": "2025-08-20",
-    "stars": 67849,
+    "stars": 68275,
     "featured": false,
     "verified": true,
-    "forks": 9093
+    "forks": 9145
   },
   {
     "slug": "codex-explorer",
@@ -3496,10 +3496,10 @@
     ],
     "createdAt": "2025-05-16",
     "updatedAt": "2025-08-20",
-    "stars": 67849,
+    "stars": 68275,
     "featured": false,
     "verified": true,
-    "forks": 9093
+    "forks": 9145
   },
   {
     "slug": "skill-creator",
@@ -3534,10 +3534,10 @@
     ],
     "createdAt": "2025-08-01",
     "updatedAt": "2025-10-15",
-    "stars": 15461,
+    "stars": 15684,
     "featured": false,
     "verified": false,
-    "forks": 916
+    "forks": 948
   },
   {
     "slug": "pr-reviewer",
@@ -3613,7 +3613,7 @@
     ],
     "createdAt": "2026-03-27",
     "updatedAt": "2026-03-27",
-    "stars": 0,
+    "stars": 5,
     "featured": false,
     "verified": false,
     "forks": 0
