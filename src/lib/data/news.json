@@ -1,1 +1,152 @@
-[]
+[
+  {
+    "id": "Yeachan-Heo/oh-my-claudecode:v4.9.3",
+    "repo": "Yeachan-Heo/oh-my-claudecode",
+    "repoUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "tagName": "v4.9.3",
+    "title": "v4.9.3 — MCP Bridge Fix, 30+ Bug Fixes & Hardening",
+    "body": "# oh-my-claudecode v4.9.3: MCP Bridge Fix, 30+ Bug Fixes & Hardening\n\n## 🔥 Critical Fix\n\n**MCP bridge server crash on startup** — `setRequestHandler` was extracted without `.bind(server)`, causing `t",
+    "publishedAt": "2026-03-28T22:49:31Z",
+    "url": "https://github.com/Yeachan-Heo/oh-my-claudecode/releases/tag/v4.9.3"
+  },
+  {
+    "id": "Yeachan-Heo/oh-my-claudecode:v4.9.2",
+    "repo": "Yeachan-Heo/oh-my-claudecode",
+    "repoUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "tagName": "v4.9.2",
+    "title": "v4.9.2 — Security hardening, project memory, Korean i18n, 50+ fixes",
+    "body": "## What's Changed\n\n### Features\n- **Project Memory**: Progressive disclosure injection with hot-path tracking (`e6511ece`)\n- **HUD**: Auto-detect terminal width for responsive wrapping (`03691be7`)\n- ",
+    "publishedAt": "2026-03-28T19:02:58Z",
+    "url": "https://github.com/Yeachan-Heo/oh-my-claudecode/releases/tag/v4.9.2"
+  },
+  {
+    "id": "google-gemini/gemini-cli:v0.35.3",
+    "repo": "google-gemini/gemini-cli",
+    "repoUrl": "https://github.com/google-gemini/gemini-cli",
+    "tagName": "v0.35.3",
+    "title": "Release v0.35.3",
+    "body": "## What's Changed\n* fix(patch): cherry-pick 765fb67 to release/v0.35.2-pr-24055 [CONFLICTS] by @gemini-cli-robot in https://github.com/google-gemini/gemini-cli/pull/24063\n\n\n**Full Changelog**: https:/",
+    "publishedAt": "2026-03-28T03:24:15Z",
+    "url": "https://github.com/google-gemini/gemini-cli/releases/tag/v0.35.3"
+  },
+  {
+    "id": "google-gemini/gemini-cli:v0.36.0-preview.6",
+    "repo": "google-gemini/gemini-cli",
+    "repoUrl": "https://github.com/google-gemini/gemini-cli",
+    "tagName": "v0.36.0-preview.6",
+    "title": "Release v0.36.0-preview.6",
+    "body": "## What's Changed\n* fix(patch): cherry-pick 765fb67 to release/v0.36.0-preview.5-pr-24055 to patch version v0.36.0-preview.5 and create version 0.36.0-preview.6 by @gemini-cli-robot in https://github.",
+    "publishedAt": "2026-03-28T03:20:18Z",
+    "url": "https://github.com/google-gemini/gemini-cli/releases/tag/v0.36.0-preview.6"
+  },
+  {
+    "id": "openai/codex:rust-v0.118.0-alpha.3",
+    "repo": "openai/codex",
+    "repoUrl": "https://github.com/openai/codex",
+    "tagName": "rust-v0.118.0-alpha.3",
+    "title": "0.118.0-alpha.3",
+    "body": "Release 0.118.0-alpha.3\n\n",
+    "publishedAt": "2026-03-27T23:09:25Z",
+    "url": "https://github.com/openai/codex/releases/tag/rust-v0.118.0-alpha.3"
+  },
+  {
+    "id": "openai/codex:rust-v0.118.0-alpha.2",
+    "repo": "openai/codex",
+    "repoUrl": "https://github.com/openai/codex",
+    "tagName": "rust-v0.118.0-alpha.2",
+    "title": "0.118.0-alpha.2",
+    "body": "Release 0.118.0-alpha.2\n\n",
+    "publishedAt": "2026-03-27T22:04:25Z",
+    "url": "https://github.com/openai/codex/releases/tag/rust-v0.118.0-alpha.2"
+  },
+  {
+    "id": "google-gemini/gemini-cli:v0.36.0-preview.5",
+    "repo": "google-gemini/gemini-cli",
+    "repoUrl": "https://github.com/google-gemini/gemini-cli",
+    "tagName": "v0.36.0-preview.5",
+    "title": "Release v0.36.0-preview.5",
+    "body": "**Full Changelog**: https://github.com/google-gemini/gemini-cli/compare/v0.36.0-preview.4...v0.36.0-preview.5",
+    "publishedAt": "2026-03-27T17:43:56Z",
+    "url": "https://github.com/google-gemini/gemini-cli/releases/tag/v0.36.0-preview.5"
+  },
+  {
+    "id": "sehoon787/my-claude:v0.23.1",
+    "repo": "sehoon787/my-claude",
+    "repoUrl": "https://github.com/sehoon787/my-claude",
+    "tagName": "v0.23.1",
+    "title": "v0.23.1",
+    "body": "## What's Changed\n* chore: bump plugin version to 0.23.0 by @github-actions[bot] in https://github.com/sehoon787/my-claude/pull/46\n\n\n**Full Changelog**: https://github.com/sehoon787/my-claude/compare/",
+    "publishedAt": "2026-03-27T01:41:34Z",
+    "url": "https://github.com/sehoon787/my-claude/releases/tag/v0.23.1"
+  },
+  {
+    "id": "sehoon787/my-claude:v0.23.0",
+    "repo": "sehoon787/my-claude",
+    "repoUrl": "https://github.com/sehoon787/my-claude",
+    "tagName": "v0.23.0",
+    "title": "v0.23.0",
+    "body": "## What's Changed\n* chore: bump plugin version to 0.22.1 by @github-actions[bot] in https://github.com/sehoon787/my-claude/pull/45\n\n\n**Full Changelog**: https://github.com/sehoon787/my-claude/compare/",
+    "publishedAt": "2026-03-27T00:28:47Z",
+    "url": "https://github.com/sehoon787/my-claude/releases/tag/v0.23.0"
+  },
+  {
+    "id": "openai/codex:rust-v0.117.0",
+    "repo": "openai/codex",
+    "repoUrl": "https://github.com/openai/codex",
+    "tagName": "rust-v0.117.0",
+    "title": "0.117.0",
+    "body": "## New Features\n- Plugins are now a first-class workflow: Codex can sync product-scoped plugins at startup, browse them in `/plugins`, and install or remove them with clearer auth/setup handling. (#15",
+    "publishedAt": "2026-03-26T22:27:39Z",
+    "url": "https://github.com/openai/codex/releases/tag/rust-v0.117.0"
+  },
+  {
+    "id": "sehoon787/my-claude:v0.22.1",
+    "repo": "sehoon787/my-claude",
+    "repoUrl": "https://github.com/sehoon787/my-claude",
+    "tagName": "v0.22.1",
+    "title": "v0.22.1",
+    "body": "## What's Changed\n* chore: bump plugin version to 0.22.0 by @github-actions[bot] in https://github.com/sehoon787/my-claude/pull/44\n\n\n**Full Changelog**: https://github.com/sehoon787/my-claude/compare/",
+    "publishedAt": "2026-03-26T06:09:09Z",
+    "url": "https://github.com/sehoon787/my-claude/releases/tag/v0.22.1"
+  },
+  {
+    "id": "Yeachan-Heo/oh-my-claudecode:v4.9.1",
+    "repo": "Yeachan-Heo/oh-my-claudecode",
+    "repoUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "tagName": "v4.9.1",
+    "title": "v4.9.1",
+    "body": "## What's Changed (44 commits)\n\n### Bug Fixes\n- fix(hud): prevent session state leakage across HUD windows (#1816)\n- fix: session-scoped state cleanup on termination (#1798)\n- fix: keyword persistent ",
+    "publishedAt": "2026-03-24T00:03:15Z",
+    "url": "https://github.com/Yeachan-Heo/oh-my-claudecode/releases/tag/v4.9.1"
+  },
+  {
+    "id": "josstei/maestro-gemini:v1.4.0",
+    "repo": "josstei/maestro-gemini",
+    "repoUrl": "https://github.com/josstei/maestro-gemini",
+    "tagName": "v1.4.0",
+    "title": "v1.4.0",
+    "body": "\n### Added\n\n- **10 new specialist agents** — `seo_specialist`, `copywriter`, `content_strategist`, `ux_designer`, `accessibility_specialist`, `product_manager`, `analytics_engineer`, `i18n_specialist`",
+    "publishedAt": "2026-03-19T06:20:22Z",
+    "url": "https://github.com/josstei/maestro-gemini/releases/tag/v1.4.0"
+  },
+  {
+    "id": "josstei/maestro-gemini:v1.3.0",
+    "repo": "josstei/maestro-gemini",
+    "repoUrl": "https://github.com/josstei/maestro-gemini",
+    "tagName": "v1.3.0",
+    "title": "v1.3.0",
+    "body": "\n### Added\n\n- **Plan-based execution mode recommendation** — When `MAESTRO_EXECUTION_MODE=ask` (default), the orchestrator analyzes the implementation plan's dependency graph and presents a data-drive",
+    "publishedAt": "2026-03-07T06:38:53Z",
+    "url": "https://github.com/josstei/maestro-gemini/releases/tag/v1.3.0"
+  },
+  {
+    "id": "josstei/maestro-gemini:v1.2.1",
+    "repo": "josstei/maestro-gemini",
+    "repoUrl": "https://github.com/josstei/maestro-gemini",
+    "tagName": "v1.2.1",
+    "title": "v1.2.1",
+    "body": "\n### Added\n\n- **Expanded test coverage** — Added 91 unit tests and migrated integration tests to Node.js to validate hooks, dispatch, state handling, config resolution, and timeout behavior\n- **Cross-",
+    "publishedAt": "2026-02-23T02:30:45Z",
+    "url": "https://github.com/josstei/maestro-gemini/releases/tag/v1.2.1"
+  }
+]
