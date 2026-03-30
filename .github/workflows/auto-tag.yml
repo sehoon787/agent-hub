@@ -87,6 +87,7 @@ jobs:
 
       - name: Bump package.json version
         if: steps.bump.outputs.skip != 'true' && env.HAS_BUMP_TOKEN == 'true'
+        continue-on-error: true
         env:
           BUMP_TOKEN: ${{ secrets.BUMP_TOKEN }}
         run: |
