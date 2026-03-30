@@ -1,8 +1,71 @@
 {
-  "Yeachan-Heo/oh-my-claudecode": { "contributors": 74 },
-  "wshobson/agents": { "contributors": 43 },
-  "google-gemini/gemini-cli": { "contributors": 598 },
-  "openai/codex": { "contributors": 392 },
-  "josstei/maestro-gemini": { "contributors": 1 },
-  "sehoon787/my-claude": { "contributors": 2 }
+  "Yeachan-Heo/oh-my-claudecode": {
+    "contributors": 74
+  },
+  "wshobson/agents": {
+    "contributors": 43
+  },
+  "google-gemini/gemini-cli": {
+    "contributors": 598
+  },
+  "josstei/maestro-gemini": {
+    "contributors": 1
+  },
+  "openai/codex": {
+    "contributors": 392
+  },
+  "sehoon787/my-claude": {
+    "contributors": 2
+  },
+  "lst97/claude-code-sub-agents": {
+    "contributors": 3
+  },
+  "softaworks/agent-toolkit": {
+    "contributors": 8
+  },
+  "hesreallyhim/a-list-of-claude-code-agents": {
+    "contributors": 4
+  },
+  "darcyegb/ClaudeCodeAgents": {
+    "contributors": 1
+  },
+  "ruvnet/agentic-flow": {
+    "contributors": 5
+  },
+  "zhsama/claude-sub-agent": {
+    "contributors": 1
+  },
+  "backant-io/backant-agents": {
+    "contributors": 1
+  },
+  "IncomeStreamSurfer/claude-code-agents-wizard-v2": {
+    "contributors": 2
+  },
+  "peterfei/ai-agent-team": {
+    "contributors": 1
+  },
+  "shinpr/ai-coding-project-boilerplate": {
+    "contributors": 2
+  },
+  "webdevtodayjason/sub-agents": {
+    "contributors": 2
+  },
+  "tony/claude-code-riper-5": {
+    "contributors": 1
+  },
+  "augmnt/agents": {
+    "contributors": 1
+  },
+  "gensecaihq/MCP-Developer-SubAgent": {
+    "contributors": 2
+  },
+  "gensecaihq/Claude-Code-Subagents-Collection": {
+    "contributors": 2
+  },
+  "msitarzewski/agency-agents": {
+    "contributors": 60
+  },
+  "VoltAgent/awesome-claude-code-subagents": {
+    "contributors": 25
+  }
 }
