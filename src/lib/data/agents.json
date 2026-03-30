@@ -3589,7 +3589,7 @@
     "platform": "claude",
     "author": "sehoon787",
     "githubUrl": "https://github.com/sehoon787/my-claude",
-    "installCommand": "npx claude-code --agent boss",
+    "installCommand": "",
     "capabilities": [
       "Intent classification",
       "Model routing",

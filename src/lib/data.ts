@@ -1,4 +1,4 @@
-import type { Agent, AgentStage, RawAgent, Stats, SearchResult } from './types';
+import type { Agent, AgentPlatform, AgentStage, RawAgent, RepoSummary, Stats, SearchResult } from './types';
 import { inferStages } from './stage-classifier';
 import agentsData from './data/agents.json';
 
@@ -16,12 +16,13 @@ export function getAgents(options?: {
   source?: string;
   platform?: string;
   stage?: string;
+  repo?: string;
   sort?: string;
   page?: number;
   limit?: number;
 }): { items: Agent[]; total: number } {
   let filtered = [...agents];
-  const { q, category, model, source, platform, stage, sort, page = 1, limit: rawLimit = 12 } = options ?? {};
+  const { q, category, model, source, platform, stage, repo, sort, page = 1, limit: rawLimit = 12 } = options ?? {};
   const limit = Math.min(Math.max(1, rawLimit), 100);
 
   if (q) {
@@ -39,6 +40,11 @@ export function getAgents(options?: {
   if (source) filtered = filtered.filter((a) => a.source === source);
   if (platform) filtered = filtered.filter((a) => a.platform === platform);
   if (stage) filtered = filtered.filter((a) => a.stages.includes(stage as AgentStage));
+  if (repo) {
+    filtered = filtered.filter((a) =>
+      a.githubUrl?.includes(`github.com/${repo}`)
+    );
+  }
 
   if (sort === 'name') {
     filtered.sort((a, b) => a.displayName.localeCompare(b.displayName));
@@ -83,6 +89,34 @@ export function getAllAgentSlugs(): string[] {
 
 export function getTopAgentsByStars(limit = 10): Agent[] {
   return [...agents].sort((a, b) => b.stars - a.stars).slice(0, limit);
+}
+
+export function getTopRepositories(limit = 10): RepoSummary[] {
+  const repoMap = new Map<string, { agents: Agent[]; githubUrl: string }>();
+
+  for (const a of agents) {
+    if (!a.githubUrl) continue;
+    const match = a.githubUrl.match(/github\.com\/([^/]+\/[^/]+)/);
+    if (!match) continue;
+    const key = match[1];
+    if (!repoMap.has(key)) {
+      repoMap.set(key, { agents: [], githubUrl: `https://github.com/${key}` });
+    }
+    repoMap.get(key)!.agents.push(a);
+  }
+
+  return Array.from(repoMap.entries())
+    .map(([key, { agents: repoAgents, githubUrl }]) => ({
+      repoKey: key,
+      repoName: key.split('/')[1],
+      githubUrl,
+      stars: Math.max(...repoAgents.map((a) => a.stars)),
+      forks: Math.max(...repoAgents.map((a) => a.forks)),
+      agentCount: repoAgents.length,
+      platforms: [...new Set(repoAgents.map((a) => a.platform))] as AgentPlatform[],
+    }))
+    .sort((a, b) => b.stars - a.stars)
+    .slice(0, limit);
 }
 
 // --- Search ---
