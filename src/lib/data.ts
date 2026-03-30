@@ -149,6 +149,27 @@ export function getNews(): NewsItem[] {
   );
 }
 
+export function getNewsPaginated(options?: {
+  page?: number;
+  limit?: number;
+  maxAgeMonths?: number;
+}): { items: NewsItem[]; total: number } {
+  const { page = 1, limit = 20, maxAgeMonths = 3 } = options ?? {};
+
+  const cutoff = new Date();
+  cutoff.setMonth(cutoff.getMonth() - maxAgeMonths);
+
+  const filtered = (newsData as NewsItem[])
+    .filter((n) => new Date(n.publishedAt) >= cutoff)
+    .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+
+  const total = filtered.length;
+  const start = (page - 1) * limit;
+  const items = filtered.slice(start, start + limit);
+
+  return { items, total };
+}
+
 // --- Stats ---
 
 export function getStats(): Stats {

@@ -1,1 +1,8 @@
-{}
+{
+  "Yeachan-Heo/oh-my-claudecode": { "contributors": 74 },
+  "wshobson/agents": { "contributors": 43 },
+  "google-gemini/gemini-cli": { "contributors": 598 },
+  "openai/codex": { "contributors": 392 },
+  "josstei/maestro-gemini": { "contributors": 1 },
+  "sehoon787/my-claude": { "contributors": 2 }
+}

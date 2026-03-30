@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
-import { ExternalLink, Newspaper } from 'lucide-react';
-import { getNews } from '@/lib/data';
+import { Newspaper } from 'lucide-react';
+import Link from 'next/link';
+import { getNewsPaginated } from '@/lib/data';
 
 export const metadata: Metadata = {
   title: 'Latest Releases',
@@ -17,59 +18,97 @@ function relativeDate(dateStr: string): string {
   return `${Math.floor(days / 30)}mo ago`;
 }
 
-function truncate(text: string, max: number): string {
-  if (!text || text.length <= max) return text;
-  return text.slice(0, max).trimEnd() + '...';
-}
+const ITEMS_PER_PAGE = 20;
 
-export default function ReleasesPage() {
-  const news = getNews();
+export default async function ReleasesPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
+  const params = await searchParams;
+  const page = Math.max(1, parseInt(params.page || '1', 10) || 1);
+  const { items, total } = getNewsPaginated({ page, limit: ITEMS_PER_PAGE });
+  const totalPages = Math.max(1, Math.ceil(total / ITEMS_PER_PAGE));
+  const safePage = Math.min(page, totalPages);
 
   return (
     <section className="mx-auto max-w-5xl px-4 py-10">
       <div className="mb-6 flex items-center gap-2">
         <Newspaper className="h-6 w-6 text-violet-400" />
-        <h1 className="text-2xl font-bold text-zinc-100">Latest Releases</h1>
+        <h1 className="text-2xl font-bold text-zinc-100">
+          Latest Releases{' '}
+          <span className="text-lg font-normal text-zinc-400">({total})</span>
+        </h1>
       </div>
 
-      {news.length === 0 ? (
+      {items.length === 0 ? (
         <p className="py-8 text-center text-sm text-zinc-500">
           No releases collected yet. Check back later.
         </p>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2">
-          {news.map((item) => (
+        <div className="overflow-hidden rounded-xl border border-zinc-800">
+          {/* Header */}
+          <div className="grid grid-cols-[3rem_1fr_2fr_5rem_4.5rem] gap-2 border-b border-zinc-700 bg-zinc-800/60 px-4 py-2.5 text-xs font-semibold uppercase tracking-wider text-zinc-400">
+            <span>#</span>
+            <span>Repository</span>
+            <span>Title</span>
+            <span>Tag</span>
+            <span className="text-right">Date</span>
+          </div>
+
+          {/* Rows */}
+          {items.map((item, idx) => (
             <a
               key={item.id}
               href={item.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group rounded-xl border border-zinc-800 bg-zinc-900 p-5 transition-colors hover:border-zinc-700"
+              className="grid grid-cols-[3rem_1fr_2fr_5rem_4.5rem] items-center gap-2 border-b border-zinc-800 px-4 py-3 transition-colors last:border-b-0 hover:bg-zinc-800/50"
             >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-zinc-200">{item.repo}</span>
-                  <span className="text-xs text-violet-400">{item.tagName}</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-xs text-zinc-500">{relativeDate(item.publishedAt)}</span>
-                  <ExternalLink className="h-3 w-3 text-zinc-600 group-hover:text-zinc-400" />
-                </div>
-              </div>
-
-              {item.title && (
-                <p className="mt-2 text-sm font-medium text-zinc-100">
-                  {item.title}
-                </p>
-              )}
-
-              {item.body && (
-                <p className="mt-1 text-xs leading-relaxed text-zinc-500">
-                  {truncate(item.body, 200)}
-                </p>
-              )}
+              <span className="text-sm text-zinc-500">
+                {(safePage - 1) * ITEMS_PER_PAGE + idx + 1}
+              </span>
+              <span className="truncate text-sm font-medium text-violet-400">
+                {item.repo}
+              </span>
+              <span className="truncate text-sm text-zinc-200">
+                {item.title || 'Untitled'}
+              </span>
+              <span className="inline-flex w-fit items-center rounded-md bg-zinc-800 px-1.5 py-0.5 text-xs font-medium text-zinc-300">
+                {item.tagName}
+              </span>
+              <span className="text-right text-xs text-zinc-500">
+                {relativeDate(item.publishedAt)}
+              </span>
             </a>
           ))}
+        </div>
+      )}
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="mt-6 flex items-center justify-center gap-4 text-sm">
+          {safePage > 1 ? (
+            <Link
+              href={`/releases?page=${safePage - 1}`}
+              className="text-zinc-400 transition-colors hover:text-zinc-100"
+            >
+              &larr; Previous
+            </Link>
+          ) : (
+            <span className="text-zinc-600">&larr; Previous</span>
+          )}
+
+          <span className="text-zinc-400">
+            Page {safePage} of {totalPages}
+          </span>
+
+          {safePage < totalPages ? (
+            <Link
+              href={`/releases?page=${safePage + 1}`}
+              className="text-zinc-400 transition-colors hover:text-zinc-100"
+            >
+              Next &rarr;
+            </Link>
+          ) : (
+            <span className="text-zinc-600">Next &rarr;</span>
+          )}
         </div>
       )}
     </section>
