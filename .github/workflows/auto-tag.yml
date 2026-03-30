@@ -12,6 +12,8 @@ jobs:
   tag-and-release:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     runs-on: ubuntu-latest
+    env:
+      HAS_BUMP_TOKEN: ${{ secrets.BUMP_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -84,9 +86,8 @@ jobs:
           generate_release_notes: true
 
       - name: Bump package.json version
-        if: steps.bump.outputs.skip != 'true' && env.HAS_TOKEN == 'true'
+        if: steps.bump.outputs.skip != 'true' && env.HAS_BUMP_TOKEN == 'true'
         env:
-          HAS_TOKEN: ${{ secrets.BUMP_TOKEN != '' }}
           BUMP_TOKEN: ${{ secrets.BUMP_TOKEN }}
         run: |
           VERSION="${{ steps.bump.outputs.new_version }}"
