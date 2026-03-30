@@ -25,6 +25,11 @@ interface AgentEntry {
   [key: string]: unknown;
 }
 
+interface TagEntry {
+  name: string;
+  commit: { sha: string; url: string };
+}
+
 function parseOwnerRepo(githubUrl: string): { owner: string; repo: string } | null {
   const match = githubUrl.match(/github\.com\/([a-zA-Z0-9._-]+)\/([a-zA-Z0-9._-]+)/);
   if (!match) return null;
@@ -62,9 +67,16 @@ export async function GET(request: NextRequest) {
       Buffer.from(agentsData.content, 'base64').toString('utf-8')
     );
 
-    const urlSet = new Set<string>();
+    // Extract unique repos (not file URLs) to avoid duplicate API calls
+    const repoSet = new Map<string, string>(); // key: "owner/repo", value: repoUrl
     for (const agent of agents) {
-      if (agent.githubUrl) urlSet.add(agent.githubUrl);
+      if (!agent.githubUrl) continue;
+      const parsed = parseOwnerRepo(agent.githubUrl);
+      if (!parsed) continue;
+      const key = `${parsed.owner}/${parsed.repo}`;
+      if (!repoSet.has(key)) {
+        repoSet.set(key, `https://github.com/${key}`);
+      }
     }
 
     // 2. Read existing news.json
@@ -86,26 +98,56 @@ export async function GET(request: NextRequest) {
 
     // 3. Fetch releases for each unique repo
     const newItems: NewsItem[] = [];
+    const errors: string[] = [];
 
-    for (const url of urlSet) {
-      const parsed = parseOwnerRepo(url);
-      if (!parsed) continue;
-
+    for (const [repoKey, repoUrl] of repoSet) {
       const releasesRes = await fetch(
-        `https://api.github.com/repos/${parsed.owner}/${parsed.repo}/releases?per_page=3`,
+        `https://api.github.com/repos/${repoKey}/releases?per_page=3`,
         { headers, cache: 'no-store' }
       );
-      if (!releasesRes.ok) continue;
+
+      if (!releasesRes.ok) {
+        errors.push(`${repoKey}: releases HTTP ${releasesRes.status}`);
+        continue;
+      }
 
       const releases: ReleaseEntry[] = await releasesRes.json();
+
+      // If no releases, try tags as fallback
+      if (releases.length === 0) {
+        const tagsRes = await fetch(
+          `https://api.github.com/repos/${repoKey}/tags?per_page=3`,
+          { headers, cache: 'no-store' }
+        );
+        if (tagsRes.ok) {
+          const tags: TagEntry[] = await tagsRes.json();
+          for (const tag of tags) {
+            const id = `${repoKey}:${tag.name}`;
+            if (existingIds.has(id)) continue;
+            newItems.push({
+              id,
+              repo: repoKey,
+              repoUrl,
+              tagName: tag.name,
+              title: tag.name,
+              body: '',
+              publishedAt: new Date().toISOString(),
+              url: `https://github.com/${repoKey}/releases/tag/${tag.name}`,
+            });
+            existingIds.add(id);
+          }
+        }
+        continue;
+      }
+
       for (const release of releases) {
-        const id = `${parsed.owner}/${parsed.repo}:${release.tag_name}`;
+        const id = `${repoKey}:${release.tag_name}`;
         if (existingIds.has(id)) continue;
 
         newItems.push({
           id,
-          repo: `${parsed.owner}/${parsed.repo}`,
-          repoUrl: url,
+          repo: repoKey,
+          repoUrl,
           tagName: release.tag_name,
           title: release.name || release.tag_name,
           body: (release.body || '').slice(0, 200),
@@ -117,7 +159,12 @@ export async function GET(request: NextRequest) {
     }
 
     if (newItems.length === 0) {
-      return NextResponse.json({ message: 'No new releases found', repos: urlSet.size });
+      return NextResponse.json({
+        message: 'No new releases found',
+        repos: repoSet.size,
+        repoKeys: [...repoSet.keys()],
+        errors,
+      });
     }
 
     // 4. Merge, sort by date, keep max 20
@@ -153,9 +200,10 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       message: 'Synced successfully',
-      repos: urlSet.size,
+      repos: repoSet.size,
       newReleases: newItems.length,
       total: merged.length,
+      errors,
     });
   } catch {
     return NextResponse.json({ error: 'News sync failed' }, { status: 500 });
