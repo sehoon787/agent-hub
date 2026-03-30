@@ -84,8 +84,10 @@ jobs:
           generate_release_notes: true
 
       - name: Bump package.json version
-        if: steps.bump.outputs.skip != 'true'
-        continue-on-error: true
+        if: steps.bump.outputs.skip != 'true' && env.HAS_TOKEN == 'true'
+        env:
+          HAS_TOKEN: ${{ secrets.BUMP_TOKEN != '' }}
+          BUMP_TOKEN: ${{ secrets.BUMP_TOKEN }}
         run: |
           VERSION="${{ steps.bump.outputs.new_version }}"
           VERSION_NUM="${VERSION#v}"
@@ -98,6 +100,7 @@ jobs:
 
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin "https://x-access-token:${BUMP_TOKEN}@github.com/${{ github.repository }}.git"
           npm version "$VERSION_NUM" --no-git-tag-version
           git add package.json package-lock.json
           git commit -m "chore: bump version to ${VERSION} [skip ci]"
