@@ -43,10 +43,9 @@ export interface SearchResult {
 
 export interface Stats {
   totalAgents: number;
-  totalCategories: number;
-  totalContributors: number;
+  totalRepositories: number;
   totalPlatforms: number;
-  totalStages: number;
+  totalContributors: number;
 }
 
 export interface NewsItem {

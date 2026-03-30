@@ -82,7 +82,7 @@ test.describe('API Routes', () => {
     expect(response.ok()).toBeTruthy()
     const stats = await response.json()
     expect(stats.totalAgents).toBeGreaterThan(90)
-    expect(stats.totalCategories).toBe(4)
+    expect(stats.totalRepositories).toBeGreaterThan(0)
     expect(stats.totalContributors).toBeGreaterThan(0)
     expect(stats.totalPlatforms).toBeGreaterThan(0)
   })

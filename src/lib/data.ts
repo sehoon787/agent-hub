@@ -151,13 +151,21 @@ export function getNews(): NewsItem[] {
 // --- Stats ---
 
 export function getStats(): Stats {
-  const categories = new Set(agents.map((a) => a.category));
+  // Count unique repos
+  const repoSet = new Set<string>();
+  for (const a of agents) {
+    if (!a.githubUrl) continue;
+    const match = a.githubUrl.match(/github\.com\/([^/]+\/[^/]+)/);
+    if (match) repoSet.add(match[1]);
+  }
+
+  // Count unique contributors (agent authors)
   const contributors = new Set(agents.map((a) => a.author));
+
   return {
     totalAgents: agents.length,
-    totalCategories: categories.size,
-    totalContributors: contributors.size,
+    totalRepositories: repoSet.size,
     totalPlatforms: new Set(agents.map((a) => a.platform)).size,
-    totalStages: 7,
+    totalContributors: contributors.size,
   };
 }
