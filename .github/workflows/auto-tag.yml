@@ -90,7 +90,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Close any open auto/bump PRs before creating a new one
-          OPEN_BUMPS=$(gh pr list --state open --head "auto/bump-" --json number --jq '.[].number')
+          OPEN_BUMPS=$(gh pr list --state open --json number,headRefName --jq '.[] | select(.headRefName | startswith("auto/bump-")) | .number')
           for PR in $OPEN_BUMPS; do
             echo "Closing superseded bump PR #$PR"
             gh pr close "$PR" --delete-branch --comment "Superseded by ${{ steps.bump.outputs.new_version }}"
@@ -126,4 +126,4 @@ jobs:
             --base master \
             --head "$BRANCH"
 
-          gh pr merge "$BRANCH" --squash --auto
+          gh pr merge "$BRANCH" --squash --admin --delete-branch
