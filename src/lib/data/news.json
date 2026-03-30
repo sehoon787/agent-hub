@@ -1,5 +1,35 @@
 [
   {
+    "id": "shinpr/ai-coding-project-boilerplate:v1.18.7",
+    "repo": "shinpr/ai-coding-project-boilerplate",
+    "repoUrl": "https://github.com/shinpr/ai-coding-project-boilerplate",
+    "tagName": "v1.18.7",
+    "title": "Release: v1.18.7",
+    "body": "## Problem\r\n\r\nskill-reviewer applied BP patterns as if skills were human-facing documents, causing false positives that blocked valid content from being used in skills.\r\n\r\n## What changed\r\n\r\n- **BP-00",
+    "publishedAt": "2026-03-30T04:16:34Z",
+    "url": "https://github.com/shinpr/ai-coding-project-boilerplate/releases/tag/v1.18.7"
+  },
+  {
+    "id": "shinpr/ai-coding-project-boilerplate:v1.18.6",
+    "repo": "shinpr/ai-coding-project-boilerplate",
+    "repoUrl": "https://github.com/shinpr/ai-coding-project-boilerplate",
+    "tagName": "v1.18.6",
+    "title": "Release: v1.18.6",
+    "body": "## Problem\r\n\r\nThe skill creation and review workflow had several precision gaps that reduced LLM execution accuracy:\r\n\r\n1. **Descriptions didn't function as triggers** — generated descriptions lacked ",
+    "publishedAt": "2026-03-29T13:37:21Z",
+    "url": "https://github.com/shinpr/ai-coding-project-boilerplate/releases/tag/v1.18.6"
+  },
+  {
+    "id": "shinpr/ai-coding-project-boilerplate:v1.18.5",
+    "repo": "shinpr/ai-coding-project-boilerplate",
+    "repoUrl": "https://github.com/shinpr/ai-coding-project-boilerplate",
+    "tagName": "v1.18.5",
+    "title": "Release: v1.18.5",
+    "body": "## Problem\r\n\r\nDesign documents could describe components as \"existing\" without verification, causing implementation failures when those dependencies turned out to be missing or mismatched.\r\n\r\n## What ",
+    "publishedAt": "2026-03-29T10:16:31Z",
+    "url": "https://github.com/shinpr/ai-coding-project-boilerplate/releases/tag/v1.18.5"
+  },
+  {
     "id": "Yeachan-Heo/oh-my-claudecode:v4.9.3",
     "repo": "Yeachan-Heo/oh-my-claudecode",
     "repoUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
@@ -148,5 +178,25 @@
     "body": "\n### Added\n\n- **Expanded test coverage** — Added 91 unit tests and migrated integration tests to Node.js to validate hooks, dispatch, state handling, config resolution, and timeout behavior\n- **Cross-",
     "publishedAt": "2026-02-23T02:30:45Z",
     "url": "https://github.com/josstei/maestro-gemini/releases/tag/v1.2.1"
+  },
+  {
+    "id": "peterfei/ai-agent-team:v2.0.1",
+    "repo": "peterfei/ai-agent-team",
+    "repoUrl": "https://github.com/peterfei/ai-agent-team",
+    "tagName": "v2.0.1",
+    "title": "AI Agent Team v2.0.1 ",
+    "body": "# AI Agent Team v2.0.1 发布说明\r\n\r\n我很高兴地宣布 **AI Agent Team v2.0.1** 正式发布！这个版本是一个重要的里程碑，为 AI 助手赋予了真正的“语义记忆”能力，并极大地优化了国内用户的使用体验。\r\n\r\n## 🌟 核心亮点\r\n\r\n### 1. 🧠 Thread Manager 语义搜索 (Semantic Search)\r\n\r\n这是本次更新的重头",
+    "publishedAt": "2025-12-12T08:24:43Z",
+    "url": "https://github.com/peterfei/ai-agent-team/releases/tag/v2.0.1"
+  },
+  {
+    "id": "peterfei/ai-agent-team:v2.0.0",
+    "repo": "peterfei/ai-agent-team",
+    "repoUrl": "https://github.com/peterfei/ai-agent-team",
+    "tagName": "v2.0.0",
+    "title": "AI Agent Team v2.0.0",
+    "body": "# AI Agent Team v2.0.0 发布说明\r\n\r\n> 🎉 **重大版本更新** - 全新的任务记忆和版本控制系统\r\n\r\n**发布日期**: 2025-12-05\r\n**版本**: 2.0.0\r\n**类型**: 重大功能更新\r\n\r\n---\r\n\r\n## 🌟 核心亮点\r\n\r\n### 🧠 AI 团队拥有\"记忆\"了！\r\n\r\nAI Agent Team 2.0 引入了革命性的 **Threa",
+    "publishedAt": "2025-12-05T08:02:02Z",
+    "url": "https://github.com/peterfei/ai-agent-team/releases/tag/v2.0.0"
   }
 ]
