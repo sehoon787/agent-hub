@@ -2,6 +2,7 @@ import type { Agent, AgentPlatform, AgentStage, RawAgent, RepoSummary, Stats, Se
 import { inferStages } from './stage-classifier';
 import agentsData from './data/agents.json';
 import newsData from './data/news.json';
+import repoStatsData from './data/repo-stats.json';
 
 const agents: Agent[] = (agentsData as RawAgent[]).map((a) => ({
   ...a,
@@ -159,13 +160,19 @@ export function getStats(): Stats {
     if (match) repoSet.add(match[1]);
   }
 
-  // Count unique contributors (agent authors)
-  const contributors = new Set(agents.map((a) => a.author));
+  // Sum contributor counts from repo-stats.json, fallback to unique authors
+  const repoStats = repoStatsData as Record<string, { contributors: number }>;
+  const totalContributors = Object.values(repoStats).reduce(
+    (sum, r) => sum + (r.contributors || 0), 0
+  );
+  const contributorCount = totalContributors > 0
+    ? totalContributors
+    : new Set(agents.map((a) => a.author)).size;
 
   return {
     totalAgents: agents.length,
     totalRepositories: repoSet.size,
     totalPlatforms: new Set(agents.map((a) => a.platform)).size,
-    totalContributors: contributors.size,
+    totalContributors: contributorCount,
   };
 }

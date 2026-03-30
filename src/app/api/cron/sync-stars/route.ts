@@ -20,6 +20,23 @@ function parseOwnerRepo(githubUrl: string): { owner: string; repo: string } | nu
   return { owner: match[1], repo: match[2].replace(/\.git$/, '') };
 }
 
+async function fetchContributorCount(repoKey: string, headers: Record<string, string>): Promise<number> {
+  const res = await fetch(
+    `https://api.github.com/repos/${repoKey}/contributors?per_page=1&anon=true`,
+    { headers, cache: 'no-store' }
+  );
+  if (!res.ok) return 0;
+
+  const linkHeader = res.headers.get('link');
+  if (!linkHeader) {
+    const data = await res.json();
+    return Array.isArray(data) ? data.length : 0;
+  }
+
+  const lastMatch = linkHeader.match(/[?&]page=(\d+)>;\s*rel="last"/);
+  return lastMatch ? parseInt(lastMatch[1], 10) : 1;
+}
+
 export async function GET(request: NextRequest) {
   // Verify Vercel Cron authorization
   const cronSecret = process.env.CRON_SECRET;
@@ -52,43 +69,61 @@ export async function GET(request: NextRequest) {
       Buffer.from(fileData.content, 'base64').toString('utf-8')
     );
 
-    // 2. Collect unique githubUrls
-    const urlSet = new Set<string>();
+    // 2. Collect unique repos (deduplicate by owner/repo, not full URL)
+    const repoMap = new Map<string, string>(); // key: "owner/repo", value: first URL
     for (const agent of agents) {
-      if (agent.githubUrl) urlSet.add(agent.githubUrl);
+      if (!agent.githubUrl) continue;
+      const parsed = parseOwnerRepo(agent.githubUrl);
+      if (!parsed) continue;
+      const key = `${parsed.owner}/${parsed.repo}`;
+      if (!repoMap.has(key)) {
+        repoMap.set(key, agent.githubUrl);
+      }
     }
 
     // 3. Fetch stars/forks for each unique repo
     const repoStats = new Map<string, { stars: number; forks: number }>();
-    const notFound: string[] = [];
+    const notFoundKeys = new Set<string>();
 
-    for (const url of urlSet) {
-      const parsed = parseOwnerRepo(url);
-      if (!parsed) continue;
-
+    for (const [repoKey] of repoMap) {
       const res = await fetch(
-        `https://api.github.com/repos/${parsed.owner}/${parsed.repo}`,
+        `https://api.github.com/repos/${repoKey}`,
         { headers, cache: 'no-store' }
       );
 
       if (res.status === 404) {
-        notFound.push(url);
+        notFoundKeys.add(repoKey);
         continue;
       }
       if (!res.ok) continue;
 
       const data: RepoStats = await res.json();
-      repoStats.set(url, {
+      repoStats.set(repoKey, {
         stars: data.stargazers_count,
         forks: data.forks_count,
       });
     }
 
-    // 4. Update agents with real data
+    // 4. Fetch contributor counts for each unique repo
+    const repoContributors: Record<string, { contributors: number }> = {};
+    for (const [repoKey] of repoMap) {
+      if (notFoundKeys.has(repoKey)) continue;
+      const count = await fetchContributorCount(repoKey, headers);
+      repoContributors[repoKey] = { contributors: count };
+    }
+
+    // 5. Update agents with real data
     let changed = false;
+    const notFound: string[] = [];
     for (const agent of agents) {
+      if (!agent.githubUrl) continue;
+      const parsed = parseOwnerRepo(agent.githubUrl);
+      if (!parsed) continue;
+      const key = `${parsed.owner}/${parsed.repo}`;
+
       // Clear 404 URLs
-      if (notFound.includes(agent.githubUrl)) {
+      if (notFoundKeys.has(key)) {
+        notFound.push(agent.githubUrl);
         agent.githubUrl = '';
         agent.stars = 0;
         agent.forks = 0;
@@ -96,7 +131,7 @@ export async function GET(request: NextRequest) {
         continue;
       }
 
-      const stats = repoStats.get(agent.githubUrl);
+      const stats = repoStats.get(key);
       if (stats && (agent.stars !== stats.stars || agent.forks !== stats.forks)) {
         agent.stars = stats.stars;
         agent.forks = stats.forks;
@@ -104,11 +139,40 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    if (!changed) {
-      return NextResponse.json({ message: 'No changes needed', repos: urlSet.size });
+    // 6. Commit repo-stats.json via GitHub Contents API
+    const repoStatsRes = await fetch(
+      githubApiUrl('contents/src/lib/data/repo-stats.json'),
+      { headers, cache: 'no-store' }
+    );
+    let repoStatsSha = '';
+    if (repoStatsRes.ok) {
+      const d = await repoStatsRes.json() as { sha: string };
+      repoStatsSha = d.sha;
     }
 
-    // 5. Commit updated agents.json back to GitHub
+    const statsContent = Buffer.from(
+      JSON.stringify(repoContributors, null, 2) + '\n'
+    ).toString('base64');
+    const statsBody: Record<string, unknown> = {
+      message: 'chore: sync repo contributor counts',
+      content: statsContent,
+    };
+    if (repoStatsSha) statsBody.sha = repoStatsSha;
+
+    await fetch(
+      githubApiUrl('contents/src/lib/data/repo-stats.json'),
+      {
+        method: 'PUT',
+        headers: { ...headers, 'Content-Type': 'application/json' },
+        body: JSON.stringify(statsBody),
+      }
+    );
+
+    if (!changed) {
+      return NextResponse.json({ message: 'No changes needed', repos: repoMap.size });
+    }
+
+    // 7. Commit updated agents.json back to GitHub
     const updatedContent = Buffer.from(
       JSON.stringify(agents, null, 2) + '\n'
     ).toString('base64');
@@ -136,7 +200,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       message: 'Synced successfully',
-      repos: urlSet.size,
+      repos: repoMap.size,
       updated: changed,
       notFound,
     });
