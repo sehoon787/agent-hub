@@ -1,0 +1,511 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "AgentHub" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - img [ref=e5]
+        - generic [ref=e8]: AgentHub
+      - navigation [ref=e9]:
+        - link "Agents" [ref=e10] [cursor=pointer]:
+          - /url: /agents
+        - link "Submit" [ref=e11] [cursor=pointer]:
+          - /url: /submit
+        - link "About" [ref=e12] [cursor=pointer]:
+          - /url: /about
+        - link "GitHub" [ref=e13] [cursor=pointer]:
+          - /url: https://github.com/sehoon787/agent-hub
+        - button "User menu" [ref=e16]:
+          - img "sehoon.K" [ref=e17]
+  - main [ref=e18]:
+    - generic [ref=e19]:
+      - heading "AgentHub" [level=1] [ref=e20]
+      - paragraph [ref=e21]: Discover & share AI coding agents across Claude Code, Gemini CLI, and Codex CLI. The open-source registry for the multi-platform agent ecosystem.
+      - generic [ref=e23]:
+        - img [ref=e24]
+        - textbox "Search agents..." [ref=e27]
+        - generic [ref=e28]: /
+      - generic [ref=e29]:
+        - link "Browse Agents" [ref=e30] [cursor=pointer]:
+          - /url: /agents
+        - link "Submit Yours" [ref=e31] [cursor=pointer]:
+          - /url: /submit
+    - generic [ref=e33]:
+      - generic [ref=e35]:
+        - img [ref=e37]
+        - generic [ref=e40]:
+          - paragraph [ref=e41]: "93"
+          - paragraph [ref=e42]: Total Agents
+      - generic [ref=e44]:
+        - img [ref=e46]
+        - generic [ref=e50]:
+          - paragraph [ref=e51]: "4"
+          - paragraph [ref=e52]: Categories
+      - generic [ref=e54]:
+        - img [ref=e56]
+        - generic [ref=e61]:
+          - paragraph [ref=e62]: "7"
+          - paragraph [ref=e63]: Contributors
+      - generic [ref=e65]:
+        - img [ref=e67]
+        - generic [ref=e69]:
+          - paragraph [ref=e70]: "4"
+          - paragraph [ref=e71]: Platforms
+      - generic [ref=e73]:
+        - img [ref=e75]
+        - generic [ref=e79]:
+          - paragraph [ref=e80]: "7"
+          - paragraph [ref=e81]: Workflow Stages
+    - generic [ref=e83]:
+      - generic [ref=e84]:
+        - generic [ref=e85]:
+          - generic [ref=e86]:
+            - img [ref=e87]
+            - heading "Top by Stars" [level=3] [ref=e93]
+          - link "View all →" [ref=e94] [cursor=pointer]:
+            - /url: /agents?sort=stars
+        - generic [ref=e95]:
+          - button "All" [ref=e96]
+          - button "claude" [ref=e97]
+          - button "gemini" [ref=e98]
+          - button "codex" [ref=e99]
+          - button "universal" [ref=e100]
+        - table [ref=e102]:
+          - rowgroup [ref=e103]:
+            - row "1 Codebase Investigator+6 gemini 99,233" [ref=e104]:
+              - cell "1" [ref=e105]
+              - cell "Codebase Investigator+6" [ref=e106]:
+                - link "Codebase Investigator" [ref=e107] [cursor=pointer]:
+                  - /url: /agents/codebase-investigator
+                - generic [ref=e108]: "+6"
+              - cell "gemini" [ref=e109]:
+                - generic [ref=e110]: gemini
+              - cell "99,233" [ref=e111]:
+                - generic [ref=e112]:
+                  - img [ref=e113]
+                  - text: 99,233
+            - row "2 Codex Default+2 codex 67,849" [ref=e115]:
+              - cell "2" [ref=e116]
+              - cell "Codex Default+2" [ref=e117]:
+                - link "Codex Default" [ref=e118] [cursor=pointer]:
+                  - /url: /agents/codex-default
+                - generic [ref=e119]: "+2"
+              - cell "codex" [ref=e120]:
+                - generic [ref=e121]: codex
+              - cell "67,849" [ref=e122]:
+                - generic [ref=e123]:
+                  - img [ref=e124]
+                  - text: 67,849
+            - row "3 Atlas+9 claude 32,344" [ref=e126]:
+              - cell "3" [ref=e127]
+              - cell "Atlas+9" [ref=e128]:
+                - link "Atlas" [ref=e129] [cursor=pointer]:
+                  - /url: /agents/atlas
+                - generic [ref=e130]: "+9"
+              - cell "claude" [ref=e131]:
+                - generic [ref=e132]: claude
+              - cell "32,344" [ref=e133]:
+                - generic [ref=e134]:
+                  - img [ref=e135]
+                  - text: 32,344
+      - generic [ref=e137]:
+        - generic [ref=e139]:
+          - img [ref=e140]
+          - heading "Latest Releases" [level=3] [ref=e143]
+        - paragraph [ref=e145]: No releases collected yet. Check back later.
+    - generic [ref=e146]:
+      - generic [ref=e147]:
+        - generic [ref=e148]:
+          - heading "Featured Agents" [level=2] [ref=e149]
+          - paragraph [ref=e150]: Hand-picked highlights from the community
+        - link "View all →" [ref=e151] [cursor=pointer]:
+          - /url: /agents
+      - generic [ref=e152]:
+        - link "Sisyphus Verified claude opus Master orchestrator with intent classification, model routing, and relentless task completion through iterative refinement loops. Orchestrator Plan orchestrator persistent 12,922 852 curl -o ~/.claude/agents/sisyphus.md https://raw.githubusercontent.com/Yeachan-Heo/oh-my-claudecode/main/agents/sisyphus.md Copy command" [ref=e153] [cursor=pointer]:
+          - /url: /agents/sisyphus
+          - generic [ref=e154]:
+            - img [ref=e155]
+            - heading "Sisyphus" [level=3] [ref=e158]
+            - img "Verified" [ref=e159]
+          - generic [ref=e162]:
+            - generic [ref=e163]: claude
+            - generic [ref=e164]: opus
+          - paragraph [ref=e165]: Master orchestrator with intent classification, model routing, and relentless task completion through iterative refinement loops.
+          - generic [ref=e166]:
+            - generic [ref=e167]: Orchestrator
+            - generic [ref=e168]: Plan
+            - generic [ref=e169]: orchestrator
+            - generic [ref=e170]: persistent
+          - generic [ref=e171]:
+            - generic [ref=e172]:
+              - generic [ref=e173]:
+                - img [ref=e174]
+                - text: 12,922
+              - generic [ref=e176]:
+                - img [ref=e177]
+                - text: "852"
+            - generic [ref=e183]:
+              - code [ref=e184]: curl -o ~/.claude/agents/sisyphus.md https://raw.githubusercontent.com/Yeachan-Heo/oh-my-claudecode/main/agents/sisyphus.md
+              - button "Copy command" [ref=e185]:
+                - img [ref=e186]
+        - link "Atlas Verified claude opus Master task orchestrator for delegation and coordination across multiple specialized sub-agents with priority-based scheduling. Orchestrator Plan Implement orchestrator coordination 32,344 3,528 curl -o ~/.claude/agents/atlas.md https://raw.githubusercontent.com/wshobson/agents/main/atlas.md Copy command" [ref=e189] [cursor=pointer]:
+          - /url: /agents/atlas
+          - generic [ref=e190]:
+            - img [ref=e191]
+            - heading "Atlas" [level=3] [ref=e194]
+            - img "Verified" [ref=e195]
+          - generic [ref=e198]:
+            - generic [ref=e199]: claude
+            - generic [ref=e200]: opus
+          - paragraph [ref=e201]: Master task orchestrator for delegation and coordination across multiple specialized sub-agents with priority-based scheduling.
+          - generic [ref=e202]:
+            - generic [ref=e203]: Orchestrator
+            - generic [ref=e204]: Plan
+            - generic [ref=e205]: Implement
+            - generic [ref=e206]: orchestrator
+            - generic [ref=e207]: coordination
+          - generic [ref=e208]:
+            - generic [ref=e209]:
+              - generic [ref=e210]:
+                - img [ref=e211]
+                - text: 32,344
+              - generic [ref=e213]:
+                - img [ref=e214]
+                - text: 3,528
+            - generic [ref=e220]:
+              - code [ref=e221]: curl -o ~/.claude/agents/atlas.md https://raw.githubusercontent.com/wshobson/agents/main/atlas.md
+              - button "Copy command" [ref=e222]:
+                - img [ref=e223]
+        - link "Hephaestus Verified claude opus Autonomous deep worker that explores codebases, plans approaches, executes implementations, and verifies results without human intervention. Worker Implement Verify autonomous deep-work 12,922 852 curl -o ~/.claude/agents/hephaestus.md https://raw.githubusercontent.com/Yeachan-Heo/oh-my-claudecode/main/agents/hephaestus.md Copy command" [ref=e226] [cursor=pointer]:
+          - /url: /agents/hephaestus
+          - generic [ref=e227]:
+            - img [ref=e228]
+            - heading "Hephaestus" [level=3] [ref=e231]
+            - img "Verified" [ref=e232]
+          - generic [ref=e235]:
+            - generic [ref=e236]: claude
+            - generic [ref=e237]: opus
+          - paragraph [ref=e238]: Autonomous deep worker that explores codebases, plans approaches, executes implementations, and verifies results without human intervention.
+          - generic [ref=e239]:
+            - generic [ref=e240]: Worker
+            - generic [ref=e241]: Implement
+            - generic [ref=e242]: Verify
+            - generic [ref=e243]: autonomous
+            - generic [ref=e244]: deep-work
+          - generic [ref=e245]:
+            - generic [ref=e246]:
+              - generic [ref=e247]:
+                - img [ref=e248]
+                - text: 12,922
+              - generic [ref=e250]:
+                - img [ref=e251]
+                - text: "852"
+            - generic [ref=e257]:
+              - code [ref=e258]: curl -o ~/.claude/agents/hephaestus.md https://raw.githubusercontent.com/Yeachan-Heo/oh-my-claudecode/main/agents/hephaestus.md
+              - button "Copy command" [ref=e259]:
+                - img [ref=e260]
+        - link "Architect Verified claude opus Strategic architecture and debugging advisor that analyzes systems read-only, providing design recommendations without modifying code. Analyst Plan architecture read-only 32,344 3,528 curl -o ~/.claude/agents/architect.md https://raw.githubusercontent.com/wshobson/agents/main/architect.md Copy command" [ref=e263] [cursor=pointer]:
+          - /url: /agents/architect
+          - generic [ref=e264]:
+            - img [ref=e265]
+            - heading "Architect" [level=3] [ref=e268]
+            - img "Verified" [ref=e269]
+          - generic [ref=e272]:
+            - generic [ref=e273]: claude
+            - generic [ref=e274]: opus
+          - paragraph [ref=e275]: Strategic architecture and debugging advisor that analyzes systems read-only, providing design recommendations without modifying code.
+          - generic [ref=e276]:
+            - generic [ref=e277]: Analyst
+            - generic [ref=e278]: Plan
+            - generic [ref=e279]: architecture
+            - generic [ref=e280]: read-only
+          - generic [ref=e281]:
+            - generic [ref=e282]:
+              - generic [ref=e283]:
+                - img [ref=e284]
+                - text: 32,344
+              - generic [ref=e286]:
+                - img [ref=e287]
+                - text: 3,528
+            - generic [ref=e293]:
+              - code [ref=e294]: curl -o ~/.claude/agents/architect.md https://raw.githubusercontent.com/wshobson/agents/main/architect.md
+              - button "Copy command" [ref=e295]:
+                - img [ref=e296]
+        - link "Designer Verified claude sonnet UI/UX designer-developer that creates stunning, accessible interfaces with modern design patterns and pixel-perfect implementation. Specialist Implement ui ux 12,922 852 curl -o ~/.claude/agents/designer.md https://raw.githubusercontent.com/Yeachan-Heo/oh-my-claudecode/main/agents/designer.md Copy command" [ref=e299] [cursor=pointer]:
+          - /url: /agents/designer
+          - generic [ref=e300]:
+            - img [ref=e301]
+            - heading "Designer" [level=3] [ref=e304]
+            - img "Verified" [ref=e305]
+          - generic [ref=e308]:
+            - generic [ref=e309]: claude
+            - generic [ref=e310]: sonnet
+          - paragraph [ref=e311]: UI/UX designer-developer that creates stunning, accessible interfaces with modern design patterns and pixel-perfect implementation.
+          - generic [ref=e312]:
+            - generic [ref=e313]: Specialist
+            - generic [ref=e314]: Implement
+            - generic [ref=e315]: ui
+            - generic [ref=e316]: ux
+          - generic [ref=e317]:
+            - generic [ref=e318]:
+              - generic [ref=e319]:
+                - img [ref=e320]
+                - text: 12,922
+              - generic [ref=e322]:
+                - img [ref=e323]
+                - text: "852"
+            - generic [ref=e329]:
+              - code [ref=e330]: curl -o ~/.claude/agents/designer.md https://raw.githubusercontent.com/Yeachan-Heo/oh-my-claudecode/main/agents/designer.md
+              - button "Copy command" [ref=e331]:
+                - img [ref=e332]
+      - generic [ref=e335]:
+        - generic [ref=e336]:
+          - heading "Recently Added" [level=2] [ref=e337]
+          - paragraph [ref=e338]: Latest agents added to the registry
+        - link "View all →" [ref=e339] [cursor=pointer]:
+          - /url: /agents?sort=recent
+      - generic [ref=e340]:
+        - link "Boss claude opus Dynamic meta-orchestrator that classifies intent, selects optimal models, and delegates to specialized sub-agents with full context management. Orchestrator Plan orchestrator meta-agent 0 0 npx claude-code --agent boss Copy command" [ref=e341] [cursor=pointer]:
+          - /url: /agents/boss
+          - generic [ref=e342]:
+            - img [ref=e343]
+            - heading "Boss" [level=3] [ref=e346]
+          - generic [ref=e347]:
+            - generic [ref=e348]: claude
+            - generic [ref=e349]: opus
+          - paragraph [ref=e350]: Dynamic meta-orchestrator that classifies intent, selects optimal models, and delegates to specialized sub-agents with full context management.
+          - generic [ref=e351]:
+            - generic [ref=e352]: Orchestrator
+            - generic [ref=e353]: Plan
+            - generic [ref=e354]: orchestrator
+            - generic [ref=e355]: meta-agent
+          - generic [ref=e356]:
+            - generic [ref=e357]:
+              - generic [ref=e358]:
+                - img [ref=e359]
+                - text: "0"
+              - generic [ref=e361]:
+                - img [ref=e362]
+                - text: "0"
+            - generic [ref=e368]:
+              - code [ref=e369]: npx claude-code --agent boss
+              - button "Copy command" [ref=e370]:
+                - img [ref=e371]
+        - link "Workflow Architect Verified claude sonnet Complete workflow tree mapping specialist for complex multi-step process design. Specialist Implement Plan workflow architecture 12,922 852 /plugin install workflow-architect@omc Copy command" [ref=e374] [cursor=pointer]:
+          - /url: /agents/workflow-architect
+          - generic [ref=e375]:
+            - img [ref=e376]
+            - heading "Workflow Architect" [level=3] [ref=e379]
+            - img "Verified" [ref=e380]
+          - generic [ref=e383]:
+            - generic [ref=e384]: claude
+            - generic [ref=e385]: sonnet
+          - paragraph [ref=e386]: Complete workflow tree mapping specialist for complex multi-step process design.
+          - generic [ref=e387]:
+            - generic [ref=e388]: Specialist
+            - generic [ref=e389]: Implement
+            - generic [ref=e390]: Plan
+            - generic [ref=e391]: workflow
+            - generic [ref=e392]: architecture
+          - generic [ref=e393]:
+            - generic [ref=e394]:
+              - generic [ref=e395]:
+                - img [ref=e396]
+                - text: 12,922
+              - generic [ref=e398]:
+                - img [ref=e399]
+                - text: "852"
+            - generic [ref=e405]:
+              - code [ref=e406]: /plugin install workflow-architect@omc
+              - button "Copy command" [ref=e407]:
+                - img [ref=e408]
+        - link "Salesforce Architect Verified claude sonnet Multi-cloud Salesforce design specialist for enterprise CRM architecture. Specialist Plan Implement salesforce crm 12,922 852 /plugin install salesforce-architect@omc Copy command" [ref=e411] [cursor=pointer]:
+          - /url: /agents/salesforce-architect
+          - generic [ref=e412]:
+            - img [ref=e413]
+            - heading "Salesforce Architect" [level=3] [ref=e416]
+            - img "Verified" [ref=e417]
+          - generic [ref=e420]:
+            - generic [ref=e421]: claude
+            - generic [ref=e422]: sonnet
+          - paragraph [ref=e423]: Multi-cloud Salesforce design specialist for enterprise CRM architecture.
+          - generic [ref=e424]:
+            - generic [ref=e425]: Specialist
+            - generic [ref=e426]: Plan
+            - generic [ref=e427]: Implement
+            - generic [ref=e428]: salesforce
+            - generic [ref=e429]: crm
+          - generic [ref=e430]:
+            - generic [ref=e431]:
+              - generic [ref=e432]:
+                - img [ref=e433]
+                - text: 12,922
+              - generic [ref=e435]:
+                - img [ref=e436]
+                - text: "852"
+            - generic [ref=e442]:
+              - code [ref=e443]: /plugin install salesforce-architect@omc
+              - button "Copy command" [ref=e444]:
+                - img [ref=e445]
+        - link "Developer Advocate Verified claude sonnet Developer community building and DX optimization specialist for API adoption. Specialist Implement devrel developer-experience 12,922 852 /plugin install developer-advocate@omc Copy command" [ref=e448] [cursor=pointer]:
+          - /url: /agents/developer-advocate
+          - generic [ref=e449]:
+            - img [ref=e450]
+            - heading "Developer Advocate" [level=3] [ref=e453]
+            - img "Verified" [ref=e454]
+          - generic [ref=e457]:
+            - generic [ref=e458]: claude
+            - generic [ref=e459]: sonnet
+          - paragraph [ref=e460]: Developer community building and DX optimization specialist for API adoption.
+          - generic [ref=e461]:
+            - generic [ref=e462]: Specialist
+            - generic [ref=e463]: Implement
+            - generic [ref=e464]: devrel
+            - generic [ref=e465]: developer-experience
+          - generic [ref=e466]:
+            - generic [ref=e467]:
+              - generic [ref=e468]:
+                - img [ref=e469]
+                - text: 12,922
+              - generic [ref=e471]:
+                - img [ref=e472]
+                - text: "852"
+            - generic [ref=e478]:
+              - code [ref=e479]: /plugin install developer-advocate@omc
+              - button "Copy command" [ref=e480]:
+                - img [ref=e481]
+        - link "Compliance Auditor Verified claude sonnet SOC 2, ISO 27001, and HIPAA compliance audit specialist for enterprise security. Specialist Review compliance soc2 12,922 852 /plugin install compliance-auditor@omc Copy command" [ref=e484] [cursor=pointer]:
+          - /url: /agents/compliance-auditor
+          - generic [ref=e485]:
+            - img [ref=e486]
+            - heading "Compliance Auditor" [level=3] [ref=e489]
+            - img "Verified" [ref=e490]
+          - generic [ref=e493]:
+            - generic [ref=e494]: claude
+            - generic [ref=e495]: sonnet
+          - paragraph [ref=e496]: SOC 2, ISO 27001, and HIPAA compliance audit specialist for enterprise security.
+          - generic [ref=e497]:
+            - generic [ref=e498]: Specialist
+            - generic [ref=e499]: Review
+            - generic [ref=e500]: compliance
+            - generic [ref=e501]: soc2
+          - generic [ref=e502]:
+            - generic [ref=e503]:
+              - generic [ref=e504]:
+                - img [ref=e505]
+                - text: 12,922
+              - generic [ref=e507]:
+                - img [ref=e508]
+                - text: "852"
+            - generic [ref=e514]:
+              - code [ref=e515]: /plugin install compliance-auditor@omc
+              - button "Copy command" [ref=e516]:
+                - img [ref=e517]
+        - link "Blockchain Security Auditor Verified claude opus Smart contract security auditing specialist for Solidity, Rust, and Move contracts. Specialist Review Implement blockchain security 12,922 852 /plugin install blockchain-security-auditor@omc Copy command" [ref=e520] [cursor=pointer]:
+          - /url: /agents/blockchain-security-auditor
+          - generic [ref=e521]:
+            - img [ref=e522]
+            - heading "Blockchain Security Auditor" [level=3] [ref=e525]
+            - img "Verified" [ref=e526]
+          - generic [ref=e529]:
+            - generic [ref=e530]: claude
+            - generic [ref=e531]: opus
+          - paragraph [ref=e532]: Smart contract security auditing specialist for Solidity, Rust, and Move contracts.
+          - generic [ref=e533]:
+            - generic [ref=e534]: Specialist
+            - generic [ref=e535]: Review
+            - generic [ref=e536]: Implement
+            - generic [ref=e537]: blockchain
+            - generic [ref=e538]: security
+          - generic [ref=e539]:
+            - generic [ref=e540]:
+              - generic [ref=e541]:
+                - img [ref=e542]
+                - text: 12,922
+              - generic [ref=e544]:
+                - img [ref=e545]
+                - text: "852"
+            - generic [ref=e551]:
+              - code [ref=e552]: /plugin install blockchain-security-auditor@omc
+              - button "Copy command" [ref=e553]:
+                - img [ref=e554]
+    - generic [ref=e557]:
+      - heading "Browse by Category" [level=2] [ref=e558]
+      - paragraph [ref=e559]: Find the right agent for your workflow
+      - generic [ref=e560]:
+        - link "Orchestrators Meta-agents that coordinate multi-agent workflows and delegate tasks" [ref=e561] [cursor=pointer]:
+          - /url: /agents?category=orchestrator
+          - img [ref=e563]
+          - generic [ref=e568]:
+            - heading "Orchestrators" [level=3] [ref=e569]
+            - paragraph [ref=e570]: Meta-agents that coordinate multi-agent workflows and delegate tasks
+        - link "Specialists Domain experts with deep knowledge in specific areas" [ref=e571] [cursor=pointer]:
+          - /url: /agents?category=specialist
+          - img [ref=e573]
+          - generic [ref=e575]:
+            - heading "Specialists" [level=3] [ref=e576]
+            - paragraph [ref=e577]: Domain experts with deep knowledge in specific areas
+        - link "Workers Execution-focused agents that implement and ship code" [ref=e578] [cursor=pointer]:
+          - /url: /agents?category=worker
+          - img [ref=e580]
+          - generic [ref=e583]:
+            - heading "Workers" [level=3] [ref=e584]
+            - paragraph [ref=e585]: Execution-focused agents that implement and ship code
+        - link "Analysts Read-only advisors providing analysis and strategic guidance" [ref=e586] [cursor=pointer]:
+          - /url: /agents?category=analyst
+          - img [ref=e588]
+          - generic [ref=e591]:
+            - heading "Analysts" [level=3] [ref=e592]
+            - paragraph [ref=e593]: Read-only advisors providing analysis and strategic guidance
+  - contentinfo [ref=e594]:
+    - generic [ref=e595]:
+      - generic [ref=e596]:
+        - generic [ref=e597]:
+          - generic [ref=e598]:
+            - img [ref=e599]
+            - generic [ref=e602]: AgentHub
+          - paragraph [ref=e603]: Discover & share AI coding agents across Claude Code, Gemini CLI, and Codex CLI.
+        - generic [ref=e604]:
+          - heading "Browse" [level=3] [ref=e605]
+          - list [ref=e606]:
+            - listitem [ref=e607]:
+              - link "All Agents" [ref=e608] [cursor=pointer]:
+                - /url: /agents
+            - listitem [ref=e609]:
+              - link "Orchestrators" [ref=e610] [cursor=pointer]:
+                - /url: /agents?category=orchestrator
+            - listitem [ref=e611]:
+              - link "Specialists" [ref=e612] [cursor=pointer]:
+                - /url: /agents?category=specialist
+            - listitem [ref=e613]:
+              - link "Workers" [ref=e614] [cursor=pointer]:
+                - /url: /agents?category=worker
+        - generic [ref=e615]:
+          - heading "Community" [level=3] [ref=e616]
+          - list [ref=e617]:
+            - listitem [ref=e618]:
+              - link "Submit Agent" [ref=e619] [cursor=pointer]:
+                - /url: /submit
+            - listitem [ref=e620]:
+              - link "About" [ref=e621] [cursor=pointer]:
+                - /url: /about
+            - listitem [ref=e622]:
+              - link "GitHub" [ref=e623] [cursor=pointer]:
+                - /url: https://github.com/sehoon787/agent-hub
+        - generic [ref=e624]:
+          - heading "Platforms" [level=3] [ref=e625]
+          - list [ref=e626]:
+            - listitem [ref=e627]:
+              - link "Claude Code" [ref=e628] [cursor=pointer]:
+                - /url: https://github.com/anthropics/claude-code
+            - listitem [ref=e629]:
+              - link "Gemini CLI" [ref=e630] [cursor=pointer]:
+                - /url: https://github.com/google-gemini/gemini-cli
+            - listitem [ref=e631]:
+              - link "Codex CLI" [ref=e632] [cursor=pointer]:
+                - /url: https://github.com/openai/codex
+      - generic [ref=e633]: © 2026 AgentHub. Open source project.
+  - alert [ref=e634]
+```

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { ExternalLink, ChevronRight, Bot, BadgeCheck } from 'lucide-react';
+import { ExternalLink, ChevronRight, Bot, BadgeCheck, Package } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { getAgent, getRelatedAgents, getAllAgentSlugs } from '@/lib/data';
@@ -76,6 +76,8 @@ export default async function AgentDetailPage({
   if (!agent) notFound();
 
   const related = getRelatedAgents(slug);
+  const repoMatch = agent.githubUrl?.match(/github\.com\/([^/]+\/[^/]+)/);
+  const repoKey = repoMatch?.[1];
 
   return (
     <div className="py-8">
@@ -120,17 +122,28 @@ export default async function AgentDetailPage({
             ))}
           </div>
         </div>
-        {agent.githubUrl && (
-          <a
-            href={agent.githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex shrink-0 items-center gap-2 rounded-lg border border-zinc-700 bg-zinc-800/50 px-4 py-2 text-sm text-zinc-300 hover:bg-zinc-800"
-          >
-            <ExternalLink className="h-4 w-4" />
-            View Source
-          </a>
-        )}
+        <div className="flex shrink-0 flex-wrap gap-2">
+          {repoKey && (
+            <Link
+              href={`/agents?repo=${repoKey}`}
+              className="inline-flex items-center gap-2 rounded-lg border border-zinc-700 bg-zinc-800 px-4 py-2 text-sm font-medium text-zinc-300 hover:bg-zinc-700 hover:text-white"
+            >
+              <Package className="h-4 w-4" />
+              {repoKey}
+            </Link>
+          )}
+          {agent.githubUrl && (
+            <a
+              href={agent.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 rounded-lg border border-zinc-700 bg-zinc-800/50 px-4 py-2 text-sm text-zinc-300 hover:bg-zinc-800"
+            >
+              <ExternalLink className="h-4 w-4" />
+              View Source
+            </a>
+          )}
+        </div>
       </div>
 
       {/* Install */}

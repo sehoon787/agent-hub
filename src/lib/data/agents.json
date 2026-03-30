@@ -3502,44 +3502,6 @@
     "forks": 9145
   },
   {
-    "slug": "skill-creator",
-    "name": "skill_creator",
-    "displayName": "Skill Creator",
-    "description": "Meta-skill for creating new agent skills across Claude Code, Gemini CLI, and Codex CLI",
-    "longDescription": "A cross-platform meta-skill for creating new agent skills that work across Claude Code, Gemini CLI, and Codex CLI. Uses the shared SKILL.md open standard to generate portable skill definitions with capabilities, tools, and configuration.",
-    "category": "worker",
-    "model": "sonnet",
-    "source": "community",
-    "platform": "universal",
-    "author": "community",
-    "githubUrl": "https://github.com/openai/skills",
-    "installCommand": "Copy SKILL.md template to your agents directory",
-    "capabilities": [
-      "Skill generation",
-      "Cross-platform compatibility",
-      "Template creation",
-      "SKILL.md standard"
-    ],
-    "tools": [
-      "read_file",
-      "write_file",
-      "edit_file"
-    ],
-    "tags": [
-      "universal",
-      "cross-platform",
-      "skill",
-      "meta",
-      "SKILL.md"
-    ],
-    "createdAt": "2025-08-01",
-    "updatedAt": "2025-10-15",
-    "stars": 15684,
-    "featured": false,
-    "verified": false,
-    "forks": 948
-  },
-  {
     "slug": "pr-reviewer",
     "name": "pr_reviewer",
     "displayName": "PR Reviewer",
