@@ -195,7 +195,11 @@ export async function GET(request: NextRequest) {
     );
 
     if (!commitRes.ok) {
-      return NextResponse.json({ error: 'Failed to commit news.json' }, { status: 502 });
+      const detail = await commitRes.text();
+      return NextResponse.json(
+        { error: 'Failed to commit news.json', status: commitRes.status, detail },
+        { status: 502 }
+      );
     }
 
     return NextResponse.json({

@@ -127,7 +127,11 @@ export async function GET(request: NextRequest) {
     );
 
     if (!commitRes.ok) {
-      return NextResponse.json({ error: 'Failed to commit changes' }, { status: 502 });
+      const detail = await commitRes.text();
+      return NextResponse.json(
+        { error: 'Failed to commit changes', status: commitRes.status, detail },
+        { status: 502 }
+      );
     }
 
     return NextResponse.json({
