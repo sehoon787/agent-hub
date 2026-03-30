@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Star, Trophy, Users } from 'lucide-react';
+import { Bot, Star, Trophy } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import type { AgentPlatform, RepoSummary } from '@/lib/types';
 
@@ -90,7 +90,7 @@ export function CompactRanking({ repos }: CompactRankingProps) {
                   </td>
                   <td className="py-2 text-right">
                     <span className="flex items-center justify-end gap-1 text-xs text-zinc-500">
-                      <Users className="h-3 w-3" />
+                      <Bot className="h-3 w-3" />
                       {repo.agentCount}
                     </span>
                   </td>
