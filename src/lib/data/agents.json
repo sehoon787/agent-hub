@@ -3579,38 +3579,5 @@
     "featured": false,
     "verified": true,
     "forks": 0
-  },
-  {
-    "slug": "test-pipeline-agent",
-    "name": "test-pipeline-agent",
-    "displayName": "Test Pipeline Agent",
-    "description": "Temporary agent to test the submission-to-verified pipeline end-to-end",
-    "longDescription": "This is a temporary test agent created to verify the full pipeline: issue submission → PR creation → merge → verified status. Will be removed after testing.",
-    "category": "worker",
-    "model": "sonnet",
-    "source": "community",
-    "platform": "claude",
-    "author": "sehoon787",
-    "githubUrl": "https://github.com/sehoon787/agent-hub",
-    "installCommand": "curl -o ~/.claude/agents/test-pipeline-agent.md https://raw.githubusercontent.com/sehoon787/agent-hub/main/agents/test-pipeline-agent.md",
-    "capabilities": [
-      "Testing",
-      "Pipeline validation"
-    ],
-    "tools": [
-      "read_file",
-      "write_file"
-    ],
-    "tags": [
-      "test",
-      "pipeline",
-      "temporary"
-    ],
-    "createdAt": "2026-03-30",
-    "updatedAt": "2026-03-30",
-    "stars": 0,
-    "forks": 0,
-    "featured": false,
-    "verified": false
   }
 ]
