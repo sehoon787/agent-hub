@@ -162,6 +162,20 @@ export async function PATCH(
     return NextResponse.json({ error: 'Failed to update submission. Please try again.' }, { status: 502 });
   }
 
+  // Sync updated metadata to DB (non-blocking)
+  if (process.env.DATABASE_URL) {
+    try {
+      const { getDb } = await import("@/lib/db")
+      const sql = getDb()
+      await sql`
+        UPDATE submissions SET slug = ${slug}, display_name = ${data.displayName}, updated_at = NOW()
+        WHERE github_issue_number = ${Number(number)}
+      `
+    } catch (e) {
+      console.error("Failed to sync submission update to DB:", e)
+    }
+  }
+
   return NextResponse.json({ success: true });
 }
 
@@ -221,6 +235,21 @@ export async function DELETE(
       if (!labelRes.ok) {
         return NextResponse.json({ error: 'Failed to remove submission' }, { status: 502 });
       }
+
+      // Sync status to DB (non-blocking)
+      if (process.env.DATABASE_URL) {
+        try {
+          const { getDb } = await import("@/lib/db")
+          const sql = getDb()
+          await sql`
+            UPDATE submissions SET status = 'removed', updated_at = NOW()
+            WHERE github_issue_number = ${Number(number)}
+          `
+        } catch (e) {
+          console.error("Failed to sync submission status to DB:", e)
+        }
+      }
+
       return NextResponse.json({ success: true });
     }
 
@@ -235,6 +264,20 @@ export async function DELETE(
 
     if (!closeRes.ok) {
       return NextResponse.json({ error: 'Failed to close submission. Please try again.' }, { status: 502 });
+    }
+
+    // Sync status to DB (non-blocking)
+    if (process.env.DATABASE_URL) {
+      try {
+        const { getDb } = await import("@/lib/db")
+        const sql = getDb()
+        await sql`
+          UPDATE submissions SET status = 'removed', updated_at = NOW()
+          WHERE github_issue_number = ${Number(number)}
+        `
+      } catch (e) {
+        console.error("Failed to sync submission status to DB:", e)
+      }
     }
 
     return NextResponse.json({ success: true });

@@ -198,7 +198,28 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Failed to create submission. Please try again.' }, { status: 502 });
   }
 
-  const ghData = await ghRes.json() as { html_url: string };
+  const ghData = await ghRes.json() as { html_url: string; number: number };
+
+  // Sync to submissions DB (non-blocking)
+  if (process.env.DATABASE_URL) {
+    try {
+      const { getDb } = await import("@/lib/db")
+      const sql = getDb()
+      const userLogin = session.user.login ?? ''
+      const users = await sql`SELECT id FROM users WHERE login = ${userLogin}`
+      if (users.length > 0) {
+        const issueNumber = ghData.number
+        await sql`
+          INSERT INTO submissions (user_id, github_issue_number, slug, display_name, status)
+          VALUES (${users[0].id}, ${issueNumber}, ${slug}, ${data.displayName}, 'pending')
+          ON CONFLICT (github_issue_number) DO NOTHING
+        `
+      }
+    } catch (e) {
+      console.error("Failed to sync submission to DB:", e)
+    }
+  }
+
   return NextResponse.json(
     {
       success: true,
