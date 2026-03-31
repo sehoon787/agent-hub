@@ -67,8 +67,8 @@ test.describe('Submit page — authenticated', () => {
     await githubInput.blur();
     await expect(page.locator('p.text-red-400:has-text("https://github")')).toBeVisible({ timeout: 3000 });
 
-    // Now enter a valid GitHub URL
-    await githubInput.fill('https://github.com/test/repo');
+    // Now enter a valid GitHub file URL (must include /blob/)
+    await githubInput.fill('https://github.com/test/repo/blob/main/agents/my-agent.md');
     await githubInput.blur();
 
     // Error should disappear
