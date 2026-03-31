@@ -33,8 +33,8 @@ test.describe('Agents Browse Page', () => {
     await searchInput.first().fill('security')
     // Wait for debounce (400ms)
     await page.waitForTimeout(600)
-    // "Showing X of Y agents" text should update
-    await expect(page.locator('text=Showing')).toBeVisible()
+    // Counter text like "1–12 of 1591" should be visible
+    await expect(page.locator('p.text-zinc-500:has-text(" of ")')).toBeVisible()
     // Should still have results
     const cards = page.locator('main a[href^="/agents/"]')
     const count = await cards.count()
@@ -70,14 +70,14 @@ test.describe('Agents Browse Page', () => {
   test('should show platform badges on cards', async ({ page }) => {
     await page.goto('/agents')
     await page.waitForTimeout(500)
-    // Agent cards have platform badges using data-slot="badge"
-    const platformBadge = page.locator('main [data-slot="badge"]:has-text("claude")')
+    // Agent cards have platform badges (gemini, claude, codex, etc.)
+    const platformBadge = page.locator('main a[href^="/agents/"] span:has-text("gemini")')
     await expect(platformBadge.first()).toBeVisible({ timeout: 5000 })
   })
 
   test('should show "Showing X of Y agents" count', async ({ page }) => {
     await page.goto('/agents')
-    const showingText = page.locator('text=Showing')
+    const showingText = page.locator('p.text-zinc-500:has-text(" of ")')
     await expect(showingText).toBeVisible()
   })
 
@@ -91,7 +91,7 @@ test.describe('Agents Browse Page', () => {
 
   test('should have sort dropdown', async ({ page }) => {
     await page.goto('/agents')
-    const sortSelect = page.locator('select')
+    const sortSelect = page.locator('select').nth(1)
     await expect(sortSelect).toBeVisible()
     // Should contain sort options
     await expect(sortSelect.locator('option:has-text("Most Popular")')).toBeAttached()
@@ -112,7 +112,7 @@ test.describe('Agents Browse Page', () => {
 
   test('should filter agents when stage is selected', async ({ page }) => {
     await page.goto('/agents')
-    const showingText = page.locator('text=Showing')
+    const showingText = page.locator('p.text-zinc-500:has-text(" of ")')
     await expect(showingText).toBeVisible()
     const initialText = await showingText.textContent()
 
@@ -136,8 +136,8 @@ test.describe('Agents Browse Page', () => {
 
   test('should show @owner/repo below agent name on cards', async ({ page }) => {
     await page.goto('/agents')
-    // Agent cards should show @owner/repo parsed from githubUrl
-    const repoSpan = page.locator('main a[href^="/agents/"] span.text-zinc-500')
+    // Agent cards should show @owner/repo parsed from githubUrl (RepoLink renders an <a> tag)
+    const repoSpan = page.locator('main a[href^="/agents/"] a.text-zinc-500')
     await expect(repoSpan.first()).toBeVisible({ timeout: 10000 })
     // The text should start with @
     const text = await repoSpan.first().textContent()

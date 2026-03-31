@@ -54,7 +54,7 @@ test.describe('Agents page', () => {
     await searchInput.fill('security');
     // Wait for debounce
     await page.waitForTimeout(600);
-    await expect(page.locator('text=Showing')).toBeVisible();
+    await expect(page.locator('p.text-zinc-500:has-text(" of ")')).toBeVisible();
     const cards = page.locator('main a[href^="/agents/"]');
     expect(await cards.count()).toBeGreaterThan(0);
   });

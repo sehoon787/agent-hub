@@ -181,7 +181,7 @@ test.describe('API Routes', () => {
     expect(response.ok()).toBeTruthy()
     const text = await response.text()
     expect(text).toContain('urlset')
-    expect(text).toContain('/agents/hephaestus')
+    expect(text).toContain('/agents/codebase-investigator')
   })
 
   test('GET /robots.txt should return robots', async ({ request }) => {
