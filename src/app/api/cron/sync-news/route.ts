@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { githubApiUrl } from '@/lib/github-api';
 
+export const maxDuration = 60;
+
 interface ReleaseEntry {
   tag_name: string;
   name: string;
