@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import type { Agent } from '@/lib/types';
 import { InstallCommand } from '@/components/detail/install-command';
 import { AgentDisplayName } from '@/components/ui/agent-display-name';
+import { RepoLink } from '@/components/cards/repo-link';
 
 const modelColors: Record<string, string> = {
   opus: 'bg-violet-500/20 text-violet-300 border-violet-500/30',
@@ -68,8 +69,9 @@ export function AgentCard({ agent }: { agent: Agent }) {
             )}
           </div>
           {(() => {
-            const repo = agent.githubUrl?.match(/github\.com\/([^/]+\/[^/]+)/)?.[1];
-            return repo ? <span className="text-xs text-zinc-500">@{repo}</span> : null;
+            const repoMatch = agent.githubUrl?.match(/github\.com\/([^/]+)\/([^/]+)/);
+            if (!repoMatch) return null;
+            return <RepoLink owner={repoMatch[1]} repo={`${repoMatch[1]}/${repoMatch[2]}`} />;
           })()}
         </div>
       </div>

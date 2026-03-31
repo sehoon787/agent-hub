@@ -204,10 +204,8 @@ export async function DELETE(
     return NextResponse.json({ error: 'Not an agent submission' }, { status: 403 });
   }
   if (issue.state !== 'open') {
-    return NextResponse.json({ error: 'Submission is not open' }, { status: 403 });
-  }
-  if (labelNames.includes('approved')) {
-    return NextResponse.json({ error: 'Submission already approved' }, { status: 403 });
+    // Already closed — just return success
+    return NextResponse.json({ success: true });
   }
 
   if (!isSubmissionOwner(issue.body ?? '', session.user)) {

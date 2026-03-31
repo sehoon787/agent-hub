@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { SubmitForm } from './submit-form';
 
 export const metadata: Metadata = {
@@ -13,7 +14,7 @@ export default function SubmitPage() {
       <p className="mt-1 text-zinc-400">
         Share your AI coding agent with the community.
       </p>
-      <SubmitForm />
+      <Suspense><SubmitForm /></Suspense>
     </div>
   );
 }

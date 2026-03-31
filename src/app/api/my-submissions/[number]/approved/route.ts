@@ -285,6 +285,14 @@ export async function DELETE(
     const issue = await issueRes.json();
     const slugMatch = ((issue as { body?: string }).body ?? '').match(/\*\*slug:\*\*\s*(\S+)/);
     slug = slugMatch?.[1];
+
+    // Fallback: derive slug from name field
+    if (!slug) {
+      const nameMatch = ((issue as { body?: string }).body ?? '').match(/\*\*name:\*\*\s*(\S+)/);
+      if (nameMatch) {
+        slug = nameMatch[1].toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      }
+    }
   }
 
   if (!slug) {

@@ -71,6 +71,12 @@ export async function GET(request: NextRequest) {
       const slugMatch = (issue.body ?? '').match(/\*\*slug:\*\*\s*(\S+)/);
       const slug = slugMatch ? slugMatch[1] : undefined;
 
+      // Parse form fields from issue body for edit support
+      const parseField = (field: string) => {
+        const match = (issue.body ?? '').match(new RegExp(`\\*\\*${field}:\\*\\*\\s*(.+)`));
+        return match ? match[1].trim() : '';
+      };
+
       return {
         number: issue.number,
         title: agentName,
@@ -79,6 +85,20 @@ export async function GET(request: NextRequest) {
         url: issue.html_url,
         createdAt: issue.created_at,
         updatedAt: issue.updated_at,
+        formData: {
+          name: parseField('name'),
+          displayName: parseField('displayName'),
+          description: parseField('description'),
+          longDescription: parseField('longDescription'),
+          category: parseField('category'),
+          model: parseField('model'),
+          platform: parseField('platform'),
+          author: parseField('author'),
+          githubUrl: parseField('githubUrl'),
+          capabilities: parseField('capabilities'),
+          tools: parseField('tools'),
+          tags: parseField('tags'),
+        },
       };
     });
 

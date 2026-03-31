@@ -34,7 +34,8 @@ export function getAgents(options?: {
         a.name.toLowerCase().includes(lower) ||
         a.displayName.toLowerCase().includes(lower) ||
         a.description.toLowerCase().includes(lower) ||
-        a.tags.some((t) => t.toLowerCase().includes(lower))
+        a.tags.some((t) => t.toLowerCase().includes(lower)) ||
+        a.author?.toLowerCase().includes(lower)
     );
   }
   if (category) filtered = filtered.filter((a) => a.category === category);

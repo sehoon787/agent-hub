@@ -54,14 +54,16 @@ export function SubmissionsList() {
   }, [authStatus]);
 
   const handleDelete = async (sub: Submission) => {
-    const isApproved = sub.status === 'approved';
-    const message = isApproved
-      ? 'This will create a PR to remove this agent. Continue?'
-      : 'This will close your submission. Continue?';
-    if (!confirm(message)) return;
+    const messages: Record<string, string> = {
+      approved: 'This will create a PR to remove this agent. Continue?',
+      pending: 'This will close your submission. Continue?',
+      rejected: 'This will remove this submission from your list. Continue?',
+    };
+    if (!confirm(messages[sub.status])) return;
 
     setActionLoading(sub.number);
     try {
+      const isApproved = sub.status === 'approved';
       const url = isApproved
         ? `/api/my-submissions/${sub.number}/approved`
         : `/api/my-submissions/${sub.number}`;
@@ -189,26 +191,35 @@ export function SubmissionsList() {
                   View Agent
                 </a>
               )}
-              <a
-                href={sub.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="flex items-center gap-1.5 rounded-md border border-zinc-700 bg-zinc-800/50 px-3 py-1.5 text-xs text-zinc-300 hover:bg-zinc-800"
-              >
-                <Pencil className="h-3 w-3" />
-                Edit
-              </a>
-              {sub.status !== 'rejected' && (
-                <button
-                  onClick={(e) => { e.stopPropagation(); handleDelete(sub); }}
-                  disabled={isLoading}
-                  className="flex items-center gap-1.5 rounded-md border border-red-500/30 bg-red-500/10 px-3 py-1.5 text-xs text-red-300 hover:bg-red-500/20 disabled:opacity-50"
+              {sub.status === 'pending' ? (
+                <a
+                  href={`/submit?edit=${sub.number}`}
+                  onClick={(e) => e.stopPropagation()}
+                  className="flex items-center gap-1.5 rounded-md border border-zinc-700 bg-zinc-800/50 px-3 py-1.5 text-xs text-zinc-300 hover:bg-zinc-800"
                 >
-                  <Trash2 className="h-3 w-3" />
-                  {isLoading ? 'Processing...' : 'Remove'}
-                </button>
+                  <Pencil className="h-3 w-3" />
+                  Edit
+                </a>
+              ) : (
+                <a
+                  href={sub.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="flex items-center gap-1.5 rounded-md border border-zinc-700 bg-zinc-800/50 px-3 py-1.5 text-xs text-zinc-300 hover:bg-zinc-800"
+                >
+                  <Pencil className="h-3 w-3" />
+                  View
+                </a>
               )}
+              <button
+                onClick={(e) => { e.stopPropagation(); handleDelete(sub); }}
+                disabled={isLoading}
+                className="flex items-center gap-1.5 rounded-md border border-red-500/30 bg-red-500/10 px-3 py-1.5 text-xs text-red-300 hover:bg-red-500/20 disabled:opacity-50"
+              >
+                <Trash2 className="h-3 w-3" />
+                {isLoading ? 'Processing...' : 'Remove'}
+              </button>
             </div>
           </div>
         );

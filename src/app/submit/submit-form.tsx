@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo, type KeyboardEvent } from 'react';
 import { useSession, signIn } from 'next-auth/react';
+import { useSearchParams } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
@@ -174,6 +175,8 @@ const platformColors: Record<string, string> = {
 
 export function SubmitForm() {
   const { data: session, status } = useSession();
+  const searchParams = useSearchParams();
+  const editNumber = searchParams.get('edit');
   const [form, setForm] = useState<FormData>(initial);
   const [capabilityItems, setCapabilityItems] = useState<string[]>([]);
   const [toolItems, setToolItems] = useState<string[]>([]);
@@ -217,6 +220,33 @@ export function SubmitForm() {
       setForm((prev) => ({ ...prev, author: login }));
     }
   }, [session?.user?.login]);
+
+  // Load existing submission data when editing
+  useEffect(() => {
+    if (!editNumber) return;
+
+    async function loadSubmission() {
+      try {
+        const res = await fetch('/api/my-submissions');
+        if (!res.ok) return;
+        const data = await res.json();
+        const sub = data.submissions.find((s: { number: number; formData?: Partial<FormData> }) => s.number === Number(editNumber));
+        if (!sub?.formData) return;
+
+        setForm((prev) => ({ ...prev, ...sub.formData }));
+        if (sub.formData.capabilities) {
+          setCapabilityItems(sub.formData.capabilities.split(',').map((s: string) => s.trim()).filter(Boolean));
+        }
+        if (sub.formData.tools) {
+          setToolItems(sub.formData.tools.split(',').map((s: string) => s.trim()).filter(Boolean));
+        }
+      } catch {
+        // Ignore — user can fill manually
+      }
+    }
+
+    loadSubmission();
+  }, [editNumber]);
 
   // Treat prolonged loading as unauthenticated (auth may not be configured)
   useEffect(() => {
@@ -313,8 +343,10 @@ export function SubmitForm() {
     setLoading(true);
 
     try {
-      const res = await fetch('/api/agents', {
-        method: 'POST',
+      const submitUrl = editNumber ? `/api/my-submissions/${editNumber}` : '/api/agents';
+      const submitMethod = editNumber ? 'PATCH' : 'POST';
+      const res = await fetch(submitUrl, {
+        method: submitMethod,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       });
@@ -376,8 +408,8 @@ export function SubmitForm() {
     return (
       <div className="mt-12 flex flex-col items-center gap-4 rounded-xl border border-zinc-800 bg-zinc-900 p-12">
         <CheckCircle2 className="h-12 w-12 text-emerald-500" />
-        <h2 className="text-xl font-semibold text-zinc-100">Submission Received</h2>
-        <p className="text-sm text-zinc-400">Your agent has been submitted and is pending review. Thank you for contributing!</p>
+        <h2 className="text-xl font-semibold text-zinc-100">{editNumber ? 'Submission Updated' : 'Submission Received'}</h2>
+        <p className="text-sm text-zinc-400">{editNumber ? 'Your submission has been updated.' : 'Your agent has been submitted and is pending review. Thank you for contributing!'}</p>
         <div className="mt-4 flex items-center gap-3">
           {issueUrl && (
             <a
@@ -564,7 +596,7 @@ export function SubmitForm() {
           disabled={loading}
           className="w-full rounded-lg bg-violet-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-violet-500 disabled:opacity-50"
         >
-          {loading ? 'Submitting...' : 'Submit Agent'}
+          {loading ? (editNumber ? 'Updating...' : 'Submitting...') : (editNumber ? 'Update Submission' : 'Submit Agent')}
         </button>
       </div>
 
