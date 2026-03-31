@@ -264,76 +264,80 @@ export async function DELETE(
     return NextResponse.json({ error: 'Rate limit exceeded. Try again later.' }, { status: 429 });
   }
 
-  // Try to get slug from request body first
-  let slug: string | undefined;
   try {
-    const body = await request.json();
-    slug = (body as { slug?: string }).slug;
-  } catch {
-    // No body is OK — we'll extract slug from issue
-  }
-
-  // If no slug from client, extract from issue body
-  if (!slug) {
-    const issueRes = await fetch(
-      githubApiUrl(`issues/${number}`),
-      { headers: getGithubHeaders() }
-    );
-    if (!issueRes.ok) {
-      return NextResponse.json({ error: 'Issue not found' }, { status: 404 });
+    // Try to get slug from request body first
+    let slug: string | undefined;
+    try {
+      const body = await request.json();
+      slug = (body as { slug?: string }).slug;
+    } catch {
+      // No body is OK — we'll extract slug from issue
     }
-    const issue = await issueRes.json();
-    const slugMatch = ((issue as { body?: string }).body ?? '').match(/\*\*slug:\*\*\s*(\S+)/);
-    slug = slugMatch?.[1];
 
-    // Fallback: derive slug from name field
+    // If no slug from client, extract from issue body
     if (!slug) {
-      const nameMatch = ((issue as { body?: string }).body ?? '').match(/\*\*name:\*\*\s*(\S+)/);
-      if (nameMatch) {
-        slug = nameMatch[1].toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      const issueRes = await fetch(
+        githubApiUrl(`issues/${number}`),
+        { headers: getGithubHeaders() }
+      );
+      if (!issueRes.ok) {
+        return NextResponse.json({ error: 'Issue not found' }, { status: 404 });
+      }
+      const issue = await issueRes.json();
+      const slugMatch = ((issue as { body?: string }).body ?? '').match(/\*\*slug:\*\*\s*(\S+)/);
+      slug = slugMatch?.[1];
+
+      // Fallback: derive slug from name field
+      if (!slug) {
+        const nameMatch = ((issue as { body?: string }).body ?? '').match(/\*\*name:\*\*\s*(\S+)/);
+        if (nameMatch) {
+          slug = nameMatch[1].toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        }
       }
     }
+
+    if (!slug) {
+      return NextResponse.json({ error: 'Could not determine agent slug from submission' }, { status: 400 });
+    }
+
+    if (!process.env.GITHUB_TOKEN) {
+      return NextResponse.json({ error: 'GitHub integration not configured' }, { status: 503 });
+    }
+
+    const result = await readAgentsJson();
+    if (!result) {
+      return NextResponse.json({ error: 'Failed to read agents.json' }, { status: 502 });
+    }
+
+    const { agents, fileSha } = result;
+    const agentIndex = agents.findIndex((a) => a.slug === slug);
+    if (agentIndex === -1) {
+      return NextResponse.json({ error: 'Agent not found' }, { status: 404 });
+    }
+
+    const agent = agents[agentIndex];
+    if (agent.author !== session.user.login || agent.source === 'official') {
+      return NextResponse.json({ error: 'Not authorized to remove this agent' }, { status: 403 });
+    }
+
+    const displayName = agent.displayName;
+    const updatedAgents = agents.filter((a) => a.slug !== slug);
+
+    const prResult = await createBranchAndPR(
+      slug,
+      displayName,
+      updatedAgents,
+      fileSha,
+      session.user.login ?? session.user.name ?? 'unknown',
+      'remove'
+    );
+
+    if (!prResult.success) {
+      return NextResponse.json({ error: prResult.error }, { status: 502 });
+    }
+
+    return NextResponse.json({ success: true, prUrl: prResult.prUrl });
+  } catch {
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
-
-  if (!slug) {
-    return NextResponse.json({ error: 'Could not determine agent slug from submission' }, { status: 400 });
-  }
-
-  if (!process.env.GITHUB_TOKEN) {
-    return NextResponse.json({ error: 'GitHub integration not configured' }, { status: 503 });
-  }
-
-  const result = await readAgentsJson();
-  if (!result) {
-    return NextResponse.json({ error: 'Failed to read agents.json' }, { status: 502 });
-  }
-
-  const { agents, fileSha } = result;
-  const agentIndex = agents.findIndex((a) => a.slug === slug);
-  if (agentIndex === -1) {
-    return NextResponse.json({ error: 'Agent not found' }, { status: 404 });
-  }
-
-  const agent = agents[agentIndex];
-  if (agent.author !== session.user.login || agent.source === 'official') {
-    return NextResponse.json({ error: 'Not authorized to remove this agent' }, { status: 403 });
-  }
-
-  const displayName = agent.displayName;
-  const updatedAgents = agents.filter((a) => a.slug !== slug);
-
-  const prResult = await createBranchAndPR(
-    slug,
-    displayName,
-    updatedAgents,
-    fileSha,
-    session.user.login ?? session.user.name ?? 'unknown',
-    'remove'
-  );
-
-  if (!prResult.success) {
-    return NextResponse.json({ error: prResult.error }, { status: 502 });
-  }
-
-  return NextResponse.json({ success: true, prUrl: prResult.prUrl });
 }

@@ -74,11 +74,12 @@ export function SubmissionsList() {
           body: JSON.stringify({ slug: sub.slug }),
         } : {}),
       });
-      const data = await res.json();
       if (!res.ok) {
-        alert(data.error || 'Failed to delete');
+        const data: Record<string, string> = await res.json().catch(() => ({}));
+        alert(data.error || `Failed to delete (${res.status})`);
         return;
       }
+      const data: Record<string, string> = await res.json().catch(() => ({}));
       if (data.prUrl) {
         window.open(data.prUrl, '_blank');
       }

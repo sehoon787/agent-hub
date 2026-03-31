@@ -180,61 +180,65 @@ export async function DELETE(
     return NextResponse.json({ error: 'Rate limit exceeded. Try again later.' }, { status: 429 });
   }
 
-  if (!process.env.GITHUB_TOKEN) {
-    return NextResponse.json({ error: 'GitHub integration not configured' }, { status: 503 });
-  }
+  try {
+    if (!process.env.GITHUB_TOKEN) {
+      return NextResponse.json({ error: 'GitHub integration not configured' }, { status: 503 });
+    }
 
-  const { number } = await params;
-  if (!/^\d+$/.test(number)) {
-    return NextResponse.json({ error: 'Invalid issue number' }, { status: 400 });
-  }
+    const { number } = await params;
+    if (!/^\d+$/.test(number)) {
+      return NextResponse.json({ error: 'Invalid issue number' }, { status: 400 });
+    }
 
-  const issueRes = await fetch(
-    githubApiUrl(`issues/${number}`),
-    { headers: getGithubHeaders() }
-  );
-  if (!issueRes.ok) {
-    return NextResponse.json({ error: 'Issue not found' }, { status: 404 });
-  }
+    const issueRes = await fetch(
+      githubApiUrl(`issues/${number}`),
+      { headers: getGithubHeaders() }
+    );
+    if (!issueRes.ok) {
+      return NextResponse.json({ error: 'Issue not found' }, { status: 404 });
+    }
 
-  const issue: GitHubIssue = await issueRes.json();
-  const labelNames = issue.labels.map((l) => l.name);
+    const issue: GitHubIssue = await issueRes.json();
+    const labelNames = issue.labels.map((l) => l.name);
 
-  if (!labelNames.includes('agent-submission')) {
-    return NextResponse.json({ error: 'Not an agent submission' }, { status: 403 });
-  }
-  if (!isSubmissionOwner(issue.body ?? '', session.user)) {
-    return NextResponse.json({ error: 'Not the owner of this submission' }, { status: 403 });
-  }
+    if (!labelNames.includes('agent-submission')) {
+      return NextResponse.json({ error: 'Not an agent submission' }, { status: 403 });
+    }
+    if (!isSubmissionOwner(issue.body ?? '', session.user)) {
+      return NextResponse.json({ error: 'Not the owner of this submission' }, { status: 403 });
+    }
 
-  if (issue.state !== 'open') {
-    // Add user-removed label to hide from list
-    const labelRes = await fetch(
-      githubApiUrl(`issues/${number}/labels`),
+    if (issue.state !== 'open') {
+      // Add user-removed label to hide from list
+      const labelRes = await fetch(
+        githubApiUrl(`issues/${number}/labels`),
+        {
+          method: 'POST',
+          headers: getGithubHeaders(),
+          body: JSON.stringify({ labels: ['user-removed'] }),
+        }
+      );
+      if (!labelRes.ok) {
+        return NextResponse.json({ error: 'Failed to remove submission' }, { status: 502 });
+      }
+      return NextResponse.json({ success: true });
+    }
+
+    const closeRes = await fetch(
+      githubApiUrl(`issues/${number}`),
       {
-        method: 'POST',
+        method: 'PATCH',
         headers: getGithubHeaders(),
-        body: JSON.stringify({ labels: ['user-removed'] }),
+        body: JSON.stringify({ state: 'closed' }),
       }
     );
-    if (!labelRes.ok) {
-      return NextResponse.json({ error: 'Failed to remove submission' }, { status: 502 });
+
+    if (!closeRes.ok) {
+      return NextResponse.json({ error: 'Failed to close submission. Please try again.' }, { status: 502 });
     }
+
     return NextResponse.json({ success: true });
+  } catch {
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
-
-  const closeRes = await fetch(
-    githubApiUrl(`issues/${number}`),
-    {
-      method: 'PATCH',
-      headers: getGithubHeaders(),
-      body: JSON.stringify({ state: 'closed' }),
-    }
-  );
-
-  if (!closeRes.ok) {
-    return NextResponse.json({ error: 'Failed to close submission. Please try again.' }, { status: 502 });
-  }
-
-  return NextResponse.json({ success: true });
 }

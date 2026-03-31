@@ -71,7 +71,7 @@ export function AgentCard({ agent }: { agent: Agent }) {
           {(() => {
             const repoMatch = agent.githubUrl?.match(/github\.com\/([^/]+)\/([^/]+)/);
             if (!repoMatch) return null;
-            return <RepoLink owner={repoMatch[1]} repo={`${repoMatch[1]}/${repoMatch[2]}`} />;
+            return <RepoLink repo={`${repoMatch[1]}/${repoMatch[2]}`} />;
           })()}
         </div>
       </div>
