@@ -42,6 +42,9 @@ export const metadata: Metadata = {
     title: 'AgentHub',
     description: 'Discover & Share AI Coding Agents across Claude, Gemini, and Codex',
   },
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
 
 export default function RootLayout({
