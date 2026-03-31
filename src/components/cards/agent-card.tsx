@@ -55,18 +55,19 @@ export function AgentCard({ agent }: { agent: Agent }) {
       href={`/agents/${agent.slug}`}
       className="group flex flex-col rounded-xl border border-zinc-800 bg-zinc-900 p-5 transition-colors hover:border-zinc-700"
     >
-      {/* Row 1: name + verified badge */}
+      {/* Row 1: name + @owner + verified badge */}
       <div className="flex items-start gap-2">
         <Bot className="h-5 w-5 shrink-0 text-zinc-400 mt-0.5" />
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-1.5">
             <h3 className="truncate font-semibold text-zinc-100 group-hover:text-white">
-              <AgentDisplayName displayName={agent.displayName} variant="card" />
+              <AgentDisplayName displayName={agent.displayName} nameOnly />
             </h3>
             {agent.verified && (
               <BadgeCheck className="h-4 w-4 shrink-0 text-emerald-400" aria-label="Verified" />
             )}
           </div>
+          <AgentDisplayName displayName={agent.displayName} repoOnly />
         </div>
       </div>
       {/* Row 2: platform + model badges */}
