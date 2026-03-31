@@ -23,7 +23,7 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2">
-          <img src="/logo.svg" alt="AgentHub" className="h-8 w-8" />
+          <img src="/logo.svg" alt="AgentHub" className="h-9 w-9" />
           <span className="text-lg font-bold text-zinc-100">
             AgentHub
           </span>

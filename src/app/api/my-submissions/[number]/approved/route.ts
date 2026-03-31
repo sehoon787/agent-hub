@@ -33,7 +33,18 @@ async function readAgentsJson(): Promise<{ agents: AgentEntry[]; fileSha: string
   if (!res.ok) return null;
 
   const data = await res.json();
-  const content = Buffer.from(data.content, 'base64').toString('utf-8');
+  let content: string;
+
+  if (data.content) {
+    content = Buffer.from(data.content, 'base64').toString('utf-8');
+  } else if (data.download_url) {
+    const rawRes = await fetch(data.download_url);
+    if (!rawRes.ok) return null;
+    content = await rawRes.text();
+  } else {
+    return null;
+  }
+
   return { agents: JSON.parse(content), fileSha: data.sha };
 }
 
