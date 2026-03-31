@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
-import { rateLimit, getClientIp } from '@/lib/rate-limit';
+import { rateLimit } from '@/lib/rate-limit';
 import { agentSubmissionSchema } from '@/lib/validation';
 import { checkMaliciousContent } from '@/lib/security';
 import { githubApiUrl, getGithubHeaders } from '@/lib/github-api';
@@ -135,7 +135,7 @@ export async function PATCH(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const rateLimitKey = session.user.login || getClientIp(request);
+  const rateLimitKey = session.user.login || session.user.email || 'anonymous';
   const { allowed } = rateLimit(rateLimitKey, 3, 3600000);
   if (!allowed) {
     return NextResponse.json({ error: 'Rate limit exceeded. Try again later.' }, { status: 429 });
@@ -217,7 +217,7 @@ export async function PATCH(
     category: data.category,
     model: data.model,
     platform: data.platform,
-    author: data.author,
+    author: agent.author,  // Never allow author change via edit
     githubUrl: data.githubUrl ?? agent.githubUrl,
     capabilities: data.capabilities ? data.capabilities.split(',').map((s: string) => s.trim()) : agent.capabilities,
     tools: data.tools ? data.tools.split(',').map((s: string) => s.trim()) : agent.tools,
@@ -258,7 +258,7 @@ export async function DELETE(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const rateLimitKey = session.user.login || getClientIp(request);
+  const rateLimitKey = session.user.login || session.user.email || 'anonymous';
   const { allowed } = rateLimit(rateLimitKey, 3, 3600000);
   if (!allowed) {
     return NextResponse.json({ error: 'Rate limit exceeded. Try again later.' }, { status: 429 });

@@ -85,9 +85,10 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           BODY=$(gh api "repos/${{ github.repository }}/issues/${{ steps.issue.outputs.number }}" --jq '.body')
-          echo "ISSUE_BODY<<HEREDOC_EOF" >> "$GITHUB_ENV"
+          DELIM=$(openssl rand -hex 16)
+          echo "ISSUE_BODY<<$DELIM" >> "$GITHUB_ENV"
           echo "$BODY" >> "$GITHUB_ENV"
-          echo "HEREDOC_EOF" >> "$GITHUB_ENV"
+          echo "$DELIM" >> "$GITHUB_ENV"
 
       - name: Parse issue and create agent entry
         if: steps.issue.outputs.skip != 'true'

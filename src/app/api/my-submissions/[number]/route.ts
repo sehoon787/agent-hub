@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
-import { rateLimit, getClientIp } from '@/lib/rate-limit';
+import { rateLimit } from '@/lib/rate-limit';
 import { agentSubmissionSchema } from '@/lib/validation';
 import { checkMaliciousContent } from '@/lib/security';
 import { isSubmissionOwner } from '@/lib/ownership';
@@ -23,7 +23,7 @@ export async function PATCH(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const rateLimitKey = session.user.login || getClientIp(request);
+  const rateLimitKey = session.user.login || session.user.email || 'anonymous';
   const { allowed } = rateLimit(rateLimitKey, 10, 3600000);
   if (!allowed) {
     return NextResponse.json({ error: 'Rate limit exceeded. Try again later.' }, { status: 429 });
@@ -174,7 +174,7 @@ export async function DELETE(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const rateLimitKey = session.user.login || getClientIp(request);
+  const rateLimitKey = session.user.login || session.user.email || 'anonymous';
   const { allowed } = rateLimit(rateLimitKey, 10, 3600000);
   if (!allowed) {
     return NextResponse.json({ error: 'Rate limit exceeded. Try again later.' }, { status: 429 });
@@ -208,8 +208,8 @@ export async function DELETE(
   }
 
   if (issue.state !== 'open') {
-    // Already closed — add user-removed label to hide from list
-    await fetch(
+    // Add user-removed label to hide from list
+    const labelRes = await fetch(
       githubApiUrl(`issues/${number}/labels`),
       {
         method: 'POST',
@@ -217,6 +217,9 @@ export async function DELETE(
         body: JSON.stringify({ labels: ['user-removed'] }),
       }
     );
+    if (!labelRes.ok) {
+      return NextResponse.json({ error: 'Failed to remove submission' }, { status: 502 });
+    }
     return NextResponse.json({ success: true });
   }
 

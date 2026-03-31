@@ -38,7 +38,11 @@ export const agentSubmissionSchema = z.object({
       (v) => !/\*\*\w+:\*\*/.test(v),
       'Description cannot contain **key:** patterns'
     ),
-  longDescription: z.string().max(2000).optional(),
+  longDescription: z.string().max(2000).optional()
+    .refine(
+      (v) => !v || !/\*\*\w+:\*\*/.test(v),
+      'Cannot contain **key:** patterns'
+    ),
   category: z.enum(["orchestrator", "specialist", "worker", "analyst"], {
     message: "Please select a category",
   }),
@@ -63,9 +67,21 @@ export const agentSubmissionSchema = z.object({
       /^https:\/\/github\.com\/[a-zA-Z0-9._-]+\/[a-zA-Z0-9._-]+\/blob\/.+/,
       "Must be a direct file URL (e.g. https://github.com/owner/repo/blob/main/agent.md)"
     ),
-  capabilities: z.string().max(1000).optional(),
-  tools: z.string().max(1000).optional(),
-  tags: z.string().max(500).optional(),
+  capabilities: z.string().max(1000).optional()
+    .refine(
+      (v) => !v || !/\*\*\w+:\*\*/.test(v),
+      'Cannot contain **key:** patterns'
+    ),
+  tools: z.string().max(1000).optional()
+    .refine(
+      (v) => !v || !/\*\*\w+:\*\*/.test(v),
+      'Cannot contain **key:** patterns'
+    ),
+  tags: z.string().max(500).optional()
+    .refine(
+      (v) => !v || !/\*\*\w+:\*\*/.test(v),
+      'Cannot contain **key:** patterns'
+    ),
 }).superRefine((data, ctx) => {
   const compatible = PLATFORM_COMPATIBLE_MODELS[data.platform];
   if (compatible && !compatible.includes(data.model)) {

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAgents, getAgent } from '@/lib/data';
 import { auth } from '@/lib/auth';
-import { rateLimit, getClientIp } from '@/lib/rate-limit';
+import { rateLimit } from '@/lib/rate-limit';
 import { agentSubmissionSchema } from '@/lib/validation';
 import { checkMaliciousContent } from '@/lib/security';
 import { githubApiUrl, getGithubHeaders, getAccessToken } from '@/lib/github-api';
@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const rateLimitKey = session.user.email || getClientIp(request);
+  const rateLimitKey = session.user.login || session.user.email || 'anonymous';
   const { allowed } = rateLimit(rateLimitKey, 5, 3600000);
   if (!allowed) {
     return NextResponse.json({ error: 'Rate limit exceeded. Try again later.' }, { status: 429 });
@@ -176,7 +176,7 @@ export async function POST(request: NextRequest) {
 **category:** ${sanitizeLine(data.category)}
 **model:** ${sanitizeLine(data.model)}
 **platform:** ${sanitizeLine(data.platform)}
-**author:** ${sanitizeLine(session.user.login || data.author)}
+**author:** ${sanitizeLine(session.user.login ?? 'unknown')}
 **githubUrl:** ${sanitizeLine(data.githubUrl ?? '')}
 **installCommand:** ${sanitizeLine(installCmd)}
 **capabilities:** ${sanitizeLine(data.capabilities ?? '')}
