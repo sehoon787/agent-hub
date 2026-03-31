@@ -44068,5 +44068,628 @@
     "forks": 0,
     "featured": false,
     "verified": false
+  },
+  {
+    "slug": "sisyphus",
+    "name": "sisyphus",
+    "displayName": "Sisyphus",
+    "description": "Master orchestrator with intent classification, model routing, and relentless task completion through iterative refinement loops.",
+    "longDescription": "Sisyphus is a master orchestrator that never gives up. Named after the mythological figure, it embodies relentless persistence in task completion. Sisyphus classifies user intent, routes to the optimal model, and manages complex multi-step workflows. When sub-tasks fail, it retries with alternative approaches, escalates to more powerful models, or decomposes the problem further. It maintains a comprehensive task graph and ensures every deliverable meets quality standards through iterative refinement.",
+    "category": "orchestrator",
+    "model": "opus",
+    "source": "plugin",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "",
+    "capabilities": [
+      "Intent classification",
+      "Model routing",
+      "Iterative refinement",
+      "Failure recovery",
+      "Task graph management"
+    ],
+    "tools": [
+      "Task",
+      "Bash",
+      "Read",
+      "Write",
+      "Edit",
+      "Grep",
+      "Glob"
+    ],
+    "tags": [
+      "orchestrator",
+      "persistent",
+      "retry-logic",
+      "multi-model"
+    ],
+    "createdAt": "2025-02-01",
+    "updatedAt": "2025-03-18",
+    "stars": 16547,
+    "featured": true,
+    "verified": true,
+    "platform": "claude",
+    "forks": 1167
+  },
+  {
+    "slug": "atlas",
+    "name": "atlas",
+    "displayName": "Atlas",
+    "description": "Master task orchestrator for delegation and coordination across multiple specialized sub-agents with priority-based scheduling.",
+    "longDescription": "Atlas carries the weight of complex projects on its shoulders. As a master task orchestrator, it breaks down large objectives into discrete work items, assigns them to specialized sub-agents based on capability matching, and coordinates execution with priority-based scheduling. Atlas monitors progress in real-time, handles inter-task dependencies, resolves conflicts between parallel work streams, and assembles final deliverables from distributed agent outputs.",
+    "category": "orchestrator",
+    "model": "opus",
+    "source": "community",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/wshobson/agents",
+    "installCommand": "",
+    "capabilities": [
+      "Task decomposition",
+      "Capability matching",
+      "Priority scheduling",
+      "Dependency resolution",
+      "Progress monitoring"
+    ],
+    "tools": [
+      "Task",
+      "Bash",
+      "Read",
+      "Write",
+      "Edit"
+    ],
+    "tags": [
+      "orchestrator",
+      "coordination",
+      "scheduling",
+      "delegation"
+    ],
+    "createdAt": "2025-01-20",
+    "updatedAt": "2025-03-15",
+    "stars": 32544,
+    "featured": true,
+    "verified": true,
+    "platform": "claude",
+    "forks": 3545
+  },
+  {
+    "slug": "hephaestus",
+    "name": "hephaestus",
+    "displayName": "Hephaestus",
+    "description": "Autonomous deep worker that explores codebases, plans approaches, executes implementations, and verifies results without human intervention.",
+    "longDescription": "Named after the Greek god of the forge, Hephaestus is the ultimate autonomous worker. Given a task, it independently explores the codebase to understand context, forms an implementation plan, executes changes surgically, and verifies results through testing and type-checking. Hephaestus follows a strict explore-plan-execute-verify loop, handles failure recovery with up to 3 alternative approaches, and delivers completion reports with full change documentation. It never asks for permission — it just builds.",
+    "category": "worker",
+    "model": "opus",
+    "source": "plugin",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "",
+    "capabilities": [
+      "Codebase exploration",
+      "Implementation planning",
+      "Surgical code changes",
+      "Test verification",
+      "Failure recovery",
+      "Completion reporting"
+    ],
+    "tools": [
+      "Bash",
+      "Read",
+      "Write",
+      "Edit",
+      "Grep",
+      "Glob",
+      "Task"
+    ],
+    "tags": [
+      "autonomous",
+      "deep-work",
+      "implementation",
+      "verification"
+    ],
+    "createdAt": "2025-01-25",
+    "updatedAt": "2025-03-22",
+    "stars": 16547,
+    "featured": true,
+    "verified": true,
+    "platform": "claude",
+    "forks": 1167
+  },
+  {
+    "slug": "prometheus",
+    "name": "prometheus",
+    "displayName": "Prometheus",
+    "description": "Strategic planning consultant with interview-based workflow that extracts requirements through structured questioning before creating detailed plans.",
+    "longDescription": "Prometheus brings fire to your projects through strategic planning. Using an interview-based workflow, it asks targeted questions to extract requirements, constraints, and success criteria before generating comprehensive implementation plans. Each plan includes phased milestones, risk assessments, technology recommendations, and verification strategies. Prometheus excels at turning vague ideas into actionable roadmaps.",
+    "category": "orchestrator",
+    "model": "opus",
+    "source": "plugin",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "",
+    "capabilities": [
+      "Requirements extraction",
+      "Interview workflow",
+      "Strategic planning",
+      "Risk assessment",
+      "Milestone definition"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "WebSearch",
+      "Task"
+    ],
+    "tags": [
+      "planning",
+      "strategy",
+      "requirements",
+      "interview"
+    ],
+    "createdAt": "2025-02-05",
+    "updatedAt": "2025-03-19",
+    "stars": 16547,
+    "featured": false,
+    "verified": true,
+    "platform": "claude",
+    "forks": 1167
+  },
+  {
+    "slug": "architect",
+    "name": "architect",
+    "displayName": "Architect",
+    "description": "Strategic architecture and debugging advisor that analyzes systems read-only, providing design recommendations without modifying code.",
+    "longDescription": "Architect is a read-only strategic advisor for system architecture and complex debugging. It analyzes codebases, identifies architectural patterns and anti-patterns, evaluates design decisions, and provides actionable recommendations. For debugging, it traces execution paths, identifies root causes, and suggests targeted fixes. Architect never modifies code directly — it provides expert analysis that guides implementation decisions.",
+    "category": "analyst",
+    "model": "opus",
+    "source": "community",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/wshobson/agents",
+    "installCommand": "",
+    "capabilities": [
+      "Architecture analysis",
+      "Pattern detection",
+      "Design evaluation",
+      "Debugging guidance",
+      "Technology recommendations"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "tags": [
+      "architecture",
+      "read-only",
+      "advisory",
+      "debugging"
+    ],
+    "createdAt": "2025-01-18",
+    "updatedAt": "2025-03-20",
+    "stars": 32544,
+    "featured": true,
+    "verified": true,
+    "platform": "claude",
+    "forks": 3545
+  },
+  {
+    "slug": "executor",
+    "name": "executor",
+    "displayName": "Executor",
+    "description": "Focused task executor for implementation work that takes a well-defined plan and produces clean, tested code.",
+    "longDescription": "Executor is a focused implementation agent that takes well-defined tasks and produces clean, tested code. It follows existing patterns in the codebase, writes minimal changes, and verifies everything compiles and passes tests. Executor doesn't make architectural decisions — it executes plans efficiently with attention to code quality, error handling, and edge cases.",
+    "category": "worker",
+    "model": "sonnet",
+    "source": "community",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/wshobson/agents",
+    "installCommand": "",
+    "capabilities": [
+      "Code implementation",
+      "Pattern matching",
+      "Test writing",
+      "Build verification"
+    ],
+    "tools": [
+      "Bash",
+      "Read",
+      "Write",
+      "Edit",
+      "Grep",
+      "Glob"
+    ],
+    "tags": [
+      "implementation",
+      "coding",
+      "focused",
+      "worker"
+    ],
+    "createdAt": "2025-01-22",
+    "updatedAt": "2025-03-18",
+    "stars": 32544,
+    "featured": false,
+    "verified": true,
+    "platform": "claude",
+    "forks": 3545
+  },
+  {
+    "slug": "security-reviewer",
+    "name": "security-reviewer",
+    "displayName": "Security Reviewer",
+    "description": "Security vulnerability detection agent covering OWASP Top 10, secrets scanning, and authentication/authorization review.",
+    "longDescription": "Security Reviewer is a specialized agent for finding security vulnerabilities in codebases. It checks for OWASP Top 10 issues (injection, XSS, CSRF, broken auth, etc.), scans for hardcoded secrets (API keys, passwords, tokens), reviews authentication and authorization logic, validates input sanitization, and checks dependency versions for known CVEs. Each finding includes severity, CVSS-like scoring, and remediation steps.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "community",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/wshobson/agents",
+    "installCommand": "",
+    "capabilities": [
+      "OWASP Top 10",
+      "Secrets scanning",
+      "Auth review",
+      "Input validation",
+      "CVE checking"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "tags": [
+      "security",
+      "owasp",
+      "vulnerabilities",
+      "scanning"
+    ],
+    "createdAt": "2025-01-17",
+    "updatedAt": "2025-03-21",
+    "stars": 32544,
+    "featured": false,
+    "verified": true,
+    "platform": "claude",
+    "forks": 3545
+  },
+  {
+    "slug": "writer",
+    "name": "writer",
+    "displayName": "Writer",
+    "description": "Technical documentation writer specializing in README files, API docs, architecture docs, and developer guides.",
+    "longDescription": "Writer is a technical documentation specialist that creates clear, comprehensive documentation. It generates README files with proper structure (badges, installation, usage, API reference), API documentation with request/response examples, architecture docs with diagrams (Mermaid), and developer guides with step-by-step instructions. Writer follows documentation best practices and adapts tone for the target audience (developer, end-user, stakeholder).",
+    "category": "worker",
+    "model": "haiku",
+    "source": "community",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/wshobson/agents",
+    "installCommand": "",
+    "capabilities": [
+      "README generation",
+      "API documentation",
+      "Architecture docs",
+      "Developer guides"
+    ],
+    "tools": [
+      "Read",
+      "Write",
+      "Grep",
+      "Glob"
+    ],
+    "tags": [
+      "documentation",
+      "readme",
+      "api-docs",
+      "writing"
+    ],
+    "createdAt": "2025-01-23",
+    "updatedAt": "2025-03-15",
+    "stars": 32544,
+    "featured": false,
+    "verified": true,
+    "platform": "claude",
+    "forks": 3545
+  },
+  {
+    "slug": "explore",
+    "name": "explore",
+    "displayName": "Explore",
+    "description": "Lightweight codebase search specialist for finding files, patterns, and understanding project structure quickly.",
+    "longDescription": "Explore is a lightweight agent optimized for fast codebase navigation. It quickly finds relevant files, traces import chains, maps project structure, and identifies code patterns. Explore is ideal as a first step before deeper analysis — it provides the context that other agents need to work effectively. It uses parallel Grep/Glob operations to minimize search time.",
+    "category": "worker",
+    "model": "haiku",
+    "source": "community",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/wshobson/agents",
+    "installCommand": "",
+    "capabilities": [
+      "File search",
+      "Pattern matching",
+      "Structure mapping",
+      "Import tracing"
+    ],
+    "tools": [
+      "Grep",
+      "Glob",
+      "Read",
+      "Bash"
+    ],
+    "tags": [
+      "search",
+      "navigation",
+      "lightweight",
+      "exploration"
+    ],
+    "createdAt": "2025-01-24",
+    "updatedAt": "2025-03-14",
+    "stars": 32544,
+    "featured": false,
+    "verified": true,
+    "platform": "claude",
+    "forks": 3545
+  },
+  {
+    "slug": "analyst",
+    "name": "analyst",
+    "displayName": "Analyst",
+    "description": "Pre-planning consultant for requirements analysis, scope definition, and feasibility assessment.",
+    "longDescription": "Analyst is a pre-planning consultant that helps define project scope and requirements before implementation begins. It analyzes existing codebases to understand constraints, identifies potential risks and dependencies, estimates effort for different approaches, and produces structured requirement documents. Analyst bridges the gap between vague requests and actionable specifications.",
+    "category": "analyst",
+    "model": "opus",
+    "source": "community",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/wshobson/agents",
+    "installCommand": "",
+    "capabilities": [
+      "Requirements analysis",
+      "Scope definition",
+      "Risk assessment",
+      "Effort estimation"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "tags": [
+      "analysis",
+      "requirements",
+      "planning",
+      "assessment"
+    ],
+    "createdAt": "2025-01-26",
+    "updatedAt": "2025-03-17",
+    "stars": 32544,
+    "featured": false,
+    "verified": true,
+    "platform": "claude",
+    "forks": 3545
+  },
+  {
+    "slug": "metis",
+    "name": "metis",
+    "displayName": "Metis",
+    "description": "Pre-planning intent analyst that detects ambiguity, clarifies requirements, and ensures alignment before work begins.",
+    "longDescription": "Named after the Greek goddess of wisdom and counsel, Metis analyzes user requests to detect ambiguity, identify unstated assumptions, and clarify requirements before implementation begins. It generates targeted clarification questions, proposes interpretations with trade-offs, and produces unambiguous specifications. Metis prevents wasted effort from misunderstood requirements.",
+    "category": "analyst",
+    "model": "opus",
+    "source": "plugin",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "",
+    "capabilities": [
+      "Ambiguity detection",
+      "Requirement clarification",
+      "Assumption identification",
+      "Specification generation"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob"
+    ],
+    "tags": [
+      "analysis",
+      "ambiguity",
+      "requirements",
+      "clarity"
+    ],
+    "createdAt": "2025-02-06",
+    "updatedAt": "2025-03-19",
+    "stars": 16547,
+    "featured": false,
+    "verified": true,
+    "platform": "claude",
+    "forks": 1167
+  },
+  {
+    "slug": "momus",
+    "name": "momus",
+    "displayName": "Momus",
+    "description": "Practical work plan reviewer that critiques implementation plans read-only, finding gaps and suggesting improvements.",
+    "longDescription": "Named after the Greek god of criticism, Momus reviews work plans and implementation proposals to find gaps, contradictions, and improvement opportunities. It evaluates plans for completeness, feasibility, risk coverage, and alignment with stated goals. Momus provides constructive criticism with specific, actionable suggestions. It operates read-only and never modifies plans directly.",
+    "category": "analyst",
+    "model": "opus",
+    "source": "plugin",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "",
+    "capabilities": [
+      "Plan review",
+      "Gap analysis",
+      "Feasibility assessment",
+      "Constructive criticism"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob"
+    ],
+    "tags": [
+      "review",
+      "criticism",
+      "planning",
+      "read-only"
+    ],
+    "createdAt": "2025-02-07",
+    "updatedAt": "2025-03-16",
+    "stars": 16547,
+    "featured": false,
+    "verified": true,
+    "platform": "claude",
+    "forks": 1167
+  },
+  {
+    "slug": "oracle",
+    "name": "oracle",
+    "displayName": "Oracle",
+    "description": "Strategic technical advisor for architecture decisions and complex debugging with deep reasoning capabilities.",
+    "longDescription": "Oracle is a strategic technical advisor that provides deep analysis for architecture decisions and complex debugging scenarios. It evaluates trade-offs between competing approaches, predicts long-term consequences of design choices, and provides evidence-based recommendations. Oracle excels at situations where the obvious solution has hidden pitfalls and deeper analysis is required.",
+    "category": "analyst",
+    "model": "opus",
+    "source": "plugin",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "",
+    "capabilities": [
+      "Trade-off analysis",
+      "Design evaluation",
+      "Strategic advice",
+      "Deep reasoning"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash"
+    ],
+    "tags": [
+      "advisory",
+      "strategy",
+      "architecture",
+      "deep-reasoning"
+    ],
+    "createdAt": "2025-02-09",
+    "updatedAt": "2025-03-20",
+    "stars": 16547,
+    "featured": false,
+    "verified": true,
+    "platform": "claude",
+    "forks": 1167
+  },
+  {
+    "slug": "planner",
+    "name": "planner",
+    "displayName": "Planner",
+    "description": "Strategic planning agent with interview workflow for creating detailed implementation plans with phased milestones.",
+    "longDescription": "Planner creates detailed implementation plans through a structured interview process. It gathers context about the project, identifies constraints and dependencies, breaks work into phases with clear milestones, and produces actionable task lists. Each plan includes success criteria, risk mitigation strategies, and estimated timelines. Planner is the recommended first step for any complex feature implementation.",
+    "category": "specialist",
+    "model": "opus",
+    "source": "community",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/wshobson/agents",
+    "installCommand": "",
+    "capabilities": [
+      "Implementation planning",
+      "Phase breakdown",
+      "Risk mitigation",
+      "Timeline estimation"
+    ],
+    "tools": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash",
+      "Task"
+    ],
+    "tags": [
+      "planning",
+      "strategy",
+      "milestones",
+      "task-breakdown"
+    ],
+    "createdAt": "2025-01-14",
+    "updatedAt": "2025-03-21",
+    "stars": 32544,
+    "featured": false,
+    "verified": true,
+    "platform": "claude",
+    "forks": 3545
+  },
+  {
+    "slug": "librarian",
+    "name": "librarian",
+    "displayName": "Librarian",
+    "description": "Open-source codebase understanding agent that analyzes GitHub repositories with evidence-based documentation.",
+    "longDescription": "Librarian specializes in understanding unfamiliar open-source codebases. It clones repositories, analyzes structure, traces key code paths, identifies design patterns, and produces comprehensive documentation. Librarian creates architecture maps, dependency graphs, and annotated code walkthroughs. It provides evidence from the source code for every claim, making it a trustworthy guide to unfamiliar codebases.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "",
+    "capabilities": [
+      "Codebase analysis",
+      "Architecture mapping",
+      "Design pattern identification",
+      "Documentation generation"
+    ],
+    "tools": [
+      "Bash",
+      "Read",
+      "Grep",
+      "Glob"
+    ],
+    "tags": [
+      "codebase",
+      "analysis",
+      "documentation",
+      "open-source"
+    ],
+    "createdAt": "2025-02-15",
+    "updatedAt": "2025-03-19",
+    "stars": 16547,
+    "featured": false,
+    "verified": true,
+    "platform": "claude",
+    "forks": 1167
+  },
+  {
+    "slug": "multimodal-looker",
+    "name": "multimodal-looker",
+    "displayName": "Multimodal Looker",
+    "description": "Visual analysis agent for images, PDFs, diagrams, and screenshots with detailed description and comparison capabilities.",
+    "longDescription": "Multimodal Looker analyzes visual content including screenshots, diagrams, PDFs, and images. It can describe UI layouts, identify visual bugs, compare designs against specifications, extract text from images, and analyze architectural diagrams. Multimodal Looker is especially useful for verifying UI implementations against design mockups and analyzing error screenshots.",
+    "category": "specialist",
+    "model": "sonnet",
+    "source": "plugin",
+    "author": "anthropic-community",
+    "githubUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "installCommand": "",
+    "capabilities": [
+      "Image analysis",
+      "PDF reading",
+      "Diagram interpretation",
+      "Visual comparison",
+      "OCR"
+    ],
+    "tools": [
+      "Read",
+      "Bash"
+    ],
+    "tags": [
+      "visual",
+      "multimodal",
+      "images",
+      "screenshots"
+    ],
+    "createdAt": "2025-02-16",
+    "updatedAt": "2025-03-18",
+    "stars": 16547,
+    "featured": false,
+    "verified": true,
+    "platform": "claude",
+    "forks": 1167
   }
 ]

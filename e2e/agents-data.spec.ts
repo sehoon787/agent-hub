@@ -77,11 +77,11 @@ test.describe('Well-Known Agents Data Verification', () => {
     })
   }
 
-  test('total agent count should be 93+', async ({ request }) => {
+  test('total agent count should be 1500+', async ({ request }) => {
     const response = await request.get('/api/stats')
     expect(response.ok()).toBeTruthy()
     const stats = await response.json()
-    expect(stats.totalAgents).toBeGreaterThanOrEqual(90)
+    expect(stats.totalAgents).toBeGreaterThanOrEqual(1500)
   })
 
   test('all four categories should be represented', async ({ request }) => {

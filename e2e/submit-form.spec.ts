@@ -12,7 +12,8 @@ test.describe('Submit page — authenticated', () => {
 
   test('shows the submit form with required fields', async ({ page }) => {
     await page.goto('/submit');
-    await expect(page.locator('input[placeholder*="my-agent"]')).toBeVisible({ timeout: 10000 });
+    // Use the exact slug field placeholder to avoid matching the GitHub URL field (which also contains "my-agent")
+    await expect(page.locator('input[placeholder="e.g. my-agent (lowercase, hyphens only)"]')).toBeVisible({ timeout: 10000 });
     await expect(page.locator('input[placeholder="e.g. My Agent"]')).toBeVisible();
     await expect(page.locator('input[placeholder*="https://github.com"]')).toBeVisible();
   });
@@ -102,5 +103,24 @@ test.describe('Submit page — authenticated', () => {
     // Preview description area
     const previewDesc = page.locator('p.text-sm.text-zinc-400').first();
     await expect(previewDesc).toContainText('A helpful agent for testing purposes.');
+  });
+
+  test('agentFilePath field should NOT exist', async ({ page }) => {
+    await page.goto('/submit');
+    // Use the exact slug field placeholder to avoid matching the GitHub URL field (which also contains "my-agent")
+    await expect(page.locator('input[placeholder="e.g. my-agent (lowercase, hyphens only)"]')).toBeVisible({ timeout: 10000 });
+    // The old agentFilePath field had a label "Agent File Path" — verify it is gone
+    await expect(page.locator('label:has-text("Agent File Path")')).not.toBeVisible();
+    // Old field had exact placeholder "agents/my-agent.md" (no https:// prefix) — verify no such standalone path input exists
+    await expect(page.locator('input[placeholder="agents/my-agent.md"]')).not.toBeVisible();
+  });
+
+  test('GitHub URL placeholder shows full file URL example', async ({ page }) => {
+    await page.goto('/submit');
+    const githubInput = page.locator('input[placeholder*="https://github.com"]');
+    await expect(githubInput).toBeVisible({ timeout: 10000 });
+    // Placeholder should contain /blob/ to indicate file URL
+    const placeholder = await githubInput.getAttribute('placeholder');
+    expect(placeholder).toContain('/blob/');
   });
 });

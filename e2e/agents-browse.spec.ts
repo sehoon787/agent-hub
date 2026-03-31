@@ -134,4 +134,14 @@ test.describe('Agents Browse Page', () => {
     expect(count).toBeGreaterThan(5)
   })
 
+  test('should show @owner/repo below agent name on cards', async ({ page }) => {
+    await page.goto('/agents')
+    // Agent cards should show @owner/repo parsed from githubUrl
+    const repoSpan = page.locator('main a[href^="/agents/"] span.text-zinc-500')
+    await expect(repoSpan.first()).toBeVisible({ timeout: 10000 })
+    // The text should start with @
+    const text = await repoSpan.first().textContent()
+    expect(text).toMatch(/^@[a-zA-Z0-9._-]+\/[a-zA-Z0-9._-]+/)
+  })
+
 })
