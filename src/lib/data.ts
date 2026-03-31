@@ -67,14 +67,87 @@ export function getAgent(slug: string): Agent | undefined {
   return agents.find((a) => a.slug === slug);
 }
 
-export function getFeaturedAgents(): Agent[] {
-  return agents.filter((a) => a.featured);
+export function getFeaturedAgents(limit = 6): Agent[] {
+  const FEATURED_BOOST = 50000;
+
+  // Sort all agents: featured ones get a star boost so they rank higher
+  const sorted = [...agents].sort(
+    (a, b) => (b.stars + (b.featured ? FEATURED_BOOST : 0)) - (a.stars + (a.featured ? FEATURED_BOOST : 0))
+  );
+
+  const result: Agent[] = [];
+  const pickedSlugs = new Set<string>();
+  const pickedRepos = new Set<string>();
+
+  const getRepo = (a: Agent) =>
+    a.githubUrl?.match(/github\.com\/([^/]+\/[^/]+)/)?.[1] ?? '';
+
+  // Pass 1: pick greedily, one agent per unique repo
+  for (const a of sorted) {
+    if (result.length >= limit) break;
+    const repo = getRepo(a);
+    if (pickedRepos.has(repo)) continue;
+    result.push(a);
+    pickedSlugs.add(a.slug);
+    if (repo) pickedRepos.add(repo);
+  }
+
+  // Pass 2: if still short, allow duplicate repos but prefer different platforms
+  if (result.length < limit) {
+    const pickedPlatforms = new Set(result.map((a) => a.platform));
+    for (const a of sorted) {
+      if (result.length >= limit) break;
+      if (pickedSlugs.has(a.slug)) continue;
+      if (!pickedPlatforms.has(a.platform)) {
+        result.push(a);
+        pickedSlugs.add(a.slug);
+        pickedPlatforms.add(a.platform);
+      }
+    }
+  }
+
+  // Pass 3: final fallback — fill by boosted-star order
+  for (const a of sorted) {
+    if (result.length >= limit) break;
+    if (!pickedSlugs.has(a.slug)) {
+      result.push(a);
+      pickedSlugs.add(a.slug);
+    }
+  }
+
+  return result.slice(0, limit);
 }
 
 export function getRecentAgents(limit = 6): Agent[] {
-  return [...agents]
-    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
-    .slice(0, limit);
+  const sorted = [...agents].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+
+  const result: Agent[] = [];
+  const pickedSlugs = new Set<string>();
+  const pickedRepos = new Set<string>();
+
+  const getRepo = (a: Agent) =>
+    a.githubUrl?.match(/github\.com\/([^/]+\/[^/]+)/)?.[1] ?? '';
+
+  // Pass 1: most recent agent from each unique repo
+  for (const a of sorted) {
+    if (result.length >= limit) break;
+    const repo = getRepo(a);
+    if (pickedRepos.has(repo)) continue;
+    result.push(a);
+    pickedSlugs.add(a.slug);
+    if (repo) pickedRepos.add(repo);
+  }
+
+  // Pass 2: fill remaining slots with next most recent (duplicates allowed)
+  for (const a of sorted) {
+    if (result.length >= limit) break;
+    if (!pickedSlugs.has(a.slug)) {
+      result.push(a);
+      pickedSlugs.add(a.slug);
+    }
+  }
+
+  return result;
 }
 
 export function getRelatedAgents(slug: string, limit = 3): Agent[] {
