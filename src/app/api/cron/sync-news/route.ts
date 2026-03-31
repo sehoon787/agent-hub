@@ -57,17 +57,36 @@ export async function GET(request: NextRequest) {
 
   try {
     // 1. Read agents.json to get unique repo URLs
-    const agentsRes = await fetch(
+    // Contents API returns sha even for files > 1MB, but content is truncated/missing for large files.
+    // For files > 1MB, fall back to the Git Blob API which handles large files correctly.
+    const agentsMetaRes = await fetch(
       githubApiUrl('contents/src/lib/data/agents.json'),
       { headers, cache: 'no-store' }
     );
-    if (!agentsRes.ok) {
-      return NextResponse.json({ error: 'Failed to read agents.json' }, { status: 502 });
+    if (!agentsMetaRes.ok) {
+      return NextResponse.json({ error: 'Failed to read agents.json metadata' }, { status: 502 });
     }
-    const agentsData = await agentsRes.json();
-    const agents: AgentEntry[] = JSON.parse(
-      Buffer.from(agentsData.content, 'base64').toString('utf-8')
-    );
+    const agentsMeta = await agentsMetaRes.json();
+
+    let agentsRaw: string;
+    if (agentsMeta.content) {
+      // Small file: content is available directly in the Contents API response
+      agentsRaw = Buffer.from(agentsMeta.content, 'base64').toString('utf-8');
+    } else {
+      // Large file (> 1MB): fetch via Git Blob API using the sha
+      const githubRepo = process.env.GITHUB_REPO || 'sehoon787/agent-hub';
+      const blobRes = await fetch(
+        `https://api.github.com/repos/${githubRepo}/git/blobs/${agentsMeta.sha}`,
+        { headers, cache: 'no-store' }
+      );
+      if (!blobRes.ok) {
+        return NextResponse.json({ error: 'Failed to read agents.json blob' }, { status: 502 });
+      }
+      const blobData = await blobRes.json();
+      agentsRaw = Buffer.from(blobData.content, 'base64').toString('utf-8');
+    }
+
+    const agents: AgentEntry[] = JSON.parse(agentsRaw);
 
     // Extract unique repos (not file URLs) to avoid duplicate API calls
     const repoSet = new Map<string, string>(); // key: "owner/repo", value: repoUrl
