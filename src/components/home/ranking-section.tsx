@@ -62,7 +62,7 @@ export function RankingSection() {
                 </td>
                 <td className="py-3 pr-4">
                   <Link href={`/agents/${agent.slug}`} className="text-sm font-medium text-zinc-200 hover:text-white">
-                    <AgentDisplayName displayName={agent.displayName} />
+                    <AgentDisplayName displayName={agent.displayName} variant="inline" />
                   </Link>
                 </td>
                 <td className="py-3 pr-4">

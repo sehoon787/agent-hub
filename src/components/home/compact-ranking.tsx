@@ -29,7 +29,7 @@ export function CompactRanking({ repos }: CompactRankingProps) {
   const filtered = base.slice(0, 5);
 
   return (
-    <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-5">
+    <div className="flex h-full flex-col rounded-xl border border-zinc-800 bg-zinc-900 p-5">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Trophy className="h-5 w-5 text-yellow-400" />
@@ -59,7 +59,7 @@ export function CompactRanking({ repos }: CompactRankingProps) {
         ))}
       </div>
 
-      <div className="mt-3">
+      <div className="mt-3 flex-1">
         {filtered.length === 0 ? (
           <p className="py-4 text-center text-xs text-zinc-500">No repositories for this platform</p>
         ) : (

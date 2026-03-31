@@ -100,61 +100,75 @@ export async function GET(request: NextRequest) {
     const newItems: NewsItem[] = [];
     const errors: string[] = [];
 
-    for (const [repoKey, repoUrl] of repoSet) {
-      const releasesRes = await fetch(
-        `https://api.github.com/repos/${repoKey}/releases?per_page=5`,
-        { headers, cache: 'no-store' }
-      );
+    const repoEntries = [...repoSet.entries()];
+    const BATCH_SIZE = 10;
 
-      if (!releasesRes.ok) {
-        errors.push(`${repoKey}: releases HTTP ${releasesRes.status}`);
-        continue;
-      }
+    for (let i = 0; i < repoEntries.length; i += BATCH_SIZE) {
+      const batch = repoEntries.slice(i, i + BATCH_SIZE);
+      const results = await Promise.allSettled(
+        batch.map(async ([repoKey, repoUrl]) => {
+          const releasesRes = await fetch(
+            `https://api.github.com/repos/${repoKey}/releases?per_page=5`,
+            { headers, cache: 'no-store' }
+          );
 
-      const releases: ReleaseEntry[] = await releasesRes.json();
+          if (!releasesRes.ok) {
+            errors.push(`${repoKey}: releases HTTP ${releasesRes.status}`);
+            return;
+          }
 
-      // If no releases, try tags as fallback
-      if (releases.length === 0) {
-        const tagsRes = await fetch(
-          `https://api.github.com/repos/${repoKey}/tags?per_page=5`,
-          { headers, cache: 'no-store' }
-        );
-        if (tagsRes.ok) {
-          const tags: TagEntry[] = await tagsRes.json();
-          for (const tag of tags) {
-            const id = `${repoKey}:${tag.name}`;
+          const releases: ReleaseEntry[] = await releasesRes.json();
+
+          // If no releases, try tags as fallback
+          if (releases.length === 0) {
+            const tagsRes = await fetch(
+              `https://api.github.com/repos/${repoKey}/tags?per_page=5`,
+              { headers, cache: 'no-store' }
+            );
+            if (tagsRes.ok) {
+              const tags: TagEntry[] = await tagsRes.json();
+              for (const tag of tags) {
+                const id = `${repoKey}:${tag.name}`;
+                if (existingIds.has(id)) continue;
+                newItems.push({
+                  id,
+                  repo: repoKey,
+                  repoUrl,
+                  tagName: tag.name,
+                  title: tag.name,
+                  body: '',
+                  publishedAt: new Date().toISOString(),
+                  url: `https://github.com/${repoKey}/releases/tag/${tag.name}`,
+                });
+                existingIds.add(id);
+              }
+            }
+            return;
+          }
+
+          for (const release of releases) {
+            const id = `${repoKey}:${release.tag_name}`;
             if (existingIds.has(id)) continue;
             newItems.push({
               id,
               repo: repoKey,
               repoUrl,
-              tagName: tag.name,
-              title: tag.name,
-              body: '',
-              publishedAt: new Date().toISOString(),
-              url: `https://github.com/${repoKey}/releases/tag/${tag.name}`,
+              tagName: release.tag_name,
+              title: release.name || release.tag_name,
+              body: (release.body || '').slice(0, 200),
+              publishedAt: release.published_at,
+              url: release.html_url,
             });
             existingIds.add(id);
           }
+        })
+      );
+
+      // Collect errors from rejected promises
+      for (const result of results) {
+        if (result.status === 'rejected') {
+          errors.push(String(result.reason));
         }
-        continue;
-      }
-
-      for (const release of releases) {
-        const id = `${repoKey}:${release.tag_name}`;
-        if (existingIds.has(id)) continue;
-
-        newItems.push({
-          id,
-          repo: repoKey,
-          repoUrl,
-          tagName: release.tag_name,
-          title: release.name || release.tag_name,
-          body: (release.body || '').slice(0, 200),
-          publishedAt: release.published_at,
-          url: release.html_url,
-        });
-        existingIds.add(id);
       }
     }
 

@@ -14,10 +14,10 @@ function relativeDate(dateStr: string): string {
 }
 
 export function LatestReleases() {
-  const news = (newsData as NewsItem[]).slice(0, 6);
+  const news = (newsData as NewsItem[]).slice(0, 5);
 
   return (
-    <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-5">
+    <div className="flex h-full flex-col rounded-xl border border-zinc-800 bg-zinc-900 p-5">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Newspaper className="h-5 w-5 text-violet-400" />
@@ -31,7 +31,7 @@ export function LatestReleases() {
         </Link>
       </div>
 
-      <div className="mt-3 space-y-0">
+      <div className="mt-3 flex-1 space-y-0">
         {news.length === 0 ? (
           <p className="py-4 text-center text-sm text-zinc-500">
             No releases collected yet. Check back later.

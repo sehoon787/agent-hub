@@ -17,8 +17,8 @@ export default function HomePage() {
       <StatsSection />
       <section className="py-8">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <CompactRanking repos={topRepos} />
-          <LatestReleases />
+          <div className="flex flex-col"><CompactRanking repos={topRepos} /></div>
+          <div className="flex flex-col"><LatestReleases /></div>
         </div>
       </section>
       <FeaturedSection />

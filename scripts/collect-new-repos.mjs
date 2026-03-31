@@ -114,6 +114,15 @@ function inferModel(text) {
   return 'sonnet';
 }
 
+function inferSource(owner) {
+  const officialOrgs = ['google-gemini', 'openai', 'anthropic', 'anthropics'];
+  const pluginOrgs = ['Yeachan-Heo'];
+  const lowerOwner = owner.toLowerCase();
+  if (officialOrgs.some(o => o.toLowerCase() === lowerOwner)) return 'official';
+  if (pluginOrgs.some(o => o.toLowerCase() === lowerOwner)) return 'plugin';
+  return 'community';
+}
+
 async function sleep(ms) {
   return new Promise(r => setTimeout(r, ms));
 }
@@ -258,7 +267,7 @@ async function main() {
         longDescription: fm.longDescription || fm.long_description || '',
         category,
         model,
-        source: 'community',
+        source: inferSource(owner),
         platform: repoPlatform || 'claude',
         author: fm.author || owner,
         githubUrl: file.html_url || `https://github.com/${owner}/${repo}`,

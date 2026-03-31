@@ -88,7 +88,7 @@ export default async function AgentDetailPage({
       <nav className="flex items-center gap-1 text-sm text-zinc-500">
         <Link href="/agents" className="hover:text-zinc-300">Agents</Link>
         <ChevronRight className="h-3 w-3" />
-        <span className="text-zinc-300">{agent.displayName}</span>
+        <span className="text-zinc-300"><AgentDisplayName displayName={agent.displayName} variant="inline" /></span>
       </nav>
 
       {/* Header */}
@@ -96,7 +96,7 @@ export default async function AgentDetailPage({
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-3">
             <Bot className="h-8 w-8 shrink-0 text-violet-400" />
-            <h1 className="text-3xl font-bold text-zinc-100"><AgentDisplayName displayName={agent.displayName} /></h1>
+            <h1 className="text-3xl font-bold text-zinc-100"><AgentDisplayName displayName={agent.displayName} variant="inline" /></h1>
             {agent.verified && (
               <BadgeCheck className="h-5 w-5 shrink-0 text-emerald-400" aria-label="Verified" />
             )}
