@@ -505,7 +505,7 @@ export function SubmitForm() {
             placeholder="https://github.com/owner/repo/blob/main/agents/my-agent.md"
             className={`mt-1 bg-zinc-800/50 text-zinc-100 ${fieldErrors.githubUrl || clientErrors.githubUrl ? 'border-red-500' : 'border-zinc-700'}`}
           />
-          <p className="mt-1 text-xs text-zinc-500">GitHub에서 agent .md 파일의 전체 URL을 입력하세요 (예: https://github.com/owner/repo/blob/main/agent.md)</p>
+          <p className="mt-1 text-xs text-zinc-500">Full URL to the agent .md file on GitHub</p>
           {autoFilling && <p className="mt-1 text-xs text-violet-400">Auto-detecting repository info...</p>}
           {clientErrors.githubUrl && <p className="mt-1 text-xs text-red-400">{clientErrors.githubUrl}</p>}
           {fieldErrors.githubUrl && <p className="mt-1 text-xs text-red-400">{fieldErrors.githubUrl[0]}</p>}
