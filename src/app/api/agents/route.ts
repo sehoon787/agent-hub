@@ -127,15 +127,36 @@ export async function POST(request: NextRequest) {
     installCmd = `curl -o ~/.claude/agents/${slug}.md https://raw.githubusercontent.com/${repoKey}/${branch}/${filePath}`;
   }
 
-  // Verify file exists at the URL
+  // Verify file exists and has valid agent format
   if (installCmd) {
     const rawUrlMatch = installCmd.match(/https:\/\/raw\.githubusercontent\.com\/\S+/);
     if (rawUrlMatch) {
       try {
-        const headRes = await fetch(rawUrlMatch[0], { method: 'HEAD' });
-        if (!headRes.ok) {
+        const fileRes = await fetch(rawUrlMatch[0]);
+        if (!fileRes.ok) {
           return NextResponse.json(
-            { error: 'File not found at the specified URL. Please check the GitHub file URL.', details: { githubUrl: ['The .md file was not found at this URL (HTTP ' + headRes.status + ')'] } },
+            { error: 'File not found at the specified URL.', details: { githubUrl: ['The .md file was not found at this URL (HTTP ' + fileRes.status + ')'] } },
+            { status: 400 }
+          );
+        }
+        const content = await fileRes.text();
+        if (!content.trim()) {
+          return NextResponse.json(
+            { error: 'The file is empty.', details: { githubUrl: ['The .md file at this URL is empty'] } },
+            { status: 400 }
+          );
+        }
+        if (content.length > 100000) {
+          return NextResponse.json(
+            { error: 'File too large for an agent definition.', details: { githubUrl: ['Agent .md files should be under 100KB'] } },
+            { status: 400 }
+          );
+        }
+        const hasFrontmatter = /^---\s*\n[\s\S]*?\n---/.test(content);
+        const hasHeading = /^#\s+.+/m.test(content);
+        if (!hasFrontmatter && !hasHeading) {
+          return NextResponse.json(
+            { error: 'This file does not appear to be a valid agent definition. Agent files should have YAML frontmatter (---) or a markdown heading (#).', details: { githubUrl: ['No YAML frontmatter or markdown heading found'] } },
             { status: 400 }
           );
         }
