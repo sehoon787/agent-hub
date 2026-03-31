@@ -322,8 +322,19 @@ export async function DELETE(
 
     const { agents, fileSha } = result;
     const agentIndex = agents.findIndex((a) => a.slug === slug);
+
+    // Agent not in agents.json (PR never merged, or already removed)
+    // — just close the issue and add user-removed label
     if (agentIndex === -1) {
-      return NextResponse.json({ error: 'Agent not found' }, { status: 404 });
+      await fetch(
+        githubApiUrl(`issues/${number}`),
+        { method: 'PATCH', headers: getGithubHeaders(), body: JSON.stringify({ state: 'closed' }) }
+      );
+      await fetch(
+        githubApiUrl(`issues/${number}/labels`),
+        { method: 'POST', headers: getGithubHeaders(), body: JSON.stringify({ labels: ['user-removed'] }) }
+      );
+      return NextResponse.json({ success: true });
     }
 
     const agent = agents[agentIndex];

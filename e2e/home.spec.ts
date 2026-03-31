@@ -14,7 +14,7 @@ test.describe('Homepage', () => {
     await page.goto('/')
     // StatsSection renders StatCards with labels: Total Agents, Categories, Contributors, Verified Agents
     await expect(page.locator('text=Total Agents')).toBeVisible()
-    await expect(page.locator('text=Categories')).toBeVisible()
+    await expect(page.locator('text=Repositories')).toBeVisible()
     await expect(page.locator('text=Contributors')).toBeVisible()
     await expect(page.locator('p:has-text("Platforms")')).toBeVisible()
   })
