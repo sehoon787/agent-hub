@@ -80,6 +80,22 @@ export default async function AgentDetailPage({
   const repoMatch = agent.githubUrl?.match(/github\.com\/([^/]+\/[^/]+)/);
   const repoKey = repoMatch?.[1];
 
+  // Prefer a direct file URL for "View Source". If githubUrl is only a repo URL,
+  // derive the blob URL from the installCommand (raw.githubusercontent.com → github.com/blob).
+  const viewSourceUrl = (() => {
+    if (!agent.githubUrl) return undefined;
+    if (agent.githubUrl.includes('/blob/')) return agent.githubUrl;
+    if (agent.installCommand) {
+      const rawMatch = agent.installCommand.match(
+        /https:\/\/raw\.githubusercontent\.com\/([^/]+\/[^/]+)\/([^/]+)\/(.+\.md)/
+      );
+      if (rawMatch) {
+        return `https://github.com/${rawMatch[1]}/blob/${rawMatch[2]}/${rawMatch[3]}`;
+      }
+    }
+    return agent.githubUrl;
+  })();
+
   return (
     <div className="py-8">
       <AgentJsonLd agent={agent} />
@@ -133,9 +149,9 @@ export default async function AgentDetailPage({
               {repoKey}
             </Link>
           )}
-          {agent.githubUrl && (
+          {viewSourceUrl && (
             <a
-              href={agent.githubUrl}
+              href={viewSourceUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 rounded-lg border border-zinc-700 bg-zinc-800/50 px-4 py-2 text-sm text-zinc-300 hover:bg-zinc-800"
