@@ -1,5 +1,45 @@
 [
   {
+    "id": "openai/codex:rust-v0.119.0-alpha.1",
+    "repo": "openai/codex",
+    "repoUrl": "https://github.com/openai/codex",
+    "tagName": "rust-v0.119.0-alpha.1",
+    "title": "0.119.0-alpha.1",
+    "body": "Release 0.119.0-alpha.1\n\n",
+    "publishedAt": "2026-03-31T17:53:34Z",
+    "url": "https://github.com/openai/codex/releases/tag/rust-v0.119.0-alpha.1"
+  },
+  {
+    "id": "openai/codex:rust-v0.118.0",
+    "repo": "openai/codex",
+    "repoUrl": "https://github.com/openai/codex",
+    "tagName": "rust-v0.118.0",
+    "title": "0.118.0",
+    "body": "## New Features\n- Windows sandbox runs can now enforce proxy-only networking with OS-level egress rules, instead of relying on environment variables alone. (#12220)\n- App-server clients can now start ",
+    "publishedAt": "2026-03-31T17:02:18Z",
+    "url": "https://github.com/openai/codex/releases/tag/rust-v0.118.0"
+  },
+  {
+    "id": "google-gemini/gemini-cli:v0.36.0-preview.7",
+    "repo": "google-gemini/gemini-cli",
+    "repoUrl": "https://github.com/google-gemini/gemini-cli",
+    "tagName": "v0.36.0-preview.7",
+    "title": "Release v0.36.0-preview.7",
+    "body": "**Full Changelog**: https://github.com/google-gemini/gemini-cli/compare/v0.36.0-preview.6...v0.36.0-preview.7",
+    "publishedAt": "2026-03-31T16:56:24Z",
+    "url": "https://github.com/google-gemini/gemini-cli/releases/tag/v0.36.0-preview.7"
+  },
+  {
+    "id": "openai/codex:rust-v0.118.0-alpha.5",
+    "repo": "openai/codex",
+    "repoUrl": "https://github.com/openai/codex",
+    "tagName": "rust-v0.118.0-alpha.5",
+    "title": "0.118.0-alpha.5",
+    "body": "Release 0.118.0-alpha.5\n\n",
+    "publishedAt": "2026-03-31T14:41:15Z",
+    "url": "https://github.com/openai/codex/releases/tag/rust-v0.118.0-alpha.5"
+  },
+  {
     "id": "openai/codex:rust-v0.118.0-alpha.4",
     "repo": "openai/codex",
     "repoUrl": "https://github.com/openai/codex",
