@@ -225,7 +225,7 @@ export async function GET(request: NextRequest) {
       total: merged.length,
       errors,
     });
-  } catch {
-    return NextResponse.json({ error: 'News sync failed' }, { status: 500 });
+  } catch (err) {
+    return NextResponse.json({ error: 'News sync failed', detail: String(err) }, { status: 500 });
   }
 }
