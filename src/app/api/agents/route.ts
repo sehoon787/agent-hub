@@ -117,6 +117,17 @@ export async function POST(request: NextRequest) {
     return val.replace(/[\r\n]+/g, ' ').trim();
   }
 
+  // Auto-generate install command from githubUrl + agentFilePath + name
+  let installCmd = '';
+  if (data.githubUrl && data.agentFilePath) {
+    const repoMatch = data.githubUrl.match(/github\.com\/([^/]+\/[^/]+)/);
+    if (repoMatch) {
+      const repoKey = repoMatch[1].replace(/\.git$/, '');
+      const filePath = data.agentFilePath.replace(/^\//, '');
+      installCmd = `curl -o ~/.claude/agents/${slug}.md https://raw.githubusercontent.com/${repoKey}/main/${filePath}`;
+    }
+  }
+
   const issueBody = `## Agent Submission
 
 **name:** ${sanitizeLine(data.name)}
@@ -129,6 +140,8 @@ export async function POST(request: NextRequest) {
 **platform:** ${sanitizeLine(data.platform)}
 **author:** ${sanitizeLine(session.user.login || data.author)}
 **githubUrl:** ${sanitizeLine(data.githubUrl ?? '')}
+**agentFilePath:** ${sanitizeLine(data.agentFilePath ?? '')}
+**installCommand:** ${sanitizeLine(installCmd)}
 **capabilities:** ${sanitizeLine(data.capabilities ?? '')}
 **tools:** ${sanitizeLine(data.tools ?? '')}
 **tags:** ${sanitizeLine(data.tags ?? '')}

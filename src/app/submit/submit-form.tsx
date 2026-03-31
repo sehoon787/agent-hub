@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, type KeyboardEvent } from 'react';
 import { useSession, signIn } from 'next-auth/react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { Bot, CheckCircle2, LogIn } from 'lucide-react';
+import { Bot, CheckCircle2, LogIn, Plus, X, Terminal } from 'lucide-react';
 import { inferStages } from '@/lib/stage-classifier';
 
 interface FormData {
@@ -14,6 +14,7 @@ interface FormData {
   description: string;
   longDescription: string;
   githubUrl: string;
+  agentFilePath: string;
   category: string;
   model: string;
   platform: string;
@@ -29,6 +30,7 @@ const initial: FormData = {
   description: '',
   longDescription: '',
   githubUrl: '',
+  agentFilePath: '',
   category: '',
   model: '',
   platform: '',
@@ -37,6 +39,80 @@ const initial: FormData = {
   tools: '',
   tags: '',
 };
+
+/* ── Tag input helper ── */
+function TagInput({
+  items,
+  onAdd,
+  onRemove,
+  placeholder,
+  variant = 'default',
+}: {
+  items: string[];
+  onAdd: (item: string) => void;
+  onRemove: (index: number) => void;
+  placeholder: string;
+  variant?: 'default' | 'mono';
+}) {
+  const [draft, setDraft] = useState('');
+
+  const add = () => {
+    const trimmed = draft.trim();
+    if (!trimmed) return;
+    if (!items.includes(trimmed)) onAdd(trimmed);
+    setDraft('');
+  };
+
+  const handleKey = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') { e.preventDefault(); add(); }
+  };
+
+  return (
+    <div>
+      <div className="flex gap-1.5">
+        <Input
+          value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          onKeyDown={handleKey}
+          placeholder={placeholder}
+          className="mt-1 flex-1 border-zinc-700 bg-zinc-800/50 text-zinc-100"
+        />
+        <button
+          type="button"
+          onClick={add}
+          className="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-zinc-700 bg-zinc-800/50 text-zinc-400 hover:bg-zinc-700 hover:text-zinc-200"
+          aria-label="Add"
+        >
+          <Plus className="h-4 w-4" />
+        </button>
+      </div>
+      {items.length > 0 && (
+        <div className="mt-2 flex flex-wrap gap-1.5">
+          {items.map((item, i) => (
+            <span
+              key={item}
+              className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs ${
+                variant === 'mono'
+                  ? 'border-zinc-700 font-mono text-zinc-400'
+                  : 'border-zinc-700 text-zinc-300'
+              }`}
+            >
+              {item}
+              <button
+                type="button"
+                onClick={() => onRemove(i)}
+                className="text-zinc-500 hover:text-zinc-200"
+                aria-label={`Remove ${item}`}
+              >
+                <X className="h-3 w-3" />
+              </button>
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 const ALL_MODELS = [
   { value: 'sonnet', label: 'Sonnet (Claude)' },
@@ -61,7 +137,6 @@ const PLATFORM_MODELS: Record<string, string[]> = {
 
 const NAME_RE = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/;
 const GITHUB_URL_RE = /^https:\/\/github/i;
-const AUTHOR_RE = /^[a-zA-Z0-9](?:[a-zA-Z0-9._-]*[a-zA-Z0-9])?$/;
 
 const stageColors: Record<string, string> = {
   discover: 'bg-teal-500/20 text-teal-300 border-teal-500/30',
@@ -102,6 +177,8 @@ const platformColors: Record<string, string> = {
 export function SubmitForm() {
   const { data: session, status } = useSession();
   const [form, setForm] = useState<FormData>(initial);
+  const [capabilityItems, setCapabilityItems] = useState<string[]>([]);
+  const [toolItems, setToolItems] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
@@ -122,6 +199,15 @@ export function SubmitForm() {
       category: form.category || undefined,
     });
   }, [form.description, form.tags, form.capabilities, form.tools, form.model, form.category]);
+
+  const generatedInstallCmd = useMemo(() => {
+    if (!form.githubUrl || !form.agentFilePath || !form.name) return '';
+    const match = form.githubUrl.match(/github\.com\/([^/]+\/[^/]+)/);
+    if (!match) return '';
+    const repoKey = match[1].replace(/\.git$/, '');
+    const path = form.agentFilePath.replace(/^\//, '');
+    return `curl -o ~/.claude/agents/${form.name}.md https://raw.githubusercontent.com/${repoKey}/main/${path}`;
+  }, [form.githubUrl, form.agentFilePath, form.name]);
 
   // Auto-fill author from GitHub login (username) on mount
   useEffect(() => {
@@ -157,8 +243,6 @@ export function SubmitForm() {
       msg = 'Must be lowercase alphanumeric with hyphens, cannot start/end with a hyphen.';
     } else if (field === 'githubUrl' && value && !GITHUB_URL_RE.test(value)) {
       msg = 'Must start with https://github';
-    } else if (field === 'author' && value && !AUTHOR_RE.test(value)) {
-      msg = 'Must be alphanumeric, may include dots, hyphens, or underscores.';
     }
     setClientErrors((prev) => {
       if (!msg) {
@@ -238,6 +322,8 @@ export function SubmitForm() {
         if (data.issueUrl) setIssueUrl(data.issueUrl);
         setSubmitted(true);
         setForm(initial);
+        setCapabilityItems([]);
+        setToolItems([]);
       } else if (data.details && typeof data.details === 'object') {
         setFieldErrors(data.details);
         setError(data.error || 'Validation failed. Please check the fields below.');
@@ -410,16 +496,6 @@ export function SubmitForm() {
           </select>
         </div>
         <div>
-          <label className="text-sm font-medium text-zinc-300">Author</label>
-          <Input
-            value={form.author}
-            readOnly
-            className="mt-1 border-zinc-700 bg-zinc-800/50 text-zinc-400 cursor-not-allowed"
-          />
-          <p className="mt-1 text-xs text-zinc-500">Auto-filled from your GitHub login</p>
-          {fieldErrors.author && <p className="mt-1 text-xs text-red-400">{fieldErrors.author[0]}</p>}
-        </div>
-        <div>
           <label className="text-sm font-medium text-zinc-300">GitHub URL <span className="text-red-400">*</span></label>
           <Input
             value={form.githubUrl}
@@ -434,21 +510,48 @@ export function SubmitForm() {
           {fieldErrors.githubUrl && <p className="mt-1 text-xs text-red-400">{fieldErrors.githubUrl[0]}</p>}
         </div>
         <div>
-          <label className="text-sm font-medium text-zinc-300">Capabilities (comma-separated)</label>
+          <label className="text-sm font-medium text-zinc-300">Agent File Path</label>
           <Input
-            value={form.capabilities}
-            onChange={(e) => update('capabilities', e.target.value)}
-            placeholder="e.g. Code review, TDD workflow, Refactoring"
+            value={form.agentFilePath}
+            onChange={(e) => update('agentFilePath', e.target.value)}
+            placeholder="e.g. agents/my-agent.md or my-agent.md"
             className="mt-1 border-zinc-700 bg-zinc-800/50 text-zinc-100"
+          />
+          <p className="mt-1 text-xs text-zinc-500">Path to the agent .md file in the repo (from repo root). Used to generate the install command.</p>
+        </div>
+        <div>
+          <label className="text-sm font-medium text-zinc-300">Capabilities</label>
+          <TagInput
+            items={capabilityItems}
+            onAdd={(item) => {
+              const next = [...capabilityItems, item];
+              setCapabilityItems(next);
+              update('capabilities', next.join(', '));
+            }}
+            onRemove={(i) => {
+              const next = capabilityItems.filter((_, idx) => idx !== i);
+              setCapabilityItems(next);
+              update('capabilities', next.join(', '));
+            }}
+            placeholder="e.g. Code review"
           />
         </div>
         <div>
-          <label className="text-sm font-medium text-zinc-300">Tools (comma-separated)</label>
-          <Input
-            value={form.tools}
-            onChange={(e) => update('tools', e.target.value)}
-            placeholder="e.g. Bash, Read, Write, Edit, Grep"
-            className="mt-1 border-zinc-700 bg-zinc-800/50 text-zinc-100"
+          <label className="text-sm font-medium text-zinc-300">Tools</label>
+          <TagInput
+            items={toolItems}
+            onAdd={(item) => {
+              const next = [...toolItems, item];
+              setToolItems(next);
+              update('tools', next.join(', '));
+            }}
+            onRemove={(i) => {
+              const next = toolItems.filter((_, idx) => idx !== i);
+              setToolItems(next);
+              update('tools', next.join(', '));
+            }}
+            placeholder="e.g. Bash"
+            variant="mono"
           />
         </div>
         <div>
@@ -530,6 +633,40 @@ export function SubmitForm() {
                     {stageLabels[s] ?? s}
                   </Badge>
                 ))}
+              </div>
+            </div>
+          )}
+          {capabilityItems.length > 0 && (
+            <div className="mt-3 border-t border-zinc-800 pt-3">
+              <p className="text-xs text-zinc-500 mb-1.5">Capabilities</p>
+              <ul className="space-y-1">
+                {capabilityItems.map((c) => (
+                  <li key={c} className="flex items-center gap-2 text-xs text-zinc-300">
+                    <CheckCircle2 className="h-3 w-3 shrink-0 text-emerald-500" />
+                    {c}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {toolItems.length > 0 && (
+            <div className="mt-3 border-t border-zinc-800 pt-3">
+              <p className="text-xs text-zinc-500 mb-1.5">Tools</p>
+              <div className="flex flex-wrap gap-1.5">
+                {toolItems.map((t) => (
+                  <Badge key={t} variant="outline" className="border-zinc-700 font-mono text-xs text-zinc-400">
+                    {t}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          )}
+          {generatedInstallCmd && (
+            <div className="mt-3 border-t border-zinc-800 pt-3">
+              <p className="text-xs text-zinc-500 mb-1.5">Install Command</p>
+              <div className="flex items-center gap-2 rounded-lg border border-zinc-700 bg-zinc-800/50 px-2 py-1.5 font-mono text-xs text-zinc-300">
+                <Terminal className="h-3 w-3 shrink-0 text-zinc-500" />
+                <code className="truncate">{generatedInstallCmd}</code>
               </div>
             </div>
           )}
