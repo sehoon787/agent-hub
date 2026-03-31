@@ -21,10 +21,10 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-md">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-3">
-          <img src="/logo.svg" alt="AgentHub" className="h-20 w-20" />
-          <span className="text-3xl font-bold text-zinc-100">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <Link href="/" className="flex items-center gap-2">
+          <img src="/logo.svg" alt="AgentHub" className="h-12 w-12" />
+          <span className="text-xl font-bold text-zinc-100">
             AgentHub
           </span>
         </Link>
