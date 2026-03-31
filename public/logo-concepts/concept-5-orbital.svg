@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <radialGradient id="coreGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#c4b5fd"/>
+      <stop offset="60%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </radialGradient>
+    <linearGradient id="orbitGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a78bfa" stop-opacity="0.9"/>
+      <stop offset="40%" stop-color="#8b5cf6" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0.1"/>
+    </linearGradient>
+    <linearGradient id="orbitGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#c4b5fd" stop-opacity="0.8"/>
+      <stop offset="50%" stop-color="#8b5cf6" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0.05"/>
+    </linearGradient>
+    <filter id="coreGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="14" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="agentGlow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="ringGlow" x="-5%" y="-5%" width="110%" height="110%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Outer orbit ring — tilted ellipse (perspective) -->
+  <!-- Main orbital plane: slightly tilted, large ellipse -->
+  <ellipse cx="256" cy="256" rx="190" ry="68"
+           stroke="url(#orbitGrad1)" stroke-width="3" fill="none"
+           transform="rotate(-20 256 256)"
+           filter="url(#ringGlow)"/>
+
+  <!-- Second orbital ring — different tilt angle -->
+  <ellipse cx="256" cy="256" rx="145" ry="50"
+           stroke="url(#orbitGrad2)" stroke-width="2" fill="none"
+           transform="rotate(55 256 256)"
+           filter="url(#ringGlow)" opacity="0.7"/>
+
+  <!-- Third orbital — near-vertical, subtle -->
+  <ellipse cx="256" cy="256" rx="88" ry="175"
+           stroke="#8b5cf6" stroke-width="1.5" fill="none"
+           stroke-opacity="0.25" stroke-dasharray="14 6"/>
+
+  <!-- Orbiting agent dots on first orbit -->
+  <!-- Calculated on the tilted ellipse: approximate positions -->
+  <!-- Agent 1 — top-right of orbit 1 -->
+  <circle cx="390" cy="200" r="14" fill="#a78bfa" filter="url(#agentGlow)"/>
+  <circle cx="390" cy="200" r="7" fill="#ede9fe"/>
+
+  <!-- Agent 2 — bottom-left of orbit 1 -->
+  <circle cx="122" cy="312" r="11" fill="#8b5cf6" filter="url(#agentGlow)"/>
+  <circle cx="122" cy="312" r="5.5" fill="#c4b5fd"/>
+
+  <!-- Agent 3 on second orbit — upper left area -->
+  <circle cx="162" cy="182" r="9" fill="#7c3aed" filter="url(#agentGlow)"/>
+  <circle cx="162" cy="182" r="4.5" fill="#a78bfa"/>
+
+  <!-- Agent 4 on second orbit — lower right -->
+  <circle cx="358" cy="326" r="9" fill="#7c3aed" filter="url(#agentGlow)"/>
+  <circle cx="358" cy="326" r="4.5" fill="#a78bfa"/>
+
+  <!-- Central hub — the core -->
+  <circle cx="256" cy="256" r="72" fill="url(#coreGrad)" filter="url(#coreGlow)"/>
+  <circle cx="256" cy="256" r="58" fill="#09090b"/>
+
+  <!-- "A" inside the core -->
+  <!-- Left leg -->
+  <path d="M 228 300 L 250 206 L 256 193 L 262 206 L 284 300"
+        stroke="#c4b5fd" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"
+        fill="none"/>
+  <!-- Crossbar -->
+  <line x1="237" y1="264" x2="275" y2="264" stroke="#c4b5fd" stroke-width="10" stroke-linecap="round"/>
+
+  <!-- Core outer ring border -->
+  <circle cx="256" cy="256" r="72" stroke="#a78bfa" stroke-width="2" fill="none" stroke-opacity="0.5"/>
+
+  <!-- Speed trail on agent 1 (suggests motion) -->
+  <path d="M 368 208 Q 380 202 390 200" stroke="#c4b5fd" stroke-width="2.5" stroke-linecap="round" stroke-opacity="0.5" fill="none"/>
+  <path d="M 350 216 Q 360 210 372 207" stroke="#c4b5fd" stroke-width="1.5" stroke-linecap="round" stroke-opacity="0.25" fill="none"/>
+</svg>

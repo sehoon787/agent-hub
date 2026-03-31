@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="50%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+    <linearGradient id="innerGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e1b4b" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#09090b" stop-opacity="0.8"/>
+    </linearGradient>
+    <filter id="shieldGlow" x="-15%" y="-10%" width="130%" height="130%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <!-- Hexagon clip -->
+    <clipPath id="hexClip">
+      <path d="M256 60 L420 155 L420 357 L256 452 L92 357 L92 155 Z"/>
+    </clipPath>
+  </defs>
+
+  <!-- Hex outer glow layer -->
+  <path d="M256 60 L420 155 L420 357 L256 452 L92 357 L92 155 Z"
+        fill="url(#shieldGrad)" filter="url(#shieldGlow)" opacity="0.5"/>
+
+  <!-- Hex main body -->
+  <path d="M256 72 L408 163 L408 345 L256 436 L104 345 L104 163 Z"
+        fill="url(#shieldGrad)"/>
+
+  <!-- Hex inner dark area -->
+  <path d="M256 98 L386 172 L386 323 L256 400 L126 323 L126 172 Z"
+        fill="url(#innerGrad)"/>
+
+  <!-- Circuit board lines — decorative horizontal traces -->
+  <line x1="160" y1="220" x2="192" y2="220" stroke="#8b5cf6" stroke-width="2" stroke-opacity="0.5"/>
+  <line x1="320" y1="220" x2="352" y2="220" stroke="#8b5cf6" stroke-width="2" stroke-opacity="0.5"/>
+  <line x1="160" y1="292" x2="192" y2="292" stroke="#8b5cf6" stroke-width="2" stroke-opacity="0.5"/>
+  <line x1="320" y1="292" x2="352" y2="292" stroke="#8b5cf6" stroke-width="2" stroke-opacity="0.5"/>
+
+  <!-- Small circuit dots -->
+  <circle cx="160" cy="220" r="4" fill="#a78bfa" opacity="0.7"/>
+  <circle cx="352" cy="220" r="4" fill="#a78bfa" opacity="0.7"/>
+  <circle cx="160" cy="292" r="4" fill="#a78bfa" opacity="0.7"/>
+  <circle cx="352" cy="292" r="4" fill="#a78bfa" opacity="0.7"/>
+
+  <!-- "A" letterform — large, centered, bold -->
+  <!-- Left diagonal stroke -->
+  <path d="M 190 330 L 243 180" stroke="#ede9fe" stroke-width="28" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Right diagonal stroke -->
+  <path d="M 322 330 L 269 180" stroke="#ede9fe" stroke-width="28" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Crossbar -->
+  <line x1="210" y1="276" x2="302" y2="276" stroke="#ede9fe" stroke-width="22" stroke-linecap="round"/>
+
+  <!-- Top accent dot above A -->
+  <circle cx="256" cy="162" r="8" fill="#c4b5fd"/>
+
+  <!-- Hex border stroke (subtle) -->
+  <path d="M256 72 L408 163 L408 345 L256 436 L104 345 L104 163 Z"
+        stroke="#a78bfa" stroke-width="2.5" fill="none" stroke-opacity="0.6"/>
+</svg>

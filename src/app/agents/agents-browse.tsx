@@ -36,7 +36,7 @@ const ALL_BROWSE_MODELS = [
 
 export function AgentsBrowse() {
   const searchParams = useSearchParams();
-  const [q, setQ] = useState('');
+  const [q, setQ] = useState(searchParams.get('q') ?? '');
   const [category, setCategory] = useState<string | null>(null);
   const [stage, setStage] = useState<string | null>(null);
   const [model, setModel] = useState<string | null>(null);

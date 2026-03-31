@@ -203,13 +203,21 @@ export async function DELETE(
   if (!labelNames.includes('agent-submission')) {
     return NextResponse.json({ error: 'Not an agent submission' }, { status: 403 });
   }
-  if (issue.state !== 'open') {
-    // Already closed — just return success
-    return NextResponse.json({ success: true });
-  }
-
   if (!isSubmissionOwner(issue.body ?? '', session.user)) {
     return NextResponse.json({ error: 'Not the owner of this submission' }, { status: 403 });
+  }
+
+  if (issue.state !== 'open') {
+    // Already closed — add user-removed label to hide from list
+    await fetch(
+      githubApiUrl(`issues/${number}/labels`),
+      {
+        method: 'POST',
+        headers: getGithubHeaders(),
+        body: JSON.stringify({ labels: ['user-removed'] }),
+      }
+    );
+    return NextResponse.json({ success: true });
   }
 
   const closeRes = await fetch(

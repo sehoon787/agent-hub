@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <radialGradient id="starGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ede9fe"/>
+      <stop offset="100%" stop-color="#a78bfa"/>
+    </radialGradient>
+    <radialGradient id="anchorGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#c4b5fd"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </radialGradient>
+    <filter id="starGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="7" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="lineGlow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="bigGlow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="14" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!--
+    Constellation forming an "A":
+    Key points:
+      Apex:        (256, 108)   — top of A
+      Left foot:   (148, 388)   — bottom-left
+      Right foot:  (364, 388)   — bottom-right
+      Left mid:    (190, 268)   — left crossbar end (on left leg)
+      Right mid:   (322, 268)   — right crossbar end (on right leg)
+      Crossbar L:  (207, 268)
+      Crossbar R:  (305, 268)
+    Extra accent stars scattered near the form
+  -->
+
+  <!-- Constellation lines — the structural skeleton of A -->
+  <!-- Left leg: apex to left foot -->
+  <line x1="256" y1="108" x2="148" y2="388" stroke="#8b5cf6" stroke-width="1.8" stroke-opacity="0.55" filter="url(#lineGlow)"/>
+  <!-- Right leg: apex to right foot -->
+  <line x1="256" y1="108" x2="364" y2="388" stroke="#8b5cf6" stroke-width="1.8" stroke-opacity="0.55" filter="url(#lineGlow)"/>
+  <!-- Crossbar -->
+  <line x1="197" y1="268" x2="315" y2="268" stroke="#8b5cf6" stroke-width="1.8" stroke-opacity="0.55" filter="url(#lineGlow)"/>
+
+  <!-- Secondary constellation edges — connecting accent stars -->
+  <!-- Left mid to a nearby accent star -->
+  <line x1="197" y1="268" x2="156" y2="218" stroke="#7c3aed" stroke-width="1.2" stroke-opacity="0.35"/>
+  <!-- Right mid to nearby accent star -->
+  <line x1="315" y1="268" x2="358" y2="214" stroke="#7c3aed" stroke-width="1.2" stroke-opacity="0.35"/>
+  <!-- Foot connections to accent stars -->
+  <line x1="148" y1="388" x2="118" y2="418" stroke="#7c3aed" stroke-width="1.2" stroke-opacity="0.30"/>
+  <line x1="364" y1="388" x2="394" y2="416" stroke="#7c3aed" stroke-width="1.2" stroke-opacity="0.30"/>
+  <!-- Near apex accent connection -->
+  <line x1="256" y1="108" x2="295" y2="78" stroke="#7c3aed" stroke-width="1.2" stroke-opacity="0.30"/>
+
+  <!-- Main structural nodes -->
+  <!-- Apex — largest, anchor star -->
+  <circle cx="256" cy="108" r="16" fill="url(#anchorGrad)" filter="url(#bigGlow)"/>
+  <circle cx="256" cy="108" r="8" fill="#ede9fe"/>
+
+  <!-- Left foot -->
+  <circle cx="148" cy="388" r="14" fill="url(#anchorGrad)" filter="url(#bigGlow)"/>
+  <circle cx="148" cy="388" r="7" fill="#ede9fe"/>
+
+  <!-- Right foot -->
+  <circle cx="364" cy="388" r="14" fill="url(#anchorGrad)" filter="url(#bigGlow)"/>
+  <circle cx="364" cy="388" r="7" fill="#ede9fe"/>
+
+  <!-- Left crossbar node -->
+  <circle cx="197" cy="268" r="11" fill="url(#starGrad)" filter="url(#starGlow)"/>
+  <circle cx="197" cy="268" r="5" fill="#ffffff"/>
+
+  <!-- Right crossbar node -->
+  <circle cx="315" cy="268" r="11" fill="url(#starGrad)" filter="url(#starGlow)"/>
+  <circle cx="315" cy="268" r="5" fill="#ffffff"/>
+
+  <!-- Midpoint crossbar star -->
+  <circle cx="256" cy="268" r="8" fill="url(#starGrad)" filter="url(#starGlow)" opacity="0.8"/>
+  <circle cx="256" cy="268" r="4" fill="#ede9fe"/>
+
+  <!-- Accent/secondary stars -->
+  <circle cx="156" cy="218" r="6" fill="#a78bfa" filter="url(#starGlow)" opacity="0.75"/>
+  <circle cx="358" cy="214" r="6" fill="#a78bfa" filter="url(#starGlow)" opacity="0.75"/>
+  <circle cx="295" cy="78"  r="5" fill="#a78bfa" filter="url(#starGlow)" opacity="0.6"/>
+  <circle cx="118" cy="418" r="5" fill="#a78bfa" filter="url(#starGlow)" opacity="0.55"/>
+  <circle cx="394" cy="416" r="5" fill="#a78bfa" filter="url(#starGlow)" opacity="0.55"/>
+
+  <!-- Tiny ambient stars -->
+  <circle cx="310" cy="140" r="3" fill="#c4b5fd" opacity="0.5"/>
+  <circle cx="200" cy="152" r="2.5" fill="#c4b5fd" opacity="0.45"/>
+  <circle cx="340" cy="330" r="3" fill="#c4b5fd" opacity="0.45"/>
+  <circle cx="175" cy="335" r="2.5" fill="#c4b5fd" opacity="0.4"/>
+</svg>

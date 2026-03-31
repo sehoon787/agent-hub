@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <radialGradient id="centerGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#a78bfa"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </radialGradient>
+    <radialGradient id="nodeGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#c4b5fd"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </radialGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softglow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Outer connection spokes (faint) -->
+  <!-- Top node spoke -->
+  <line x1="256" y1="256" x2="256" y2="96" stroke="#8b5cf6" stroke-width="2.5" stroke-opacity="0.35"/>
+  <!-- Top-right spoke -->
+  <line x1="256" y1="256" x2="390" y2="149" stroke="#8b5cf6" stroke-width="2.5" stroke-opacity="0.35"/>
+  <!-- Bottom-right spoke -->
+  <line x1="256" y1="256" x2="390" y2="363" stroke="#8b5cf6" stroke-width="2.5" stroke-opacity="0.35"/>
+  <!-- Bottom spoke -->
+  <line x1="256" y1="256" x2="256" y2="416" stroke="#8b5cf6" stroke-width="2.5" stroke-opacity="0.35"/>
+  <!-- Bottom-left spoke -->
+  <line x1="256" y1="256" x2="122" y2="363" stroke="#8b5cf6" stroke-width="2.5" stroke-opacity="0.35"/>
+  <!-- Top-left spoke -->
+  <line x1="256" y1="256" x2="122" y2="149" stroke="#8b5cf6" stroke-width="2.5" stroke-opacity="0.35"/>
+
+  <!-- Cross-connection arcs (subtle ring suggesting interconnection) -->
+  <circle cx="256" cy="256" r="155" stroke="#8b5cf6" stroke-width="1.5" stroke-opacity="0.18" stroke-dasharray="12 8"/>
+
+  <!-- Satellite nodes -->
+  <!-- Top -->
+  <circle cx="256" cy="96" r="20" fill="url(#nodeGrad)" filter="url(#glow)" opacity="0.9"/>
+  <circle cx="256" cy="96" r="10" fill="#ede9fe"/>
+
+  <!-- Top-right -->
+  <circle cx="390" cy="149" r="20" fill="url(#nodeGrad)" filter="url(#glow)" opacity="0.9"/>
+  <circle cx="390" cy="149" r="10" fill="#ede9fe"/>
+
+  <!-- Bottom-right -->
+  <circle cx="390" cy="363" r="20" fill="url(#nodeGrad)" filter="url(#glow)" opacity="0.9"/>
+  <circle cx="390" cy="363" r="10" fill="#ede9fe"/>
+
+  <!-- Bottom -->
+  <circle cx="256" cy="416" r="20" fill="url(#nodeGrad)" filter="url(#glow)" opacity="0.9"/>
+  <circle cx="256" cy="416" r="10" fill="#ede9fe"/>
+
+  <!-- Bottom-left -->
+  <circle cx="122" cy="363" r="20" fill="url(#nodeGrad)" filter="url(#glow)" opacity="0.9"/>
+  <circle cx="122" cy="363" r="10" fill="#ede9fe"/>
+
+  <!-- Top-left -->
+  <circle cx="122" cy="149" r="20" fill="url(#nodeGrad)" filter="url(#glow)" opacity="0.9"/>
+  <circle cx="122" cy="149" r="10" fill="#ede9fe"/>
+
+  <!-- Central hub ring -->
+  <circle cx="256" cy="256" r="68" fill="url(#centerGrad)" filter="url(#softglow)" opacity="0.95"/>
+  <circle cx="256" cy="256" r="54" fill="#09090b"/>
+
+  <!-- "A" shape inside the central hub using paths -->
+  <!-- Left leg of A -->
+  <path d="M 226 295 L 248 205 L 256 192 L 264 205 L 286 295" stroke="#c4b5fd" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Crossbar of A -->
+  <line x1="235" y1="261" x2="277" y2="261" stroke="#c4b5fd" stroke-width="10" stroke-linecap="round"/>
+</svg>

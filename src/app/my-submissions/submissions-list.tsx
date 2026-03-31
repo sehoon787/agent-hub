@@ -191,27 +191,14 @@ export function SubmissionsList() {
                   View Agent
                 </a>
               )}
-              {sub.status === 'pending' ? (
-                <a
-                  href={`/submit?edit=${sub.number}`}
-                  onClick={(e) => e.stopPropagation()}
-                  className="flex items-center gap-1.5 rounded-md border border-zinc-700 bg-zinc-800/50 px-3 py-1.5 text-xs text-zinc-300 hover:bg-zinc-800"
-                >
-                  <Pencil className="h-3 w-3" />
-                  Edit
-                </a>
-              ) : (
-                <a
-                  href={sub.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  className="flex items-center gap-1.5 rounded-md border border-zinc-700 bg-zinc-800/50 px-3 py-1.5 text-xs text-zinc-300 hover:bg-zinc-800"
-                >
-                  <Pencil className="h-3 w-3" />
-                  View
-                </a>
-              )}
+              <a
+                href={`/submit?edit=${sub.number}`}
+                onClick={(e) => e.stopPropagation()}
+                className="flex items-center gap-1.5 rounded-md border border-zinc-700 bg-zinc-800/50 px-3 py-1.5 text-xs text-zinc-300 hover:bg-zinc-800"
+              >
+                <Pencil className="h-3 w-3" />
+                Edit
+              </a>
               <button
                 onClick={(e) => { e.stopPropagation(); handleDelete(sub); }}
                 disabled={isLoading}

@@ -52,7 +52,8 @@ export async function GET(request: NextRequest) {
 
     const userIssues = issues.filter((issue) => {
       const body = issue.body ?? '';
-      return body.includes(`**submittedBy:** ${login}`);
+      const labelNames = issue.labels.map((l) => l.name);
+      return body.includes(`**submittedBy:** ${login}`) && !labelNames.includes('user-removed');
     });
 
     const submissions = userIssues.map((issue) => {
