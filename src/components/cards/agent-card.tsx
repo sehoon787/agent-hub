@@ -67,7 +67,10 @@ export function AgentCard({ agent }: { agent: Agent }) {
               <BadgeCheck className="h-4 w-4 shrink-0 text-emerald-400" aria-label="Verified" />
             )}
           </div>
-          <AgentDisplayName displayName={agent.displayName} repoOnly />
+          {(() => {
+            const repo = agent.githubUrl?.match(/github\.com\/([^/]+\/[^/]+)/)?.[1];
+            return repo ? <span className="text-xs text-zinc-500">@{repo}</span> : null;
+          })()}
         </div>
       </div>
       {/* Row 2: platform + model badges */}

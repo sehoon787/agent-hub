@@ -63,14 +63,6 @@ export const agentSubmissionSchema = z.object({
       /^https:\/\/github\.com\/[a-zA-Z0-9._-]+\/[a-zA-Z0-9._-]+/,
       "Must be a GitHub repository URL (https://github.com/owner/repo)"
     ),
-  agentFilePath: z
-    .string()
-    .max(500, "Agent file path must be at most 500 characters")
-    .refine(
-      (v) => !v.startsWith('/') && !v.includes('..'),
-      'Agent file path must be a relative path without ..'
-    )
-    .optional(),
   capabilities: z.string().max(1000).optional(),
   tools: z.string().max(1000).optional(),
   tags: z.string().max(500).optional(),

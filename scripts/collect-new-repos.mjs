@@ -285,6 +285,23 @@ async function main() {
         verified: false,
       };
 
+      // Verify installCommand URL exists
+      if (entry.installCommand) {
+        const urlMatch = entry.installCommand.match(/https:\/\/raw\.githubusercontent\.com\/\S+/);
+        if (urlMatch) {
+          try {
+            const headRes = await fetchWithRetry(urlMatch[0], { method: 'HEAD' });
+            if (!headRes || !headRes.ok) {
+              console.warn(`  SKIP ${prefixedSlug}: installCommand URL returned ${headRes?.status ?? 'null'}`);
+              continue;
+            }
+          } catch {
+            console.warn(`  SKIP ${prefixedSlug}: installCommand URL check failed`);
+            continue;
+          }
+        }
+      }
+
       newAgents.push(entry);
       existingSlugs.add(prefixedSlug);
       repoAdded++;

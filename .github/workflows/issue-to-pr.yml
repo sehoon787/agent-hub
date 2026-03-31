@@ -180,6 +180,12 @@ jobs:
               author,
               githubUrl: githubUrl || '',
               installCommand: (function() {
+                var installCommand = parseField(body, 'installCommand');
+                if (installCommand) return installCommand;
+                if (githubUrl && githubUrl.includes('/blob/')) {
+                  var blobMatch = githubUrl.match(/github\\.com\\/([^/]+)\\/([^/]+)\\/blob\\/([^/]+)\\/(.+)/);
+                  if (blobMatch) return 'curl -o ~/.claude/agents/' + slug + '.md https://raw.githubusercontent.com/' + blobMatch[1] + '/' + blobMatch[2] + '/' + blobMatch[3] + '/' + blobMatch[4];
+                }
                 if (platform === 'claude' && githubUrl) {
                   var m = githubUrl.match(/github\\.com\\/([^/]+)\\/([^/]+)/);
                   if (m) return 'curl -o ~/.claude/agents/' + slug + '.md https://raw.githubusercontent.com/' + m[1] + '/' + m[2] + '/main/agents/' + slug + '.md';

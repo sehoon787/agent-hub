@@ -264,16 +264,31 @@ export async function DELETE(
     return NextResponse.json({ error: 'Rate limit exceeded. Try again later.' }, { status: 429 });
   }
 
-  let body: unknown;
+  // Try to get slug from request body first
+  let slug: string | undefined;
   try {
-    body = await request.json();
+    const body = await request.json();
+    slug = (body as { slug?: string }).slug;
   } catch {
-    return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
+    // No body is OK — we'll extract slug from issue
   }
 
-  const { slug } = body as { slug: string };
+  // If no slug from client, extract from issue body
   if (!slug) {
-    return NextResponse.json({ error: 'slug is required' }, { status: 400 });
+    const issueRes = await fetch(
+      githubApiUrl(`issues/${number}`),
+      { headers: getGithubHeaders() }
+    );
+    if (!issueRes.ok) {
+      return NextResponse.json({ error: 'Issue not found' }, { status: 404 });
+    }
+    const issue = await issueRes.json();
+    const slugMatch = ((issue as { body?: string }).body ?? '').match(/\*\*slug:\*\*\s*(\S+)/);
+    slug = slugMatch?.[1];
+  }
+
+  if (!slug) {
+    return NextResponse.json({ error: 'Could not determine agent slug from submission' }, { status: 400 });
   }
 
   if (!process.env.GITHUB_TOKEN) {

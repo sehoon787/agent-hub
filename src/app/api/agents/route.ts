@@ -117,14 +117,31 @@ export async function POST(request: NextRequest) {
     return val.replace(/[\r\n]+/g, ' ').trim();
   }
 
-  // Auto-generate install command from githubUrl + agentFilePath + name
+  // Auto-generate install command from githubUrl (supports /blob/ file URLs)
   let installCmd = '';
-  if (data.githubUrl && data.agentFilePath) {
-    const repoMatch = data.githubUrl.match(/github\.com\/([^/]+\/[^/]+)/);
-    if (repoMatch) {
-      const repoKey = repoMatch[1].replace(/\.git$/, '');
-      const filePath = data.agentFilePath.replace(/^\//, '');
-      installCmd = `curl -o ~/.claude/agents/${slug}.md https://raw.githubusercontent.com/${repoKey}/main/${filePath}`;
+  const blobMatch = data.githubUrl.match(/github\.com\/([^/]+\/[^/]+)\/blob\/([^/]+)\/(.+)/);
+  if (blobMatch) {
+    const repoKey = blobMatch[1].replace(/\.git$/, '');
+    const branch = blobMatch[2];
+    const filePath = blobMatch[3];
+    installCmd = `curl -o ~/.claude/agents/${slug}.md https://raw.githubusercontent.com/${repoKey}/${branch}/${filePath}`;
+  }
+
+  // Verify file exists at the URL
+  if (installCmd) {
+    const rawUrlMatch = installCmd.match(/https:\/\/raw\.githubusercontent\.com\/\S+/);
+    if (rawUrlMatch) {
+      try {
+        const headRes = await fetch(rawUrlMatch[0], { method: 'HEAD' });
+        if (!headRes.ok) {
+          return NextResponse.json(
+            { error: 'File not found at the specified URL. Please check the GitHub file URL.', details: { githubUrl: ['The .md file was not found at this URL (HTTP ' + headRes.status + ')'] } },
+            { status: 400 }
+          );
+        }
+      } catch {
+        // Network error — allow submission to proceed
+      }
     }
   }
 
@@ -140,7 +157,6 @@ export async function POST(request: NextRequest) {
 **platform:** ${sanitizeLine(data.platform)}
 **author:** ${sanitizeLine(session.user.login || data.author)}
 **githubUrl:** ${sanitizeLine(data.githubUrl ?? '')}
-**agentFilePath:** ${sanitizeLine(data.agentFilePath ?? '')}
 **installCommand:** ${sanitizeLine(installCmd)}
 **capabilities:** ${sanitizeLine(data.capabilities ?? '')}
 **tools:** ${sanitizeLine(data.tools ?? '')}

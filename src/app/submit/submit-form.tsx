@@ -14,7 +14,6 @@ interface FormData {
   description: string;
   longDescription: string;
   githubUrl: string;
-  agentFilePath: string;
   category: string;
   model: string;
   platform: string;
@@ -30,7 +29,6 @@ const initial: FormData = {
   description: '',
   longDescription: '',
   githubUrl: '',
-  agentFilePath: '',
   category: '',
   model: '',
   platform: '',
@@ -201,13 +199,16 @@ export function SubmitForm() {
   }, [form.description, form.tags, form.capabilities, form.tools, form.model, form.category]);
 
   const generatedInstallCmd = useMemo(() => {
-    if (!form.githubUrl || !form.agentFilePath || !form.name) return '';
-    const match = form.githubUrl.match(/github\.com\/([^/]+\/[^/]+)/);
-    if (!match) return '';
-    const repoKey = match[1].replace(/\.git$/, '');
-    const path = form.agentFilePath.replace(/^\//, '');
-    return `curl -o ~/.claude/agents/${form.name}.md https://raw.githubusercontent.com/${repoKey}/main/${path}`;
-  }, [form.githubUrl, form.agentFilePath, form.name]);
+    if (!form.githubUrl || !form.name) return '';
+    const blobMatch = form.githubUrl.match(/github\.com\/([^/]+\/[^/]+)\/blob\/([^/]+)\/(.+)/);
+    if (blobMatch) {
+      const repoKey = blobMatch[1].replace(/\.git$/, '');
+      const branch = blobMatch[2];
+      const filePath = blobMatch[3];
+      return `curl -o ~/.claude/agents/${form.name}.md https://raw.githubusercontent.com/${repoKey}/${branch}/${filePath}`;
+    }
+    return '';
+  }, [form.githubUrl, form.name]);
 
   // Auto-fill author from GitHub login (username) on mount
   useEffect(() => {
@@ -501,23 +502,13 @@ export function SubmitForm() {
             value={form.githubUrl}
             onChange={(e) => { update('githubUrl', e.target.value); validate('githubUrl', e.target.value); }}
             onBlur={(e) => handleGithubUrlBlur(e.target.value)}
-            placeholder="https://github.com/..."
+            placeholder="https://github.com/owner/repo/blob/main/agents/my-agent.md"
             className={`mt-1 bg-zinc-800/50 text-zinc-100 ${fieldErrors.githubUrl || clientErrors.githubUrl ? 'border-red-500' : 'border-zinc-700'}`}
           />
-          <p className="mt-1 text-xs text-zinc-500">Required. Must be a public GitHub repository (https://github.com/owner/repo)</p>
+          <p className="mt-1 text-xs text-zinc-500">GitHub에서 agent .md 파일의 전체 URL을 입력하세요 (예: https://github.com/owner/repo/blob/main/agent.md)</p>
           {autoFilling && <p className="mt-1 text-xs text-violet-400">Auto-detecting repository info...</p>}
           {clientErrors.githubUrl && <p className="mt-1 text-xs text-red-400">{clientErrors.githubUrl}</p>}
           {fieldErrors.githubUrl && <p className="mt-1 text-xs text-red-400">{fieldErrors.githubUrl[0]}</p>}
-        </div>
-        <div>
-          <label className="text-sm font-medium text-zinc-300">Agent File Path</label>
-          <Input
-            value={form.agentFilePath}
-            onChange={(e) => update('agentFilePath', e.target.value)}
-            placeholder="e.g. agents/my-agent.md or my-agent.md"
-            className="mt-1 border-zinc-700 bg-zinc-800/50 text-zinc-100"
-          />
-          <p className="mt-1 text-xs text-zinc-500">Path to the agent .md file in the repo (from repo root). Used to generate the install command.</p>
         </div>
         <div>
           <label className="text-sm font-medium text-zinc-300">Capabilities</label>
@@ -641,8 +632,8 @@ export function SubmitForm() {
               <p className="text-xs text-zinc-500 mb-1.5">Capabilities</p>
               <ul className="space-y-1">
                 {capabilityItems.map((c) => (
-                  <li key={c} className="flex items-center gap-2 text-xs text-zinc-300">
-                    <CheckCircle2 className="h-3 w-3 shrink-0 text-emerald-500" />
+                  <li key={c} className="flex items-center gap-2 text-sm text-zinc-300">
+                    <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
                     {c}
                   </li>
                 ))}
