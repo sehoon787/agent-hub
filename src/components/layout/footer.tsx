@@ -44,6 +44,8 @@ export function Footer() {
         </div>
         <div className="mt-10 border-t border-zinc-800 pt-6 text-center text-sm text-zinc-500">
           &copy; {new Date().getFullYear()} AgentHub. Open source project.
+          {' · '}
+          <a href="https://github.com/sehoon787/agent-hub" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-zinc-100">github.com/sehoon787/agent-hub</a>
         </div>
       </div>
     </footer>

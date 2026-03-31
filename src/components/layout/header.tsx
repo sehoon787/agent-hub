@@ -45,14 +45,6 @@ export function Header() {
               {link.label}
             </Link>
           ))}
-          <a
-            href="https://github.com/sehoon787/agent-hub"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="ml-2 rounded-md px-3 py-2 text-sm text-zinc-400 hover:text-zinc-100"
-          >
-            GitHub
-          </a>
           <div className="ml-2 border-l border-zinc-800 pl-3">
             <AuthButton />
           </div>
