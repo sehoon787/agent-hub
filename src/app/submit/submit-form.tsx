@@ -244,6 +244,8 @@ export function SubmitForm() {
       msg = 'Must be lowercase alphanumeric with hyphens, cannot start/end with a hyphen.';
     } else if (field === 'githubUrl' && value && !GITHUB_URL_RE.test(value)) {
       msg = 'Must start with https://github';
+    } else if (field === 'githubUrl' && value && GITHUB_URL_RE.test(value) && !/\/blob\//.test(value)) {
+      msg = 'Must be a direct file URL (e.g. https://github.com/owner/repo/blob/main/agent.md)';
     }
     setClientErrors((prev) => {
       if (!msg) {

@@ -60,8 +60,8 @@ export const agentSubmissionSchema = z.object({
     .string()
     .url("Must be a valid URL")
     .regex(
-      /^https:\/\/github\.com\/[a-zA-Z0-9._-]+\/[a-zA-Z0-9._-]+/,
-      "Must be a GitHub repository URL (https://github.com/owner/repo)"
+      /^https:\/\/github\.com\/[a-zA-Z0-9._-]+\/[a-zA-Z0-9._-]+\/blob\/.+/,
+      "Must be a direct file URL (e.g. https://github.com/owner/repo/blob/main/agent.md)"
     ),
   capabilities: z.string().max(1000).optional(),
   tools: z.string().max(1000).optional(),
