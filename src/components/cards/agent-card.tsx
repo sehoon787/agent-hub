@@ -5,6 +5,7 @@ import type { Agent } from '@/lib/types';
 import { InstallCommand } from '@/components/detail/install-command';
 import { AgentDisplayName } from '@/components/ui/agent-display-name';
 import { RepoLink } from '@/components/cards/repo-link';
+import { FavoriteButton } from '@/components/favorites/favorite-button';
 
 const modelColors: Record<string, string> = {
   opus: 'bg-violet-500/20 text-violet-300 border-violet-500/30',
@@ -74,6 +75,7 @@ export function AgentCard({ agent }: { agent: Agent }) {
             return <RepoLink repo={`${repoMatch[1]}/${repoMatch[2]}`} />;
           })()}
         </div>
+        <FavoriteButton slug={agent.slug} compact />
       </div>
       <p className="mt-2 line-clamp-2 text-sm text-zinc-400">
         {agent.description}

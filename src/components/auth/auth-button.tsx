@@ -3,7 +3,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useSession, signIn, signOut } from "next-auth/react"
-import { LogIn, LogOut, FileText } from "lucide-react"
+import { LogIn, LogOut, FileText, Heart } from "lucide-react"
 import { useState, useRef, useEffect } from "react"
 
 export function AuthButton() {
@@ -60,6 +60,14 @@ export function AuthButton() {
                 {session.user.login ?? session.user.email}
               </p>
             </div>
+            <Link
+              href="/favorites"
+              onClick={() => setOpen(false)}
+              className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-zinc-300 hover:bg-zinc-800/50 transition-colors"
+            >
+              <Heart className="h-4 w-4 text-zinc-500" />
+              My Favorites
+            </Link>
             <Link
               href="/my-submissions"
               onClick={() => setOpen(false)}

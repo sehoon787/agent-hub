@@ -10,6 +10,7 @@ import { CapabilityList } from '@/components/detail/capability-list';
 import { RelatedAgents } from '@/components/detail/related-items';
 import { AgentJsonLd, BreadcrumbJsonLd } from '@/components/seo/json-ld';
 import { AgentDisplayName } from '@/components/ui/agent-display-name';
+import { FavoriteButton } from '@/components/favorites/favorite-button';
 
 const modelColors: Record<string, string> = {
   opus: 'bg-violet-500/20 text-violet-300 border-violet-500/30',
@@ -140,6 +141,7 @@ export default async function AgentDetailPage({
           </div>
         </div>
         <div className="flex shrink-0 flex-wrap gap-2">
+          <FavoriteButton slug={agent.slug} />
           {repoKey && (
             <Link
               href={`/agents?repo=${repoKey}`}

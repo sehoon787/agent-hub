@@ -32,7 +32,7 @@ export default auth((request) => {
   }
 
   // Auth redirect for protected pages
-  const protectedPaths = ["/submit", "/my-submissions"]
+  const protectedPaths = ["/submit", "/my-submissions", "/favorites"]
   if (protectedPaths.some(p => request.nextUrl.pathname === p) && !request.auth) {
     return NextResponse.redirect(new URL("/signin", request.url))
   }
@@ -41,5 +41,5 @@ export default auth((request) => {
 })
 
 export const config = {
-  matcher: ["/submit", "/my-submissions", "/api/:path*"],
+  matcher: ["/submit", "/my-submissions", "/favorites", "/api/:path*"],
 }

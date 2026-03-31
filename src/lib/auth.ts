@@ -20,6 +20,28 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
     signIn: "/signin",
   },
+  events: {
+    async signIn({ user, profile }) {
+      if (!process.env.DATABASE_URL || !profile) return
+      try {
+        const { getDb } = await import("@/lib/db")
+        const sql = getDb()
+        const githubProfile = profile as { id?: number; login?: string }
+        await sql`
+          INSERT INTO users (github_id, login, name, email, image)
+          VALUES (${String(githubProfile.id)}, ${githubProfile.login ?? ''}, ${user.name ?? ''}, ${user.email ?? ''}, ${user.image ?? ''})
+          ON CONFLICT (github_id) DO UPDATE SET
+            login = EXCLUDED.login,
+            name = EXCLUDED.name,
+            email = EXCLUDED.email,
+            image = EXCLUDED.image,
+            updated_at = NOW()
+        `
+      } catch (e) {
+        console.error("Failed to upsert user:", e)
+      }
+    },
+  },
   callbacks: {
     jwt({ token, profile, account }) {
       if (profile) {
