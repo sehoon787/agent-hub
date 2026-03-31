@@ -1,5 +1,15 @@
 [
   {
+    "id": "openai/codex:rust-v0.118.0-alpha.4",
+    "repo": "openai/codex",
+    "repoUrl": "https://github.com/openai/codex",
+    "tagName": "rust-v0.118.0-alpha.4",
+    "title": "0.118.0-alpha.4",
+    "body": "Release 0.118.0-alpha.4\n\n",
+    "publishedAt": "2026-03-31T09:20:13Z",
+    "url": "https://github.com/openai/codex/releases/tag/rust-v0.118.0-alpha.4"
+  },
+  {
     "id": "artsmc/claude-dev-agents:v0.2.1",
     "repo": "artsmc/claude-dev-agents",
     "repoUrl": "https://github.com/artsmc/claude-dev-agents",
