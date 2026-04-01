@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { AgentCard } from '@/components/cards/agent-card';
+import { AgentCardSkeleton } from '@/components/cards/agent-card-skeleton';
 import { SearchInput } from '@/components/search/search-input';
 import { FilterSidebar } from '@/components/filters/filter-sidebar';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
@@ -49,8 +50,10 @@ export function AgentsBrowse() {
 
   const [items, setItems] = useState<Agent[]>([]);
   const [total, setTotal] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
     const params = new URLSearchParams();
     if (q) params.set('q', q);
     if (category) params.set('category', category);
@@ -72,7 +75,8 @@ export function AgentsBrowse() {
       .catch(() => {
         setItems([]);
         setTotal(0);
-      });
+      })
+      .finally(() => setIsLoading(false));
   }, [q, category, stage, model, source, platform, sort, page, perPage, repo]);
 
   const totalPages = Math.ceil(total / perPage);
@@ -175,7 +179,7 @@ export function AgentsBrowse() {
 
       <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm text-zinc-500">
-          {(page - 1) * perPage + 1}–{Math.min(page * perPage, total)} of {total}
+          {isLoading ? '...' : `${(page - 1) * perPage + 1}–${Math.min(page * perPage, total)} of ${total}`}
         </p>
         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <select
@@ -216,7 +220,13 @@ export function AgentsBrowse() {
           <FilterSidebar groups={filterGroups} />
         </div>
         <div className="flex-1">
-          {items.length === 0 ? (
+          {isLoading ? (
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+              {Array.from({ length: perPage }, (_, i) => (
+                <AgentCardSkeleton key={i} />
+              ))}
+            </div>
+          ) : items.length === 0 ? (
             <p className="py-20 text-center text-zinc-500">No agents found matching your criteria.</p>
           ) : (
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">

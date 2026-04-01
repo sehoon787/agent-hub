@@ -72,8 +72,10 @@ export const PUT = auth(async function PUT(req) {
       await sql`DELETE FROM favorites WHERE user_id = ${userId} AND agent_slug = ${slug}`
       return NextResponse.json({ favorited: false })
     } else {
-      // Add
-      await sql`INSERT INTO favorites (user_id, agent_slug) VALUES (${userId}, ${slug})`
+      // Add (look up agent_id for FK)
+      const agents = await sql`SELECT id FROM agents WHERE slug = ${slug}`
+      const agentId = agents.length > 0 ? agents[0].id : null
+      await sql`INSERT INTO favorites (user_id, agent_slug, agent_id) VALUES (${userId}, ${slug}, ${agentId})`
       return NextResponse.json({ favorited: true })
     }
   } catch (e) {
