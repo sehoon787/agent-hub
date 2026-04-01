@@ -44,10 +44,10 @@ export async function POST(
 
   // Update submission status
   await sql`
-    UPDATE submissions SET status = 'approved', updated_at = NOW() WHERE id = ${Number(id)}
+    UPDATE submissions SET status = 'listed', updated_at = NOW() WHERE id = ${Number(id)}
   `;
 
-  // Copy approved submission to agents table for immediate listing
+  // Copy listed submission to agents table for immediate listing
   const subRows = await sql`
     SELECT slug, name, display_name, description, long_description,
            category, model, platform, author, github_url, install_command,
@@ -87,5 +87,5 @@ export async function POST(
     `;
   }
 
-  return NextResponse.json({ success: true, status: 'approved' });
+  return NextResponse.json({ success: true, status: 'listed' });
 }

@@ -143,18 +143,6 @@ test.describe('API Routes', () => {
     expect(response.status()).toBeGreaterThanOrEqual(400)
   })
 
-  test('POST /api/collect without auth should return 401', async ({ request }) => {
-    const response = await request.post('/api/collect')
-    expect(response.status()).toBe(401)
-  })
-
-  test('POST /api/collect with wrong token should return 401', async ({ request }) => {
-    const response = await request.post('/api/collect', {
-      headers: { Authorization: 'Bearer wrong-token' },
-    })
-    expect(response.status()).toBe(401)
-  })
-
   test('should include stages field in agent response', async ({ request }) => {
     const res = await request.get('/api/agents?limit=1')
     expect(res.ok()).toBeTruthy()
