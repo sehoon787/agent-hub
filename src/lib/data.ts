@@ -261,7 +261,7 @@ export async function searchAll(q: string): Promise<SearchResult[]> {
   const pattern = `%${q}%`;
   const rows = await sql`
     SELECT slug, name, display_name, description FROM agents
-    WHERE name ILIKE ${pattern} OR display_name ILIKE ${pattern} OR description ILIKE ${pattern}
+    WHERE name ILIKE ${pattern} OR display_name ILIKE ${pattern} OR description ILIKE ${pattern} OR platform ILIKE ${pattern}
     LIMIT 50
   `;
   return rows.map((r) => ({

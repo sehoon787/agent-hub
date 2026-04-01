@@ -39,6 +39,7 @@ function Badge({
       {
         className: cn(badgeVariants({ variant }), className),
       },
+      { "data-slot": "badge" } as Record<string, unknown>,
       props
     ),
     render,

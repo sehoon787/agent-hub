@@ -38,7 +38,7 @@ CREATE TABLE submissions (
   capabilities TEXT DEFAULT '',
   tools TEXT DEFAULT '',
   tags TEXT DEFAULT '',
-  status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'listed', 'rejected', 'removed')),
+  status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'listed', 'rejected', 'removed')),
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
