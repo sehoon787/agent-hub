@@ -107,7 +107,7 @@ jobs:
                   const securityPatterns = [
                     /eval\\s*\\(/i, /exec\\s*\\(/i, /child_process/i,
                     /require\\s*\\(\\s*['\"]fs['\"]\\s*\\)/i,
-                    /import\\s+.*from\\s+['\"]child_process['"]/i,
+                    /import\\s+.*from\\s+['\"]child_process['\\x22]/i,
                     /process\\.env/i, /\\bsudo\\b/i, /rm\\s+-rf/i,
                     /curl\\s+.*\\|\\s*sh/i, /wget\\s+.*\\|\\s*sh/i,
                     /<script\\b/i, /javascript:/i,
