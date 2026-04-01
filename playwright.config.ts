@@ -39,5 +39,11 @@ export default defineConfig({
       testMatch: /(?!public-).*\.spec\.ts/,
       testIgnore: /.*\.setup\.ts/,
     },
+    // DB teardown (runs after all test projects)
+    {
+      name: 'db-teardown',
+      testMatch: /db-teardown\.setup\.ts/,
+      dependencies: ['authenticated', 'public'],
+    },
   ],
 });

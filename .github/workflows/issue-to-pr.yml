@@ -141,14 +141,15 @@ jobs:
         if: steps.submission.outputs.skip != 'true'
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          SUBMISSION_ID: ${{ fromJson(steps.submission.outputs.submission_data).id }}
+          SUBMISSION_DATA: ${{ steps.submission.outputs.submission_data }}
         run: |
           if [ -n "$DATABASE_URL" ]; then
             node -e "
               const { neon } = require('@neondatabase/serverless');
               const sql = neon(process.env.DATABASE_URL);
-              sql.query('UPDATE submissions SET status = \$1, updated_at = NOW() WHERE id = \$2', ['listed', Number(process.env.SUBMISSION_ID)]).then(() => {
-                console.log('DB status updated to listed');
+              const data = JSON.parse(process.env.SUBMISSION_DATA);
+              sql.query('UPDATE submissions SET status = \$1, updated_at = NOW() WHERE id = \$2', ['listed', data.id]).then(() => {
+                console.log('DB status updated to listed for submission #' + data.id);
               }).catch(err => {
                 console.error('Failed to update DB:', err);
               });
