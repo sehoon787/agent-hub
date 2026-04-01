@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge';
 interface Submission {
   id: number;
   title: string;
-  status: 'pending' | 'approved' | 'listed' | 'rejected';
+  status: 'pending' | 'listed' | 'rejected';
   slug?: string;
   createdAt: string;
   updatedAt: string;
@@ -17,7 +17,6 @@ interface Submission {
 
 const statusConfig = {
   pending: { icon: Clock, label: 'Pending Review', color: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30' },
-  approved: { icon: CheckCircle2, label: 'Approved', color: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' },
   listed: { icon: CheckCircle2, label: 'Listed', color: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' },
   rejected: { icon: XCircle, label: 'Closed', color: 'bg-red-500/20 text-red-300 border-red-500/30' },
 };
@@ -55,7 +54,7 @@ export function SubmissionsList() {
 
   const handleDelete = async (sub: Submission) => {
     const messages: Record<string, string> = {
-      approved: 'This will create a PR to remove this agent. Continue?',
+      listed: 'This will remove this agent from the directory. Continue?',
       pending: 'This will close your submission. Continue?',
       rejected: 'This will remove this submission from your list. Continue?',
     };
@@ -63,8 +62,8 @@ export function SubmissionsList() {
 
     setActionLoading(sub.id);
     try {
-      const isApproved = sub.status === 'approved';
-      const url = isApproved
+      const isListed = sub.status === 'listed';
+      const url = isListed
         ? `/api/my-submissions/${sub.id}/approved`
         : `/api/my-submissions/${sub.id}`;
       const res = await fetch(url, {
@@ -161,9 +160,9 @@ export function SubmissionsList() {
         return (
           <div
             key={sub.id}
-            onClick={() => sub.status === 'approved' && sub.slug && router.push(`/agents/${sub.slug}`)}
+            onClick={() => sub.status === 'listed' && sub.slug && router.push(`/agents/${sub.slug}`)}
             className={`flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-900 p-4 ${
-              sub.status === 'approved' && sub.slug ? 'cursor-pointer hover:border-zinc-700' : ''
+              sub.status === 'listed' && sub.slug ? 'cursor-pointer hover:border-zinc-700' : ''
             }`}
           >
             <div className="min-w-0 flex-1">
@@ -179,7 +178,7 @@ export function SubmissionsList() {
               </p>
             </div>
             <div className="ml-4 flex shrink-0 items-center gap-2">
-              {sub.status === 'approved' && sub.slug && (
+              {sub.status === 'listed' && sub.slug && (
                 <a
                   href={`/agents/${sub.slug}`}
                   onClick={(e) => e.stopPropagation()}

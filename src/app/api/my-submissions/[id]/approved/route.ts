@@ -52,8 +52,8 @@ export async function PATCH(
   }
 
   const submission = rows[0];
-  if (submission.status !== 'approved') {
-    return NextResponse.json({ error: 'Only approved submissions can be edited via this endpoint' }, { status: 403 });
+  if (submission.status !== 'listed') {
+    return NextResponse.json({ error: 'Only listed submissions can be edited via this endpoint' }, { status: 403 });
   }
 
   const slug = submission.slug as string;
@@ -190,8 +190,8 @@ export async function DELETE(
     }
 
     const submission = rows[0];
-    if (submission.status !== 'approved') {
-      return NextResponse.json({ error: 'Only approved submissions can be removed via this endpoint' }, { status: 403 });
+    if (submission.status !== 'listed') {
+      return NextResponse.json({ error: 'Only listed submissions can be removed via this endpoint' }, { status: 403 });
     }
 
     const slug = submission.slug as string;

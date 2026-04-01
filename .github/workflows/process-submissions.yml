@@ -1,0 +1,162 @@
+name: Process Pending Submissions
+
+on:
+  schedule:
+    - cron: '0 0,12 * * *'  # Twice daily at 00:00 and 12:00 UTC
+  workflow_dispatch:
+
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Process pending submissions
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "DATABASE_URL not configured"
+            exit 0
+          fi
+
+          npm init -y > /dev/null 2>&1
+          npm install @neondatabase/serverless > /dev/null 2>&1
+
+          node -e "
+            const { neon } = require('@neondatabase/serverless');
+            const sql = neon(process.env.DATABASE_URL);
+
+            async function processSubmissions() {
+              // Get all pending submissions
+              const pending = await sql\`
+                SELECT s.id, s.slug, s.name, s.display_name, s.description,
+                       s.long_description, s.category, s.model, s.platform,
+                       s.author, s.github_url, s.install_command,
+                       s.capabilities, s.tools, s.tags
+                FROM submissions s
+                WHERE s.status = 'pending'
+                ORDER BY s.created_at ASC
+                LIMIT 10
+              \`;
+
+              if (pending.length === 0) {
+                console.log('No pending submissions to process');
+                return;
+              }
+
+              console.log('Processing ' + pending.length + ' pending submission(s)...');
+
+              let listedCount = 0;
+              let rejectedCount = 0;
+
+              for (const sub of pending) {
+                const errors = [];
+
+                // 1. Basic field validation
+                if (!sub.name || sub.name.length < 2) errors.push('Name too short');
+                if (!sub.display_name) errors.push('Missing display name');
+                if (!sub.description || sub.description.length < 10) errors.push('Description too short');
+
+                const validCategories = ['orchestrator', 'specialist', 'worker', 'analyst'];
+                const validPlatforms = ['claude', 'gemini', 'codex', 'cursor', 'windsurf', 'aider', 'universal'];
+                if (!validCategories.includes((sub.category || '').toLowerCase())) errors.push('Invalid category');
+                if (!validPlatforms.includes((sub.platform || '').toLowerCase())) errors.push('Invalid platform');
+
+                // 2. GitHub URL validation - fetch the raw file
+                let fileContent = null;
+                if (sub.github_url && sub.github_url.includes('/blob/')) {
+                  const blobMatch = sub.github_url.match(/github\\.com\\/([^/]+\\/[^/]+)\\/blob\\/([^/]+)\\/(.+)/);
+                  if (blobMatch) {
+                    const rawUrl = 'https://raw.githubusercontent.com/' + blobMatch[1] + '/' + blobMatch[2] + '/' + blobMatch[3];
+                    try {
+                      const res = await fetch(rawUrl);
+                      if (!res.ok) {
+                        errors.push('GitHub file not accessible (HTTP ' + res.status + ')');
+                      } else {
+                        fileContent = await res.text();
+                        if (!fileContent.trim()) {
+                          errors.push('GitHub file is empty');
+                        } else if (fileContent.length > 100000) {
+                          errors.push('File too large (> 100KB)');
+                        } else {
+                          // Format check
+                          const hasFrontmatter = /^---\\s*\\n[\\s\\S]*?\\n---/.test(fileContent);
+                          const hasHeading = /^#\\s+.+/m.test(fileContent);
+                          if (!hasFrontmatter && !hasHeading) {
+                            errors.push('No YAML frontmatter or markdown heading found');
+                          }
+                        }
+                      }
+                    } catch (e) {
+                      errors.push('Failed to fetch GitHub file: ' + e.message);
+                    }
+                  } else {
+                    errors.push('GitHub URL is not a valid /blob/ file URL');
+                  }
+                } else if (sub.github_url) {
+                  // Non-blob GitHub URL - just check it's accessible
+                  try {
+                    const res = await fetch(sub.github_url, { method: 'HEAD' });
+                    if (!res.ok) errors.push('GitHub URL not accessible');
+                  } catch {
+                    errors.push('GitHub URL not reachable');
+                  }
+                }
+
+                // 3. Security check on content
+                if (fileContent) {
+                  if (/<script/i.test(fileContent)) errors.push('File contains script tags');
+                  if (/javascript:/i.test(fileContent)) errors.push('File contains javascript: URLs');
+                }
+
+                // 4. Process result
+                if (errors.length > 0) {
+                  // Reject
+                  await sql\`UPDATE submissions SET status = 'rejected', updated_at = NOW() WHERE id = \${sub.id}\`;
+                  console.log('REJECTED #' + sub.id + ' (' + sub.slug + '): ' + errors.join(', '));
+                  rejectedCount++;
+                } else {
+                  // Use the validated slug from submission
+                  const slug = sub.slug;
+                  let installCmd = sub.install_command || '';
+                  if (!installCmd && sub.github_url) {
+                    const bm = sub.github_url.match(/github\\.com\\/([^/]+\\/[^/]+)\\/blob\\/([^/]+)\\/(.+)/);
+                    if (bm) installCmd = 'curl -o ~/.claude/agents/' + slug + '.md https://raw.githubusercontent.com/' + bm[1] + '/' + bm[2] + '/' + bm[3];
+                  }
+
+                  const capsArr = sub.capabilities ? sub.capabilities.split(',').map(s => s.trim()).filter(Boolean) : [];
+                  const toolsArr = sub.tools ? sub.tools.split(',').map(s => s.trim()).filter(Boolean) : [];
+                  const tagsArr = sub.tags ? sub.tags.split(',').map(s => s.trim()).filter(Boolean) : [];
+
+                  // Insert into agents table
+                  await sql\`
+                    INSERT INTO agents (slug, name, display_name, description, long_description,
+                      category, model, platform, source, author, github_url, install_command,
+                      capabilities, tools, tags, stars, forks, featured, verified)
+                    VALUES (\${slug}, \${sub.name}, \${sub.display_name}, \${sub.description},
+                      \${sub.long_description || ''}, \${(sub.category || '').toLowerCase()},
+                      \${(sub.model || '').toLowerCase()}, \${(sub.platform || '').toLowerCase()},
+                      'community', \${sub.author || ''}, \${sub.github_url || ''}, \${installCmd},
+                      \${capsArr}, \${toolsArr}, \${tagsArr}, 0, 0, false, false)
+                    ON CONFLICT (slug) DO UPDATE SET
+                      display_name = EXCLUDED.display_name,
+                      description = EXCLUDED.description,
+                      long_description = EXCLUDED.long_description,
+                      updated_at = NOW()
+                  \`;
+
+                  // Update submission status to listed
+                  await sql\`UPDATE submissions SET status = 'listed', updated_at = NOW() WHERE id = \${sub.id}\`;
+                  console.log('LISTED #' + sub.id + ' (' + sub.slug + ')');
+                  listedCount++;
+                }
+              }
+
+              console.log('');
+              console.log('Summary: processed=' + pending.length + ', listed=' + listedCount + ', rejected=' + rejectedCount);
+            }
+
+            processSubmissions().catch(err => {
+              console.error('Fatal error:', err);
+              process.exit(1);
+            });
+          "
