@@ -7,8 +7,8 @@ import { LatestReleases } from '@/components/home/latest-releases';
 import { WebSiteJsonLd } from '@/components/seo/json-ld';
 import { getTopRepositories } from '@/lib/data';
 
-export default function HomePage() {
-  const topRepos = getTopRepositories(10);
+export default async function HomePage() {
+  const topRepos = await getTopRepositories(10);
 
   return (
     <>

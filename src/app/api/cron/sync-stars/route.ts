@@ -1,23 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { githubApiUrl } from '@/lib/github-api';
+import { getDb } from '@/db';
 
 interface RepoStats {
   stargazers_count: number;
   forks_count: number;
-}
-
-interface AgentEntry {
-  slug: string;
-  githubUrl: string;
-  stars: number;
-  forks: number;
-  [key: string]: unknown;
-}
-
-function parseOwnerRepo(githubUrl: string): { owner: string; repo: string } | null {
-  const match = githubUrl.match(/github\.com\/([a-zA-Z0-9._-]+)\/([a-zA-Z0-9._-]+)/);
-  if (!match) return null;
-  return { owner: match[1], repo: match[2].replace(/\.git$/, '') };
 }
 
 async function fetchContributorCount(repoKey: string, headers: Record<string, string>): Promise<number> {
@@ -55,37 +42,29 @@ export async function GET(request: NextRequest) {
     Accept: 'application/vnd.github.v3+json',
   };
 
+  if (!process.env.DATABASE_URL) {
+    return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
+  }
+
+  const sql = getDb();
+
   try {
-    // 1. Read current agents.json from GitHub
-    const fileRes = await fetch(
-      githubApiUrl('contents/src/lib/data/agents.json'),
-      { headers, cache: 'no-store' }
-    );
-    if (!fileRes.ok) {
-      return NextResponse.json({ error: 'Failed to read agents.json' }, { status: 502 });
-    }
-    const fileData = await fileRes.json() as { content: string; sha: string };
-    const agents: AgentEntry[] = JSON.parse(
-      Buffer.from(fileData.content, 'base64').toString('utf-8')
-    );
+    // 1. Get unique repos from DB
+    const repoRows = await sql`
+      SELECT DISTINCT substring(github_url from 'github\\.com/([^/]+/[^/]+)') as repo_key
+      FROM agents
+      WHERE github_url != '' AND github_url IS NOT NULL
+    `;
 
-    // 2. Collect unique repos (deduplicate by owner/repo, not full URL)
-    const repoMap = new Map<string, string>(); // key: "owner/repo", value: first URL
-    for (const agent of agents) {
-      if (!agent.githubUrl) continue;
-      const parsed = parseOwnerRepo(agent.githubUrl);
-      if (!parsed) continue;
-      const key = `${parsed.owner}/${parsed.repo}`;
-      if (!repoMap.has(key)) {
-        repoMap.set(key, agent.githubUrl);
-      }
-    }
+    const repoKeys = repoRows
+      .map(r => r.repo_key as string)
+      .filter(Boolean);
 
-    // 3. Fetch stars/forks for each unique repo
+    // 2. Fetch stars/forks for each unique repo
     const repoStats = new Map<string, { stars: number; forks: number }>();
     const notFoundKeys = new Set<string>();
 
-    for (const [repoKey] of repoMap) {
+    for (const repoKey of repoKeys) {
       const res = await fetch(
         `https://api.github.com/repos/${repoKey}`,
         { headers, cache: 'no-store' }
@@ -104,42 +83,38 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    // 4. Fetch contributor counts for each unique repo
+    // 3. Fetch contributor counts for each unique repo
     const repoContributors: Record<string, { contributors: number }> = {};
-    for (const [repoKey] of repoMap) {
+    for (const repoKey of repoKeys) {
       if (notFoundKeys.has(repoKey)) continue;
       const count = await fetchContributorCount(repoKey, headers);
       repoContributors[repoKey] = { contributors: count };
     }
 
-    // 5. Update agents with real data
-    let changed = false;
+    // 4. Update agents in DB
+    let updated = 0;
     const notFound: string[] = [];
-    for (const agent of agents) {
-      if (!agent.githubUrl) continue;
-      const parsed = parseOwnerRepo(agent.githubUrl);
-      if (!parsed) continue;
-      const key = `${parsed.owner}/${parsed.repo}`;
 
-      // Clear 404 URLs
-      if (notFoundKeys.has(key)) {
-        notFound.push(agent.githubUrl);
-        agent.githubUrl = '';
-        agent.stars = 0;
-        agent.forks = 0;
-        changed = true;
-        continue;
-      }
-
-      const stats = repoStats.get(key);
-      if (stats && (agent.stars !== stats.stars || agent.forks !== stats.forks)) {
-        agent.stars = stats.stars;
-        agent.forks = stats.forks;
-        changed = true;
-      }
+    for (const [repoKey, stats] of repoStats) {
+      const pattern = `%github.com/${repoKey}%`;
+      await sql`
+        UPDATE agents SET stars = ${stats.stars}, forks = ${stats.forks}, updated_at = NOW()
+        WHERE github_url LIKE ${pattern}
+      `;
+      updated++;
     }
 
-    // 6. Commit repo-stats.json via GitHub Contents API
+    // Clear 404 repos
+    for (const repoKey of notFoundKeys) {
+      notFound.push(repoKey);
+      const pattern = `%github.com/${repoKey}%`;
+      await sql`
+        UPDATE agents SET github_url = '', stars = 0, forks = 0, updated_at = NOW()
+        WHERE github_url LIKE ${pattern}
+      `;
+    }
+
+    // 5. Commit repo-stats.json via GitHub Contents API (keep for contributor stats)
     const repoStatsRes = await fetch(
       githubApiUrl('contents/src/lib/data/repo-stats.json'),
       { headers, cache: 'no-store' }
@@ -168,40 +143,10 @@ export async function GET(request: NextRequest) {
       }
     );
 
-    if (!changed) {
-      return NextResponse.json({ message: 'No changes needed', repos: repoMap.size });
-    }
-
-    // 7. Commit updated agents.json back to GitHub
-    const updatedContent = Buffer.from(
-      JSON.stringify(agents, null, 2) + '\n'
-    ).toString('base64');
-
-    const commitRes = await fetch(
-      githubApiUrl('contents/src/lib/data/agents.json'),
-      {
-        method: 'PUT',
-        headers: { ...headers, 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: 'chore: sync GitHub stars and forks',
-          content: updatedContent,
-          sha: fileData.sha,
-        }),
-      }
-    );
-
-    if (!commitRes.ok) {
-      const detail = await commitRes.text();
-      return NextResponse.json(
-        { error: 'Failed to commit changes', status: commitRes.status, detail },
-        { status: 502 }
-      );
-    }
-
     return NextResponse.json({
       message: 'Synced successfully',
-      repos: repoMap.size,
-      updated: changed,
+      repos: repoKeys.length,
+      updated,
       notFound,
     });
   } catch {

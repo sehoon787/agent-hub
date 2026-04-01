@@ -6,6 +6,6 @@ export async function GET(request: NextRequest) {
   if (!q) {
     return NextResponse.json({ results: [] });
   }
-  const results = searchAll(q);
+  const results = await searchAll(q);
   return NextResponse.json({ results });
 }

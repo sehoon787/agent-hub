@@ -22,20 +22,9 @@ interface NewsItem {
   url: string;
 }
 
-interface AgentEntry {
-  githubUrl: string;
-  [key: string]: unknown;
-}
-
 interface TagEntry {
   name: string;
   commit: { sha: string; url: string };
-}
-
-function parseOwnerRepo(githubUrl: string): { owner: string; repo: string } | null {
-  const match = githubUrl.match(/github\.com\/([a-zA-Z0-9._-]+)\/([a-zA-Z0-9._-]+)/);
-  if (!match) return null;
-  return { owner: match[1], repo: match[2].replace(/\.git$/, '') };
 }
 
 export async function GET(request: NextRequest) {
@@ -56,46 +45,24 @@ export async function GET(request: NextRequest) {
   };
 
   try {
-    // 1. Read agents.json to get unique repo URLs
-    // Contents API returns sha even for files > 1MB, but content is truncated/missing for large files.
-    // For files > 1MB, fall back to the Git Blob API which handles large files correctly.
-    const agentsMetaRes = await fetch(
-      githubApiUrl('contents/src/lib/data/agents.json'),
-      { headers, cache: 'no-store' }
-    );
-    if (!agentsMetaRes.ok) {
-      return NextResponse.json({ error: 'Failed to read agents.json metadata' }, { status: 502 });
-    }
-    const agentsMeta = await agentsMetaRes.json();
-
-    let agentsRaw: string;
-    if (agentsMeta.content) {
-      // Small file: content is available directly in the Contents API response
-      agentsRaw = Buffer.from(agentsMeta.content, 'base64').toString('utf-8');
-    } else {
-      // Large file (> 1MB): fetch via Git Blob API using the sha
-      const githubRepo = process.env.GITHUB_REPO || 'sehoon787/agent-hub';
-      const blobRes = await fetch(
-        `https://api.github.com/repos/${githubRepo}/git/blobs/${agentsMeta.sha}`,
-        { headers, cache: 'no-store' }
-      );
-      if (!blobRes.ok) {
-        return NextResponse.json({ error: 'Failed to read agents.json blob' }, { status: 502 });
-      }
-      const blobData = await blobRes.json();
-      agentsRaw = Buffer.from(blobData.content, 'base64').toString('utf-8');
+    // 1. Get unique repo URLs from DB
+    if (!process.env.DATABASE_URL) {
+      return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
     }
 
-    const agents: AgentEntry[] = JSON.parse(agentsRaw);
+    const { getDb } = await import('@/db');
+    const sql = getDb();
 
-    // Extract unique repos (not file URLs) to avoid duplicate API calls
-    const repoSet = new Map<string, string>(); // key: "owner/repo", value: repoUrl
-    for (const agent of agents) {
-      if (!agent.githubUrl) continue;
-      const parsed = parseOwnerRepo(agent.githubUrl);
-      if (!parsed) continue;
-      const key = `${parsed.owner}/${parsed.repo}`;
-      if (!repoSet.has(key)) {
+    const repoRows = await sql`
+      SELECT DISTINCT substring(github_url from 'github\\.com/([^/]+/[^/]+)') as repo_key
+      FROM agents
+      WHERE github_url != '' AND github_url IS NOT NULL
+    `;
+
+    const repoSet = new Map<string, string>();
+    for (const r of repoRows) {
+      const key = r.repo_key as string;
+      if (key) {
         repoSet.set(key, `https://github.com/${key}`);
       }
     }

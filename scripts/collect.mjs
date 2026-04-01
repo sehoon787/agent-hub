@@ -1,16 +1,15 @@
 #!/usr/bin/env node
 // scripts/collect.mjs — Auto-collection script for GitHub Actions
 //
-// Reads agents.json, fetches .md files from known GitHub repos,
-// parses YAML frontmatter, and merges new entries back.
+// Fetches .md files from known GitHub repos, parses YAML frontmatter,
+// and merges new entries into the Neon DB.
 // Self-contained — no imports from src/lib/.
 
-import { readFileSync, writeFileSync } from 'fs';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { neon } from '@neondatabase/serverless';
+import { config } from 'dotenv';
+config({ path: '.env.local' });
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const AGENTS_PATH = join(__dirname, '..', 'src', 'lib', 'data', 'agents.json');
+const sql = neon(process.env.DATABASE_URL);
 
 const KNOWN_REPOS = [
   { owner: 'anthropics', repo: 'claude-code', path: 'agents' },
@@ -171,9 +170,9 @@ async function fetchRepoEntries(owner, repo, path) {
 }
 
 async function main() {
-  // Read existing agents
-  const agents = JSON.parse(readFileSync(AGENTS_PATH, 'utf8'));
-  const existingSlugs = new Set(agents.map((a) => a.slug));
+  // Read existing slugs from DB
+  const existingRows = await sql.query('SELECT slug FROM agents');
+  const existingSlugs = new Set(existingRows.map(r => r.slug));
 
   const newAgents = [];
 
@@ -217,9 +216,15 @@ async function main() {
     return;
   }
 
-  // Merge and write
-  const merged = [...agents, ...newAgents];
-  writeFileSync(AGENTS_PATH, JSON.stringify(merged, null, 2) + '\n');
+  // Insert new agents into DB
+  for (const entry of newAgents) {
+    await sql.query(
+      `INSERT INTO agents (slug, name, display_name, description, long_description, category, model, source, platform, author, github_url, install_command, capabilities, tools, tags, stars, forks, featured, verified)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)
+       ON CONFLICT (slug) DO NOTHING`,
+      [entry.slug, entry.name, entry.displayName, entry.description, entry.longDescription, entry.category, entry.model, entry.source, entry.platform, entry.author, entry.githubUrl, entry.installCommand, entry.capabilities, entry.tools, entry.tags, entry.stars, entry.forks, entry.featured, entry.verified]
+    );
+  }
 
   const names = newAgents.map((a) => a.displayName).join(', ');
   console.log(`Collected ${newAgents.length} new agents: ${names}`);

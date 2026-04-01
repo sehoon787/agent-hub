@@ -2,9 +2,9 @@ import Link from 'next/link';
 import { getFeaturedAgents, getRecentAgents } from '@/lib/data';
 import { AgentCard } from '@/components/cards/agent-card';
 
-export function FeaturedSection() {
-  const featured = getFeaturedAgents().slice(0, 6);
-  const recent = getRecentAgents(6);
+export async function FeaturedSection() {
+  const featured = (await getFeaturedAgents()).slice(0, 6);
+  const recent = await getRecentAgents(6);
 
   return (
     <section className="py-12">

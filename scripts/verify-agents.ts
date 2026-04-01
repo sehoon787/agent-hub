@@ -1,79 +1,69 @@
 /**
- * Verify all agent GitHub URLs in agents.json.
+ * Verify all agent GitHub URLs in the Neon DB.
  * Sets verified=true for agents with valid, reachable GitHub URLs.
  * Run with: npx tsx scripts/verify-agents.ts
  */
 
-import { readFileSync, writeFileSync } from "fs"
-import { resolve } from "path"
+import { neon } from '@neondatabase/serverless';
+import { config } from 'dotenv';
+config({ path: '.env.local' });
 
 interface Agent {
-  slug: string
-  displayName: string
-  githubUrl?: string
-  verified: boolean
-  [key: string]: unknown
+  id: number;
+  slug: string;
+  display_name: string;
+  github_url: string;
+  verified: boolean;
 }
 
 async function main() {
-  const filePath = resolve(__dirname, "../src/lib/data/agents.json")
-  const agents: Agent[] = JSON.parse(readFileSync(filePath, "utf-8"))
+  const sql = neon(process.env.DATABASE_URL!);
+  const agents: Agent[] = await sql.query('SELECT id, slug, display_name, github_url, verified FROM agents') as unknown as Agent[];
 
-  const results = { valid: 0, invalid: 0, missing: 0, rateLimit: 0 }
-  let changed = false
+  const results = { valid: 0, invalid: 0, missing: 0, rateLimit: 0 };
 
   for (const agent of agents) {
-    if (!agent.githubUrl) {
-      results.missing++
+    if (!agent.github_url) {
+      results.missing++;
       if (agent.verified) {
-        agent.verified = false
-        changed = true
+        await sql.query('UPDATE agents SET verified = false WHERE id = $1', [agent.id]);
       }
-      console.log(`[MISSING] ${agent.displayName} — no GitHub URL`)
-      continue
+      console.log(`[MISSING] ${agent.display_name} — no GitHub URL`);
+      continue;
     }
 
     try {
-      const res = await fetch(agent.githubUrl, { method: "HEAD", redirect: "follow" })
+      const res = await fetch(agent.github_url, { method: 'HEAD', redirect: 'follow' });
       if (res.status === 429) {
-        results.rateLimit++
-        console.log(`[RATE-LIMITED] ${agent.displayName} — ${agent.githubUrl}`)
+        results.rateLimit++;
+        console.log(`[RATE-LIMITED] ${agent.display_name}`);
       } else if (res.ok) {
-        results.valid++
+        results.valid++;
         if (!agent.verified) {
-          agent.verified = true
-          changed = true
+          await sql.query('UPDATE agents SET verified = true WHERE id = $1', [agent.id]);
         }
-        console.log(`[VALID] ${agent.displayName} — ${agent.githubUrl}`)
       } else {
-        results.invalid++
+        results.invalid++;
         if (agent.verified) {
-          agent.verified = false
-          changed = true
+          await sql.query('UPDATE agents SET verified = false WHERE id = $1', [agent.id]);
         }
-        console.log(`[INVALID ${res.status}] ${agent.displayName} — ${agent.githubUrl}`)
+        console.log(`[INVALID ${res.status}] ${agent.display_name}`);
       }
     } catch (err) {
-      results.invalid++
+      results.invalid++;
       if (agent.verified) {
-        agent.verified = false
-        changed = true
+        await sql.query('UPDATE agents SET verified = false WHERE id = $1', [agent.id]);
       }
-      console.log(`[ERROR] ${agent.displayName} — ${agent.githubUrl} — ${err}`)
+      console.log(`[ERROR] ${agent.display_name} — ${err}`);
     }
   }
 
-  if (changed) {
-    writeFileSync(filePath, JSON.stringify(agents, null, 2) + "\n")
-    console.log("\n[UPDATED] agents.json written with verified status changes")
-  }
-
-  console.log("\n--- Summary ---")
-  console.log(`Valid: ${results.valid}`)
-  console.log(`Invalid: ${results.invalid}`)
-  console.log(`Missing URL: ${results.missing}`)
-  console.log(`Rate Limited: ${results.rateLimit}`)
-  console.log(`Total: ${agents.length}`)
+  console.log('\n--- Summary ---');
+  console.log(`Valid: ${results.valid}`);
+  console.log(`Invalid: ${results.invalid}`);
+  console.log(`Missing URL: ${results.missing}`);
+  console.log(`Rate Limited: ${results.rateLimit}`);
+  console.log(`Total: ${agents.length}`);
 }
 
-main()
+main();

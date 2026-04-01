@@ -1,17 +1,40 @@
-import type { Agent, AgentPlatform, AgentStage, RawAgent, RepoSummary, Stats, SearchResult, NewsItem } from './types';
+import type { Agent, AgentCategory, AgentModel, AgentPlatform, AgentSource, AgentStage, RepoSummary, Stats, SearchResult, NewsItem } from './types';
 import { inferStages } from './stage-classifier';
-import agentsData from './data/agents.json';
+import { getDb } from '@/db';
 import newsData from './data/news.json';
 import repoStatsData from './data/repo-stats.json';
 
-const agents: Agent[] = (agentsData as RawAgent[]).map((a) => ({
-  ...a,
-  stages: inferStages(a),
-}));
+function mapRowToAgent(row: Record<string, unknown>): Agent {
+  const raw = {
+    id: row.id as number,
+    slug: row.slug as string,
+    name: row.name as string,
+    displayName: row.display_name as string,
+    description: row.description as string,
+    longDescription: (row.long_description as string) || '',
+    category: row.category as AgentCategory,
+    model: row.model as AgentModel,
+    source: (row.source as AgentSource) || 'community',
+    platform: row.platform as AgentPlatform,
+    author: (row.author as string) || '',
+    githubUrl: (row.github_url as string) || '',
+    installCommand: (row.install_command as string) || '',
+    capabilities: (row.capabilities as string[]) || [],
+    tools: (row.tools as string[]) || [],
+    tags: (row.tags as string[]) || [],
+    stars: (row.stars as number) || 0,
+    forks: (row.forks as number) || 0,
+    featured: (row.featured as boolean) || false,
+    verified: (row.verified as boolean) || false,
+    createdAt: String(row.created_at || ''),
+    updatedAt: String(row.updated_at || ''),
+  };
+  return { ...raw, stages: inferStages(raw) };
+}
 
 // --- Agents ---
 
-export function getAgents(options?: {
+export async function getAgents(options?: {
   q?: string;
   category?: string;
   model?: string;
@@ -22,14 +45,20 @@ export function getAgents(options?: {
   sort?: string;
   page?: number;
   limit?: number;
-}): { items: Agent[]; total: number } {
-  let filtered = [...agents];
+}): Promise<{ items: Agent[]; total: number }> {
+  if (!process.env.DATABASE_URL) return { items: [], total: 0 };
+
+  const sql = getDb();
   const { q, category, model, source, platform, stage, repo, sort, page = 1, limit: rawLimit = 12 } = options ?? {};
   const limit = Math.min(Math.max(1, rawLimit), 100);
+  const offset = (page - 1) * limit;
+
+  const rows = await sql`SELECT * FROM agents ORDER BY stars DESC`;
+  let agents = rows.map(mapRowToAgent);
 
   if (q) {
     const lower = q.toLowerCase();
-    filtered = filtered.filter(
+    agents = agents.filter(
       (a) =>
         a.name.toLowerCase().includes(lower) ||
         a.displayName.toLowerCase().includes(lower) ||
@@ -38,40 +67,47 @@ export function getAgents(options?: {
         a.author?.toLowerCase().includes(lower)
     );
   }
-  if (category) filtered = filtered.filter((a) => a.category === category);
-  if (model) filtered = filtered.filter((a) => a.model === model);
-  if (source) filtered = filtered.filter((a) => a.source === source);
-  if (platform) filtered = filtered.filter((a) => a.platform === platform);
-  if (stage) filtered = filtered.filter((a) => a.stages.includes(stage as AgentStage));
-  if (repo) {
-    filtered = filtered.filter((a) =>
-      a.githubUrl?.includes(`github.com/${repo}`)
-    );
-  }
+  if (category) agents = agents.filter((a) => a.category === category);
+  if (model) agents = agents.filter((a) => a.model === model);
+  if (source) agents = agents.filter((a) => a.source === source);
+  if (platform) agents = agents.filter((a) => a.platform === platform);
+  if (repo) agents = agents.filter((a) => a.githubUrl?.includes(`github.com/${repo}`));
 
   if (sort === 'name') {
-    filtered.sort((a, b) => a.displayName.localeCompare(b.displayName));
+    agents.sort((a, b) => a.displayName.localeCompare(b.displayName));
   } else if (sort === 'recent') {
-    filtered.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+    agents.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
   } else {
-    filtered.sort((a, b) => b.stars - a.stars);
+    agents.sort((a, b) => b.stars - a.stars);
   }
 
-  const total = filtered.length;
-  const start = (page - 1) * limit;
-  const items = filtered.slice(start, start + limit);
+  if (stage) {
+    const validStages = new Set(['discover', 'plan', 'implement', 'review', 'verify', 'debug', 'operate']);
+    if (validStages.has(stage)) {
+      agents = agents.filter((a) => a.stages.includes(stage as AgentStage));
+    }
+  }
 
+  const total = agents.length;
+  const items = agents.slice(offset, offset + limit);
   return { items, total };
 }
 
-export function getAgent(slug: string): Agent | undefined {
-  return agents.find((a) => a.slug === slug);
+export async function getAgent(slug: string): Promise<Agent | undefined> {
+  if (!process.env.DATABASE_URL) return undefined;
+  const sql = getDb();
+  const rows = await sql`SELECT * FROM agents WHERE slug = ${slug}`;
+  if (rows.length === 0) return undefined;
+  return mapRowToAgent(rows[0]);
 }
 
-export function getFeaturedAgents(limit = 6): Agent[] {
-  const FEATURED_BOOST = 50000;
+export async function getFeaturedAgents(limit = 6): Promise<Agent[]> {
+  if (!process.env.DATABASE_URL) return [];
+  const sql = getDb();
+  const rows = await sql`SELECT * FROM agents ORDER BY stars DESC`;
+  const agents = rows.map(mapRowToAgent);
 
-  // Sort all agents: featured ones get a star boost so they rank higher
+  const FEATURED_BOOST = 50000;
   const sorted = [...agents].sort(
     (a, b) => (b.stars + (b.featured ? FEATURED_BOOST : 0)) - (a.stars + (a.featured ? FEATURED_BOOST : 0))
   );
@@ -119,7 +155,12 @@ export function getFeaturedAgents(limit = 6): Agent[] {
   return result.slice(0, limit);
 }
 
-export function getRecentAgents(limit = 6): Agent[] {
+export async function getRecentAgents(limit = 6): Promise<Agent[]> {
+  if (!process.env.DATABASE_URL) return [];
+  const sql = getDb();
+  const rows = await sql`SELECT * FROM agents ORDER BY created_at DESC LIMIT 50`;
+  const agents = rows.map(mapRowToAgent);
+
   const sorted = [...agents].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 
   const result: Agent[] = [];
@@ -151,34 +192,53 @@ export function getRecentAgents(limit = 6): Agent[] {
   return result;
 }
 
-export function getRelatedAgents(slug: string, limit = 3): Agent[] {
-  const agent = getAgent(slug);
+export async function getRelatedAgents(slug: string, limit = 3): Promise<Agent[]> {
+  const agent = await getAgent(slug);
   if (!agent) return [];
-  return agents
-    .filter((a) => a.slug !== slug && (a.category === agent.category || a.model === agent.model))
-    .slice(0, limit);
+  if (!process.env.DATABASE_URL) return [];
+  const sql = getDb();
+  const rows = await sql`
+    SELECT * FROM agents
+    WHERE slug != ${slug} AND (category = ${agent.category} OR model = ${agent.model})
+    LIMIT ${limit}
+  `;
+  return rows.map(mapRowToAgent);
 }
 
-export function getAllAgentSlugs(): string[] {
-  return agents.map((a) => a.slug);
+export async function getAllAgentSlugs(): Promise<string[]> {
+  if (!process.env.DATABASE_URL) return [];
+  const sql = getDb();
+  const rows = await sql`SELECT slug FROM agents`;
+  return rows.map((r) => r.slug as string);
 }
 
-export function getTopAgentsByStars(limit = 10): Agent[] {
-  return [...agents].sort((a, b) => b.stars - a.stars).slice(0, limit);
+export async function getTopAgentsByStars(limit = 10): Promise<Agent[]> {
+  if (!process.env.DATABASE_URL) return [];
+  const sql = getDb();
+  const rows = await sql`SELECT * FROM agents ORDER BY stars DESC LIMIT ${limit}`;
+  return rows.map(mapRowToAgent);
 }
 
-export function getTopRepositories(limit = 10): RepoSummary[] {
-  const repoMap = new Map<string, { agents: Agent[]; githubUrl: string }>();
+export async function getTopRepositories(limit = 10): Promise<RepoSummary[]> {
+  if (!process.env.DATABASE_URL) return [];
+  const sql = getDb();
+  const rows = await sql`SELECT slug, display_name, github_url, stars, forks, platform FROM agents WHERE github_url != '' AND github_url IS NOT NULL`;
 
-  for (const a of agents) {
-    if (!a.githubUrl) continue;
-    const match = a.githubUrl.match(/github\.com\/([^/]+\/[^/]+)/);
+  const repoMap = new Map<string, { agents: { stars: number; forks: number; platform: AgentPlatform }[]; githubUrl: string }>();
+
+  for (const r of rows) {
+    const githubUrl = r.github_url as string;
+    const match = githubUrl.match(/github\.com\/([^/]+\/[^/]+)/);
     if (!match) continue;
     const key = match[1];
     if (!repoMap.has(key)) {
       repoMap.set(key, { agents: [], githubUrl: `https://github.com/${key}` });
     }
-    repoMap.get(key)!.agents.push(a);
+    repoMap.get(key)!.agents.push({
+      stars: (r.stars as number) || 0,
+      forks: (r.forks as number) || 0,
+      platform: r.platform as AgentPlatform,
+    });
   }
 
   return Array.from(repoMap.entries())
@@ -197,22 +257,22 @@ export function getTopRepositories(limit = 10): RepoSummary[] {
 
 // --- Search ---
 
-export function searchAll(q: string): SearchResult[] {
-  const lower = q.toLowerCase();
-  return agents
-    .filter(
-      (a) =>
-        a.name.toLowerCase().includes(lower) ||
-        a.displayName.toLowerCase().includes(lower) ||
-        a.description.toLowerCase().includes(lower)
-    )
-    .map((a) => ({
-      type: 'agent' as const,
-      slug: a.slug,
-      name: a.name,
-      displayName: a.displayName,
-      description: a.description,
-    }));
+export async function searchAll(q: string): Promise<SearchResult[]> {
+  if (!process.env.DATABASE_URL) return [];
+  const sql = getDb();
+  const pattern = `%${q}%`;
+  const rows = await sql`
+    SELECT slug, name, display_name, description FROM agents
+    WHERE name ILIKE ${pattern} OR display_name ILIKE ${pattern} OR description ILIKE ${pattern}
+    LIMIT 50
+  `;
+  return rows.map((r) => ({
+    type: 'agent' as const,
+    slug: r.slug as string,
+    name: r.name as string,
+    displayName: r.display_name as string,
+    description: r.description as string,
+  }));
 }
 
 // --- News / Releases ---
@@ -246,28 +306,31 @@ export function getNewsPaginated(options?: {
 
 // --- Stats ---
 
-export function getStats(): Stats {
-  // Count unique repos
-  const repoSet = new Set<string>();
-  for (const a of agents) {
-    if (!a.githubUrl) continue;
-    const match = a.githubUrl.match(/github\.com\/([^/]+\/[^/]+)/);
-    if (match) repoSet.add(match[1]);
+export async function getStats(): Promise<Stats> {
+  if (!process.env.DATABASE_URL) {
+    return { totalAgents: 0, totalRepositories: 0, totalPlatforms: 0, totalContributors: 0 };
   }
 
-  // Sum contributor counts from repo-stats.json, fallback to unique authors
+  const sql = getDb();
+
+  const countRows = await sql`SELECT COUNT(*) as total FROM agents`;
+  const totalAgents = Number(countRows[0].total);
+
+  const repoRows = await sql`
+    SELECT COUNT(DISTINCT substring(github_url from 'github\\.com/([^/]+/[^/]+)')) as total
+    FROM agents WHERE github_url != '' AND github_url IS NOT NULL
+  `;
+  const totalRepositories = Number(repoRows[0].total);
+
+  const platformRows = await sql`SELECT COUNT(DISTINCT platform) as total FROM agents`;
+  const totalPlatforms = Number(platformRows[0].total);
+
   const repoStats = repoStatsData as Record<string, { contributors: number }>;
   const totalContributors = Object.values(repoStats).reduce(
     (sum, r) => sum + (r.contributors || 0), 0
   );
-  const contributorCount = totalContributors > 0
-    ? totalContributors
-    : new Set(agents.map((a) => a.author)).size;
+  const authorRows = await sql`SELECT COUNT(DISTINCT author) as total FROM agents`;
+  const contributorCount = totalContributors > 0 ? totalContributors : Number(authorRows[0].total);
 
-  return {
-    totalAgents: agents.length,
-    totalRepositories: repoSet.size,
-    totalPlatforms: new Set(agents.map((a) => a.platform)).size,
-    totalContributors: contributorCount,
-  };
+  return { totalAgents, totalRepositories, totalPlatforms, totalContributors: contributorCount };
 }

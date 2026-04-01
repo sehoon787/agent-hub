@@ -8,7 +8,7 @@ import { getAccessToken } from '@/lib/github-api';
 
 export async function GET(request: NextRequest) {
   const sp = request.nextUrl.searchParams;
-  const result = getAgents({
+  const result = await getAgents({
     q: sp.get('q') || undefined,
     category: sp.get('category') || undefined,
     model: sp.get('model') || undefined,
@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
     .replace(/(^-|-$)/g, '');
 
   // Check for duplicate slug
-  const existing = getAgent(slug);
+  const existing = await getAgent(slug);
   if (existing) {
     return NextResponse.json(
       { error: 'An agent with this name already exists', details: { name: [`Agent "${existing.displayName}" already uses the slug "${slug}"`] } },
@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
   }
 
   // Check for duplicate githubUrl from different authors
-  const allAgents = getAgents({ limit: 100 }).items;
+  const allAgents = (await getAgents({ limit: 100 })).items;
   const existingWithSameUrl = allAgents.filter(
     (a) => a.githubUrl === data.githubUrl && a.author !== (session.user.login || data.author)
   );

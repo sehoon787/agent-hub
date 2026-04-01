@@ -5,6 +5,7 @@ export type AgentPlatform = 'claude' | 'gemini' | 'codex' | 'cursor' | 'windsurf
 export type AgentStage = 'discover' | 'plan' | 'implement' | 'review' | 'verify' | 'debug' | 'operate';
 
 export interface Agent {
+  id?: number;
   slug: string;
   name: string;
   displayName: string;

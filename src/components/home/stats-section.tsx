@@ -1,11 +1,19 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { Bot, GitFork, Monitor, Users } from 'lucide-react';
-import { getStats } from '@/lib/data';
 import { StatCard } from '@/components/cards/stat-card';
 
 export function StatsSection() {
-  const stats = getStats();
+  const [stats, setStats] = useState({ totalAgents: 0, totalRepositories: 0, totalPlatforms: 0, totalContributors: 0 });
+
+  useEffect(() => {
+    fetch('/api/stats')
+      .then((r) => r.json())
+      .then((data) => setStats(data))
+      .catch(() => {});
+  }, []);
+
   return (
     <section className="py-8">
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

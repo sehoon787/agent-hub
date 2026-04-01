@@ -1,14 +1,14 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { getAgents } from '@/lib/data';
 import { AgentCard } from '@/components/cards/agent-card';
 import { SearchInput } from '@/components/search/search-input';
 import { FilterSidebar } from '@/components/filters/filter-sidebar';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
 import { Pagination } from '@/components/ui/pagination';
 import { SlidersHorizontal } from 'lucide-react';
+import type { Agent } from '@/lib/types';
 
 const BROWSE_PLATFORM_MODELS: Record<string, { value: string; label: string }[]> = {
   claude: [
@@ -47,19 +47,32 @@ export function AgentsBrowse() {
   const [perPage, setPerPage] = useState(12);
   const [repo, setRepo] = useState<string | null>(searchParams.get('repo'));
 
-  const { items, total } = useMemo(() => {
-    return getAgents({
-      q: q || undefined,
-      category: category || undefined,
-      stage: stage || undefined,
-      model: model || undefined,
-      source: source || undefined,
-      platform: platform || undefined,
-      repo: repo || undefined,
-      sort,
-      page,
-      limit: perPage,
-    });
+  const [items, setItems] = useState<Agent[]>([]);
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (q) params.set('q', q);
+    if (category) params.set('category', category);
+    if (stage) params.set('stage', stage);
+    if (model) params.set('model', model);
+    if (source) params.set('source', source);
+    if (platform) params.set('platform', platform);
+    if (repo) params.set('repo', repo);
+    params.set('sort', sort);
+    params.set('page', String(page));
+    params.set('limit', String(perPage));
+
+    fetch(`/api/agents?${params.toString()}`)
+      .then((r) => r.json())
+      .then((data) => {
+        setItems(data.items ?? []);
+        setTotal(data.total ?? 0);
+      })
+      .catch(() => {
+        setItems([]);
+        setTotal(0);
+      });
   }, [q, category, stage, model, source, platform, sort, page, perPage, repo]);
 
   const totalPages = Math.ceil(total / perPage);

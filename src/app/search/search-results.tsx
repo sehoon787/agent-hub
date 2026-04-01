@@ -1,10 +1,9 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Bot, Search } from 'lucide-react';
 import { SearchInput } from '@/components/search/search-input';
-import { searchAll } from '@/lib/data';
 import type { SearchResult } from '@/lib/types';
 import { AgentDisplayName } from '@/components/ui/agent-display-name';
 
@@ -25,10 +24,25 @@ function ResultItem({ result }: { result: SearchResult }) {
 
 export function SearchResults({ query }: { query: string }) {
   const [q, setQ] = useState(query);
+  const [results, setResults] = useState<SearchResult[]>([]);
 
-  const results = useMemo(() => {
-    if (!q.trim()) return [];
-    return searchAll(q);
+  useEffect(() => {
+    if (!q.trim()) {
+      setResults([]);
+      return;
+    }
+    fetch(`/api/agents?q=${encodeURIComponent(q)}&limit=50`)
+      .then((r) => r.json())
+      .then((data) => {
+        setResults((data.items ?? []).map((a: SearchResult & { displayName: string }) => ({
+          type: 'agent' as const,
+          slug: a.slug,
+          name: a.name,
+          displayName: a.displayName,
+          description: a.description,
+        })));
+      })
+      .catch(() => setResults([]));
   }, [q]);
 
   return (

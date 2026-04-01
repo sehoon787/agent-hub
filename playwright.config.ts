@@ -1,4 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
+import { loadEnvConfig } from '@next/env';
+
+// Load .env.local so DATABASE_URL is available for db-seed setup
+loadEnvConfig(process.cwd());
 
 export default defineConfig({
   testDir: './e2e',
@@ -15,7 +19,9 @@ export default defineConfig({
   },
   projects: [
     // Setup project for authentication
-    { name: 'setup', testMatch: /.*\.setup\.ts/ },
+    { name: 'setup', testMatch: /auth\.setup\.ts/ },
+    // DB seed project (runs after auth setup)
+    { name: 'db-seed', testMatch: /db-seed\.setup\.ts/, dependencies: ['setup'] },
     // Public tests (no auth)
     {
       name: 'public',
@@ -29,7 +35,7 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
         storageState: 'e2e/.auth/user.json',
       },
-      dependencies: ['setup'],
+      dependencies: ['db-seed'],
       testMatch: /(?!public-).*\.spec\.ts/,
       testIgnore: /.*\.setup\.ts/,
     },

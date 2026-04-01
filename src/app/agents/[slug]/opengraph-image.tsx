@@ -7,7 +7,7 @@ export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
 export default async function Image({ params }: { params: { slug: string } }) {
-  const agent = getAgent(params.slug);
+  const agent = await getAgent(params.slug);
   if (!agent) {
     return new ImageResponse(
       (

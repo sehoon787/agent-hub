@@ -3,134 +3,6 @@ import { auth } from '@/lib/auth';
 import { rateLimit } from '@/lib/rate-limit';
 import { agentSubmissionSchema } from '@/lib/validation';
 import { checkMaliciousContent } from '@/lib/security';
-import { githubApiUrl, getGithubHeaders } from '@/lib/github-api';
-
-interface AgentEntry {
-  slug: string;
-  name: string;
-  displayName: string;
-  description: string;
-  longDescription?: string;
-  category: string;
-  model: string;
-  platform: string;
-  source: string;
-  author: string;
-  githubUrl?: string;
-  capabilities?: string[];
-  tools?: string[];
-  tags?: string[];
-  createdAt: string;
-  updatedAt: string;
-  [key: string]: unknown;
-}
-
-async function readAgentsJson(): Promise<{ agents: AgentEntry[]; fileSha: string } | null> {
-  const res = await fetch(
-    githubApiUrl('contents/src/lib/data/agents.json?ref=master'),
-    { headers: getGithubHeaders() }
-  );
-  if (!res.ok) return null;
-
-  const data = await res.json();
-  let content: string;
-
-  if (data.content) {
-    content = Buffer.from(data.content, 'base64').toString('utf-8');
-  } else if (data.download_url) {
-    const rawRes = await fetch(data.download_url);
-    if (!rawRes.ok) return null;
-    content = await rawRes.text();
-  } else {
-    return null;
-  }
-
-  return { agents: JSON.parse(content), fileSha: data.sha };
-}
-
-async function createBranchAndPR(
-  slug: string,
-  displayName: string,
-  updatedAgents: AgentEntry[],
-  fileSha: string,
-  login: string,
-  action: 'edit' | 'remove'
-): Promise<{ success: boolean; prUrl?: string; error?: string }> {
-  // Get master ref SHA
-  const refRes = await fetch(
-    githubApiUrl('git/ref/heads/master'),
-    { headers: getGithubHeaders() }
-  );
-  if (!refRes.ok) {
-    return { success: false, error: 'Failed to get master ref' };
-  }
-  const refData = await refRes.json();
-  const masterSha = refData.object.sha;
-
-  // Create new branch
-  const branchName = `${action}-agent/${slug}/${Date.now()}`;
-  const branchRes = await fetch(
-    githubApiUrl('git/refs'),
-    {
-      method: 'POST',
-      headers: getGithubHeaders(),
-      body: JSON.stringify({ ref: `refs/heads/${branchName}`, sha: masterSha }),
-    }
-  );
-  if (!branchRes.ok) {
-    return { success: false, error: 'Failed to create branch' };
-  }
-
-  // Update agents.json on the branch
-  const commitMessage = action === 'edit'
-    ? `feat: edit agent "${slug}" by @${login}`
-    : `feat: remove agent "${slug}" by @${login}`;
-
-  const updateRes = await fetch(
-    githubApiUrl('contents/src/lib/data/agents.json'),
-    {
-      method: 'PUT',
-      headers: getGithubHeaders(),
-      body: JSON.stringify({
-        message: commitMessage,
-        content: Buffer.from(JSON.stringify(updatedAgents, null, 2) + '\n').toString('base64'),
-        sha: fileSha,
-        branch: branchName,
-      }),
-    }
-  );
-  if (!updateRes.ok) {
-    return { success: false, error: 'Failed to update agents.json' };
-  }
-
-  // Create PR
-  const prTitle = action === 'edit'
-    ? `[Agent Edit] ${displayName}`
-    : `[Agent Remove] ${displayName}`;
-  const prBody = action === 'edit'
-    ? `Modifies community agent \`${slug}\`.\n\n**Requested by:** @${login}\n\n> This PR was auto-generated from the My Submissions dashboard.`
-    : `Removes community agent \`${slug}\`.\n\n**Requested by:** @${login}\n\n> This PR was auto-generated from the My Submissions dashboard.`;
-
-  const prRes = await fetch(
-    githubApiUrl('pulls'),
-    {
-      method: 'POST',
-      headers: getGithubHeaders(),
-      body: JSON.stringify({
-        title: prTitle,
-        body: prBody,
-        head: branchName,
-        base: 'master',
-      }),
-    }
-  );
-  if (!prRes.ok) {
-    return { success: false, error: 'Failed to create pull request' };
-  }
-
-  const prData = await prRes.json();
-  return { success: true, prUrl: prData.html_url };
-}
 
 export async function PATCH(
   request: NextRequest,
@@ -159,7 +31,6 @@ export async function PATCH(
     return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
   }
 
-  // Look up submission from DB to get the slug
   if (!process.env.DATABASE_URL) {
     return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
   }
@@ -168,6 +39,7 @@ export async function PATCH(
   const sql = getDb();
   const userLogin = session.user.login ?? '';
 
+  // Check submission ownership and status
   const rows = await sql`
     SELECT s.id, s.slug, s.status
     FROM submissions s
@@ -185,6 +57,16 @@ export async function PATCH(
   }
 
   const slug = submission.slug as string;
+
+  // Check agent exists in agents table and belongs to user
+  const agentRows = await sql`SELECT * FROM agents WHERE slug = ${slug}`;
+  if (agentRows.length === 0) {
+    return NextResponse.json({ error: 'Agent not found' }, { status: 404 });
+  }
+  const agent = agentRows[0];
+  if (agent.author !== userLogin || agent.source === 'official') {
+    return NextResponse.json({ error: 'Not authorized to edit this agent' }, { status: 403 });
+  }
 
   const { slug: _bodySlug, ...rest } = body as { slug?: string; [key: string]: unknown };
   void _bodySlug;
@@ -206,35 +88,15 @@ export async function PATCH(
     return NextResponse.json({ error: 'Submission contains disallowed content' }, { status: 400 });
   }
 
-  if (!process.env.GITHUB_TOKEN) {
-    return NextResponse.json({ error: 'GitHub integration not configured' }, { status: 503 });
-  }
-
-  const result = await readAgentsJson();
-  if (!result) {
-    return NextResponse.json({ error: 'Failed to read agents.json' }, { status: 502 });
-  }
-
-  const { agents, fileSha } = result;
-  const agentIndex = agents.findIndex((a) => a.slug === slug);
-  if (agentIndex === -1) {
-    return NextResponse.json({ error: 'Agent not found' }, { status: 404 });
-  }
-
-  const agent = agents[agentIndex];
-  if (agent.author !== session.user.login || agent.source === 'official') {
-    return NextResponse.json({ error: 'Not authorized to edit this agent' }, { status: 403 });
-  }
-
   // Re-verify githubUrl ownership if changed
-  if (data.githubUrl && data.githubUrl !== agent.githubUrl) {
+  if (data.githubUrl && data.githubUrl !== agent.github_url) {
     const { getAccessToken } = await import('@/lib/github-api');
     const accessToken = await getAccessToken(request);
     if (!accessToken) {
       return NextResponse.json({ error: 'GitHub token expired. Please sign out and sign back in.' }, { status: 401 });
     }
     const { validateGithubUrlOwnership } = await import('@/lib/github-ownership');
-    const ownership = await validateGithubUrlOwnership(data.githubUrl, session.user.login!, accessToken);
+    const ownership = await validateGithubUrlOwnership(data.githubUrl, userLogin, accessToken);
     if (!ownership.valid) {
       return NextResponse.json(
         { error: ownership.reason, details: { githubUrl: [ownership.reason!] } },
@@ -243,41 +105,48 @@ export async function PATCH(
     }
   }
 
-  // Merge updated fields
-  const updatedAgent: AgentEntry = {
-    ...agent,
-    name: data.name,
-    displayName: data.displayName,
-    description: data.description,
-    longDescription: data.longDescription ?? agent.longDescription,
-    category: data.category,
-    model: data.model,
-    platform: data.platform,
-    author: agent.author,  // Never allow author change via edit
-    githubUrl: data.githubUrl ?? agent.githubUrl,
-    capabilities: data.capabilities ? data.capabilities.split(',').map((s: string) => s.trim()) : agent.capabilities,
-    tools: data.tools ? data.tools.split(',').map((s: string) => s.trim()) : agent.tools,
-    tags: data.tags ? data.tags.split(',').map((s: string) => s.trim()) : agent.tags,
-    updatedAt: new Date().toISOString().split('T')[0],
-  };
+  // Parse comma-separated strings to arrays
+  const capabilities = data.capabilities ? data.capabilities.split(',').map((s: string) => s.trim()).filter(Boolean) : [];
+  const tools = data.tools ? data.tools.split(',').map((s: string) => s.trim()).filter(Boolean) : [];
+  const tags = data.tags ? data.tags.split(',').map((s: string) => s.trim()).filter(Boolean) : [];
 
-  const updatedAgents = [...agents];
-  updatedAgents[agentIndex] = updatedAgent;
+  // Update agents table
+  await sql`
+    UPDATE agents SET
+      name = ${data.name.toLowerCase().replace(/[^a-z0-9_-]/g, '_')},
+      display_name = ${data.displayName},
+      description = ${data.description},
+      long_description = ${data.longDescription ?? ''},
+      category = ${data.category},
+      model = ${data.model},
+      platform = ${data.platform},
+      github_url = ${data.githubUrl ?? agent.github_url},
+      capabilities = ${capabilities},
+      tools = ${tools},
+      tags = ${tags},
+      updated_at = NOW()
+    WHERE slug = ${slug}
+  `;
 
-  const prResult = await createBranchAndPR(
-    slug,
-    data.displayName,
-    updatedAgents,
-    fileSha,
-    session.user.login ?? session.user.name ?? 'unknown',
-    'edit'
-  );
+  // Also update submission record
+  await sql`
+    UPDATE submissions SET
+      name = ${data.name},
+      display_name = ${data.displayName},
+      description = ${data.description},
+      long_description = ${data.longDescription ?? ''},
+      category = ${data.category},
+      model = ${data.model},
+      platform = ${data.platform},
+      github_url = ${data.githubUrl ?? ''},
+      capabilities = ${data.capabilities ?? ''},
+      tools = ${data.tools ?? ''},
+      tags = ${data.tags ?? ''},
+      updated_at = NOW()
+    WHERE id = ${Number(id)}
+  `;
 
-  if (!prResult.success) {
-    return NextResponse.json({ error: prResult.error }, { status: 502 });
-  }
-
-  return NextResponse.json({ success: true, prUrl: prResult.prUrl });
+  return NextResponse.json({ success: true });
 }
 
 export async function DELETE(
@@ -310,7 +179,7 @@ export async function DELETE(
     const userLogin = session.user.login ?? '';
 
     const rows = await sql`
-      SELECT s.id, s.slug, s.status, s.display_name
+      SELECT s.id, s.slug, s.status
       FROM submissions s
       JOIN users u ON s.user_id = u.id
       WHERE s.id = ${Number(id)} AND u.login = ${userLogin}
@@ -327,51 +196,21 @@ export async function DELETE(
 
     const slug = submission.slug as string;
 
-    if (!process.env.GITHUB_TOKEN) {
-      return NextResponse.json({ error: 'GitHub integration not configured' }, { status: 503 });
+    // Check ownership before delete
+    const agentRows = await sql`SELECT author, source FROM agents WHERE slug = ${slug}`;
+    if (agentRows.length > 0) {
+      const agent = agentRows[0];
+      if (agent.author !== userLogin || agent.source === 'official') {
+        return NextResponse.json({ error: 'Not authorized to remove this agent' }, { status: 403 });
+      }
+      // Delete from agents table
+      await sql`DELETE FROM agents WHERE slug = ${slug}`;
     }
 
-    const result = await readAgentsJson();
-    if (!result) {
-      return NextResponse.json({ error: 'Failed to read agents.json' }, { status: 502 });
-    }
-
-    const { agents, fileSha } = result;
-    const agentIndex = agents.findIndex((a) => a.slug === slug);
-
-    // Agent not in agents.json (PR never merged, or already removed)
-    if (agentIndex === -1) {
-      // Update DB status
-      await sql`UPDATE submissions SET status = 'removed', updated_at = NOW() WHERE id = ${Number(id)}`;
-
-      return NextResponse.json({ success: true });
-    }
-
-    const agent = agents[agentIndex];
-    if (agent.author !== session.user.login || agent.source === 'official') {
-      return NextResponse.json({ error: 'Not authorized to remove this agent' }, { status: 403 });
-    }
-
-    const displayName = agent.displayName;
-    const updatedAgents = agents.filter((a) => a.slug !== slug);
-
-    const prResult = await createBranchAndPR(
-      slug,
-      displayName,
-      updatedAgents,
-      fileSha,
-      session.user.login ?? session.user.name ?? 'unknown',
-      'remove'
-    );
-
-    if (!prResult.success) {
-      return NextResponse.json({ error: prResult.error }, { status: 502 });
-    }
-
-    // Update DB status after creating removal PR
+    // Update submission status
     await sql`UPDATE submissions SET status = 'removed', updated_at = NOW() WHERE id = ${Number(id)}`;
 
-    return NextResponse.json({ success: true, prUrl: prResult.prUrl });
+    return NextResponse.json({ success: true });
   } catch {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }

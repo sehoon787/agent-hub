@@ -9,8 +9,8 @@ export const metadata: Metadata = {
   description: 'Discover AI coding agents across Claude, Gemini, and Codex — orchestrators, specialists, workers, and analysts for your development workflow.',
 };
 
-export default function AgentsPage() {
-  const stats = getStats();
+export default async function AgentsPage() {
+  const stats = await getStats();
   return (
     <>
       <CollectionPageJsonLd count={stats.totalAgents} />

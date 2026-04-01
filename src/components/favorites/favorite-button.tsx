@@ -7,9 +7,10 @@ import { useFavorites } from "@/hooks/use-favorites"
 interface FavoriteButtonProps {
   slug: string
   compact?: boolean
+  size?: "sm" | "lg"
 }
 
-export function FavoriteButton({ slug, compact }: FavoriteButtonProps) {
+export function FavoriteButton({ slug, compact, size = "sm" }: FavoriteButtonProps) {
   const { status } = useSession()
   const { isFavorited, toggleFavorite } = useFavorites()
 
@@ -38,7 +39,7 @@ export function FavoriteButton({ slug, compact }: FavoriteButtonProps) {
       aria-label={favorited ? "Remove from favorites" : "Add to favorites"}
     >
       <Heart
-        className={`h-4 w-4 transition-colors ${
+        className={`${size === "lg" ? "h-8 w-8" : "h-4 w-4"} transition-colors ${
           favorited
             ? "fill-red-500 text-red-500"
             : "text-zinc-500 group-hover/fav:text-red-400"

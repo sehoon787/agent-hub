@@ -14,8 +14,8 @@ const platformColors: Record<string, string> = {
   aider: 'bg-orange-500/20 text-orange-300 border-orange-500/30',
 };
 
-export function RankingSection() {
-  const topAgents = getTopAgentsByStars(10);
+export async function RankingSection() {
+  const topAgents = await getTopAgentsByStars(10);
 
   if (topAgents.length === 0) return null;
 

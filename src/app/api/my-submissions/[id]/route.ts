@@ -104,7 +104,7 @@ export async function PATCH(
 
   // Check for slug collision on edit
   const { getAgent } = await import('@/lib/data');
-  const existingAgent = getAgent(slug);
+  const existingAgent = await getAgent(slug);
   if (existingAgent) {
     return NextResponse.json(
       { error: `Agent with slug "${slug}" already exists`, details: { name: [`An agent already uses the slug "${slug}"`] } },
@@ -189,8 +189,6 @@ export async function DELETE(
     if (rows.length === 0) {
       return NextResponse.json({ error: 'Submission not found or not owned by you' }, { status: 404 });
     }
-
-    const submission = rows[0];
 
     // Update DB status to 'removed' (primary)
     await sql`

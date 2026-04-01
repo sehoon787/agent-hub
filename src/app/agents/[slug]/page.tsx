@@ -4,13 +4,15 @@ import Link from 'next/link';
 import { ExternalLink, ChevronRight, Bot, BadgeCheck, Package } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { getAgent, getRelatedAgents, getAllAgentSlugs } from '@/lib/data';
+import { getAgent, getRelatedAgents } from '@/lib/data';
 import { InstallCommand } from '@/components/detail/install-command';
 import { CapabilityList } from '@/components/detail/capability-list';
 import { RelatedAgents } from '@/components/detail/related-items';
 import { AgentJsonLd, BreadcrumbJsonLd } from '@/components/seo/json-ld';
 import { AgentDisplayName } from '@/components/ui/agent-display-name';
 import { FavoriteButton } from '@/components/favorites/favorite-button';
+
+export const revalidate = 60;
 
 const modelColors: Record<string, string> = {
   opus: 'bg-violet-500/20 text-violet-300 border-violet-500/30',
@@ -45,17 +47,13 @@ const platformColors: Record<string, string> = {
   universal: 'bg-purple-500/20 text-purple-300 border-purple-500/30',
 };
 
-export async function generateStaticParams() {
-  return getAllAgentSlugs().map((slug) => ({ slug }));
-}
-
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const agent = getAgent(slug);
+  const agent = await getAgent(slug);
   if (!agent) return { title: 'Agent Not Found' };
   return {
     title: agent.displayName,
@@ -74,10 +72,10 @@ export default async function AgentDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const agent = getAgent(slug);
+  const agent = await getAgent(slug);
   if (!agent) notFound();
 
-  const related = getRelatedAgents(slug);
+  const related = await getRelatedAgents(slug);
   const repoMatch = agent.githubUrl?.match(/github\.com\/([^/]+\/[^/]+)/);
   const repoKey = repoMatch?.[1];
 
@@ -108,7 +106,7 @@ export default async function AgentDetailPage({
           <ChevronRight className="h-3 w-3" />
           <span className="text-zinc-300"><AgentDisplayName displayName={agent.displayName} variant="inline" /></span>
         </div>
-        <FavoriteButton slug={agent.slug} compact />
+        <FavoriteButton slug={agent.slug} compact size="lg" />
       </nav>
 
       {/* Header */}

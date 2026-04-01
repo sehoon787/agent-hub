@@ -1,9 +1,9 @@
 import type { MetadataRoute } from "next"
 import { getAgents } from "@/lib/data"
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://agent-hub.vercel.app"
-  const { items: agents } = getAgents({ limit: 1000 })
+  const { items: agents } = await getAgents({ limit: 1000 })
 
   const agentUrls = agents.map((agent) => ({
     url: `${siteUrl}/agents/${agent.slug}`,

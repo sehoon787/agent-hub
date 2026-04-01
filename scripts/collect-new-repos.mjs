@@ -2,15 +2,14 @@
 // scripts/collect-new-repos.mjs — Collect agents from discovered repos
 //
 // Fetches .md agent files from 40 GitHub repos via the API,
-// parses YAML frontmatter, and merges new entries into agents.json.
+// parses YAML frontmatter, and inserts new entries into the Neon DB.
 // Uses owner--agentName slug convention to avoid collisions.
 
-import { readFileSync, writeFileSync } from 'fs';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { neon } from '@neondatabase/serverless';
+import { config } from 'dotenv';
+config({ path: '.env.local' });
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const AGENTS_PATH = join(__dirname, '..', 'src', 'lib', 'data', 'agents.json');
+const sql = neon(process.env.DATABASE_URL);
 
 const TOKEN = process.env.GITHUB_TOKEN || '';
 const headers = {
@@ -193,9 +192,9 @@ async function listMdFiles(owner, repo, path, recursive) {
 }
 
 async function main() {
-  const agents = JSON.parse(readFileSync(AGENTS_PATH, 'utf8'));
-  const existingSlugs = new Set(agents.map(a => a.slug));
-  console.log(`Existing: ${agents.length} agents, ${existingSlugs.size} slugs`);
+  const existingRows = await sql.query('SELECT slug FROM agents');
+  const existingSlugs = new Set(existingRows.map(r => r.slug));
+  console.log(`Existing: ${existingSlugs.size} slugs`);
 
   const newAgents = [];
   let totalSkipped = 0;
@@ -319,11 +318,17 @@ async function main() {
     return;
   }
 
-  // Merge and write
-  const merged = [...agents, ...newAgents];
-  writeFileSync(AGENTS_PATH, JSON.stringify(merged, null, 2) + '\n');
-  console.log(`Total agents now: ${merged.length}`);
-  console.log(`Written to ${AGENTS_PATH}`);
+  // Insert new agents into DB
+  for (const entry of newAgents) {
+    await sql.query(
+      `INSERT INTO agents (slug, name, display_name, description, long_description, category, model, source, platform, author, github_url, install_command, capabilities, tools, tags, stars, forks, featured, verified)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)
+       ON CONFLICT (slug) DO NOTHING`,
+      [entry.slug, entry.name, entry.displayName, entry.description, entry.longDescription, entry.category, entry.model, entry.source, entry.platform, entry.author, entry.githubUrl, entry.installCommand, entry.capabilities, entry.tools, entry.tags, entry.stars, entry.forks, entry.featured, entry.verified]
+    );
+  }
+
+  console.log(`Inserted ${newAgents.length} new agents into DB`);
 }
 
 main().catch(err => {
