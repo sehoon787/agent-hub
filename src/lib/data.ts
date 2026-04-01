@@ -1,8 +1,6 @@
 import type { Agent, AgentCategory, AgentModel, AgentPlatform, AgentSource, AgentStage, RepoSummary, Stats, SearchResult, NewsItem } from './types';
 import { inferStages } from './stage-classifier';
 import { getDb } from '@/db';
-import newsData from './data/news.json';
-import repoStatsData from './data/repo-stats.json';
 
 function mapRowToAgent(row: Record<string, unknown>): Agent {
   const raw = {
@@ -277,31 +275,51 @@ export async function searchAll(q: string): Promise<SearchResult[]> {
 
 // --- News / Releases ---
 
-export function getNews(): NewsItem[] {
-  return (newsData as NewsItem[]).sort(
-    (a, b) => b.publishedAt.localeCompare(a.publishedAt)
-  );
+function mapRowToNewsItem(row: Record<string, unknown>): NewsItem {
+  return {
+    id: row.id as string,
+    repo: row.repo as string,
+    repoUrl: row.repo_url as string,
+    tagName: row.tag_name as string,
+    title: row.title as string,
+    body: (row.body as string) || '',
+    publishedAt: String(row.published_at || ''),
+    url: row.url as string,
+  };
 }
 
-export function getNewsPaginated(options?: {
+export async function getNews(): Promise<NewsItem[]> {
+  if (!process.env.DATABASE_URL) return [];
+  const sql = getDb();
+  const rows = await sql`SELECT * FROM releases ORDER BY published_at DESC LIMIT 10`;
+  return rows.map(mapRowToNewsItem);
+}
+
+export async function getNewsPaginated(options?: {
   page?: number;
   limit?: number;
   maxAgeMonths?: number;
-}): { items: NewsItem[]; total: number } {
+}): Promise<{ items: NewsItem[]; total: number }> {
+  if (!process.env.DATABASE_URL) return { items: [], total: 0 };
+  const sql = getDb();
   const { page = 1, limit = 20, maxAgeMonths = 6 } = options ?? {};
 
   const cutoff = new Date();
   cutoff.setMonth(cutoff.getMonth() - maxAgeMonths);
+  const cutoffStr = cutoff.toISOString();
 
-  const filtered = (newsData as NewsItem[])
-    .filter((n) => new Date(n.publishedAt) >= cutoff)
-    .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+  const countRows = await sql`SELECT COUNT(*) as total FROM releases WHERE published_at >= ${cutoffStr}`;
+  const total = Number(countRows[0].total);
 
-  const total = filtered.length;
-  const start = (page - 1) * limit;
-  const items = filtered.slice(start, start + limit);
+  const offset = (page - 1) * limit;
+  const rows = await sql`
+    SELECT * FROM releases
+    WHERE published_at >= ${cutoffStr}
+    ORDER BY published_at DESC
+    LIMIT ${limit} OFFSET ${offset}
+  `;
 
-  return { items, total };
+  return { items: rows.map(mapRowToNewsItem), total };
 }
 
 // --- Stats ---
@@ -325,12 +343,10 @@ export async function getStats(): Promise<Stats> {
   const platformRows = await sql`SELECT COUNT(DISTINCT platform) as total FROM agents`;
   const totalPlatforms = Number(platformRows[0].total);
 
-  const repoStats = repoStatsData as Record<string, { contributors: number }>;
-  const totalContributors = Object.values(repoStats).reduce(
-    (sum, r) => sum + (r.contributors || 0), 0
-  );
+  const contribRows = await sql`SELECT COALESCE(SUM(contributors), 0) as total FROM repo_stats`;
   const authorRows = await sql`SELECT COUNT(DISTINCT author) as total FROM agents`;
-  const contributorCount = totalContributors > 0 ? totalContributors : Number(authorRows[0].total);
+  const totalFromRepoStats = Number(contribRows[0].total);
+  const contributorCount = totalFromRepoStats > 0 ? totalFromRepoStats : Number(authorRows[0].total);
 
   return { totalAgents, totalRepositories, totalPlatforms, totalContributors: contributorCount };
 }

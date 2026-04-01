@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 
 const MUTATING_METHODS = new Set(["POST", "PUT", "DELETE", "PATCH"])
-const CSRF_EXEMPT = ["/api/auth/", "/api/cron/", "/api/collect"]
+const CSRF_EXEMPT = ["/api/auth/", "/api/cron/"]
 
 export default auth((request) => {
   // CSRF origin check for mutating requests

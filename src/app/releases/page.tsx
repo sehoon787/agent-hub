@@ -23,7 +23,7 @@ const ITEMS_PER_PAGE = 12;
 export default async function ReleasesPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
   const params = await searchParams;
   const page = Math.max(1, parseInt(params.page || '1', 10) || 1);
-  const { items, total } = getNewsPaginated({ page, limit: ITEMS_PER_PAGE });
+  const { items, total } = await getNewsPaginated({ page, limit: ITEMS_PER_PAGE });
   const totalPages = Math.max(1, Math.ceil(total / ITEMS_PER_PAGE));
   const safePage = Math.min(page, totalPages);
 

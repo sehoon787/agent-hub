@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { githubApiUrl } from '@/lib/github-api';
 import { getDb } from '@/db';
 
 interface RepoStats {
@@ -114,34 +113,16 @@ export async function GET(request: NextRequest) {
       `;
     }
 
-    // 5. Commit repo-stats.json via GitHub Contents API (keep for contributor stats)
-    const repoStatsRes = await fetch(
-      githubApiUrl('contents/src/lib/data/repo-stats.json'),
-      { headers, cache: 'no-store' }
-    );
-    let repoStatsSha = '';
-    if (repoStatsRes.ok) {
-      const d = await repoStatsRes.json() as { sha: string };
-      repoStatsSha = d.sha;
+    // 5. Upsert contributor counts to DB
+    for (const [repoKey, data] of Object.entries(repoContributors)) {
+      await sql`
+        INSERT INTO repo_stats (repo_key, contributors, updated_at)
+        VALUES (${repoKey}, ${(data as {contributors: number}).contributors}, NOW())
+        ON CONFLICT (repo_key) DO UPDATE SET
+          contributors = EXCLUDED.contributors,
+          updated_at = NOW()
+      `;
     }
-
-    const statsContent = Buffer.from(
-      JSON.stringify(repoContributors, null, 2) + '\n'
-    ).toString('base64');
-    const statsBody: Record<string, unknown> = {
-      message: 'chore: sync repo contributor counts',
-      content: statsContent,
-    };
-    if (repoStatsSha) statsBody.sha = repoStatsSha;
-
-    await fetch(
-      githubApiUrl('contents/src/lib/data/repo-stats.json'),
-      {
-        method: 'PUT',
-        headers: { ...headers, 'Content-Type': 'application/json' },
-        body: JSON.stringify(statsBody),
-      }
-    );
 
     return NextResponse.json({
       message: 'Synced successfully',

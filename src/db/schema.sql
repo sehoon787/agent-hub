@@ -76,3 +76,24 @@ CREATE INDEX IF NOT EXISTS idx_agents_platform ON agents(platform);
 CREATE INDEX IF NOT EXISTS idx_agents_model ON agents(model);
 CREATE INDEX IF NOT EXISTS idx_agents_stars ON agents(stars DESC);
 CREATE INDEX IF NOT EXISTS idx_agents_featured ON agents(featured) WHERE featured = true;
+
+-- 5. Repo stats (contributor counts synced from GitHub)
+CREATE TABLE IF NOT EXISTS repo_stats (
+  repo_key TEXT PRIMARY KEY,
+  contributors INTEGER DEFAULT 0,
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 6. Releases (synced from GitHub releases/tags)
+CREATE TABLE IF NOT EXISTS releases (
+  id TEXT PRIMARY KEY,
+  repo TEXT NOT NULL,
+  repo_url TEXT NOT NULL,
+  tag_name TEXT NOT NULL,
+  title TEXT NOT NULL,
+  body TEXT DEFAULT '',
+  published_at TIMESTAMPTZ NOT NULL,
+  url TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_releases_published ON releases(published_at DESC);
+CREATE INDEX IF NOT EXISTS idx_releases_repo ON releases(repo);

@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { Newspaper, ExternalLink } from 'lucide-react';
-import newsData from '@/lib/data/news.json';
-import type { NewsItem } from '@/lib/types';
+import { getNews } from '@/lib/data';
 
 function relativeDate(dateStr: string): string {
   const diff = Date.now() - new Date(dateStr).getTime();
@@ -13,8 +12,8 @@ function relativeDate(dateStr: string): string {
   return `${Math.floor(days / 30)}mo ago`;
 }
 
-export function LatestReleases() {
-  const news = (newsData as NewsItem[]).slice(0, 5);
+export async function LatestReleases() {
+  const news = (await getNews()).slice(0, 5);
 
   return (
     <div className="flex h-full flex-col rounded-xl border border-zinc-800 bg-zinc-900 p-5">

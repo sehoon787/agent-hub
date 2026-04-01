@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { githubApiUrl } from '@/lib/github-api';
 
 export const maxDuration = 60;
 
@@ -67,22 +66,9 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // 2. Read existing news.json
-    const newsRes = await fetch(
-      githubApiUrl('contents/src/lib/data/news.json'),
-      { headers, cache: 'no-store' }
-    );
-    let existingNews: NewsItem[] = [];
-    let newsSha = '';
-    if (newsRes.ok) {
-      const newsData = await newsRes.json();
-      newsSha = newsData.sha;
-      existingNews = JSON.parse(
-        Buffer.from(newsData.content, 'base64').toString('utf-8')
-      );
-    }
-
-    const existingIds = new Set(existingNews.map((n) => n.id));
+    // 2. Read existing releases from DB
+    const existingRows = await sql`SELECT id FROM releases`;
+    const existingIds = new Set(existingRows.map((r: Record<string, unknown>) => r.id as string));
 
     // 3. Fetch releases for each unique repo
     const newItems: NewsItem[] = [];
@@ -169,46 +155,23 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    // 4. Merge, sort by date, keep max 100
-    const merged = [...existingNews, ...newItems]
-      .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
-      .slice(0, 100);
-
-    // 5. Commit news.json
-    const updatedContent = Buffer.from(
-      JSON.stringify(merged, null, 2) + '\n'
-    ).toString('base64');
-
-    const commitBody: Record<string, unknown> = {
-      message: 'chore: sync release news',
-      content: updatedContent,
-    };
-    if (newsSha) {
-      commitBody.sha = newsSha;
-    }
-
-    const commitRes = await fetch(
-      githubApiUrl('contents/src/lib/data/news.json'),
-      {
-        method: 'PUT',
-        headers: { ...headers, 'Content-Type': 'application/json' },
-        body: JSON.stringify(commitBody),
-      }
-    );
-
-    if (!commitRes.ok) {
-      const detail = await commitRes.text();
-      return NextResponse.json(
-        { error: 'Failed to commit news.json', status: commitRes.status, detail },
-        { status: 502 }
-      );
+    // 4. Insert new items into DB
+    let insertedCount = 0;
+    for (const item of newItems) {
+      try {
+        await sql`
+          INSERT INTO releases (id, repo, repo_url, tag_name, title, body, published_at, url)
+          VALUES (${item.id}, ${item.repo}, ${item.repoUrl}, ${item.tagName}, ${item.title}, ${item.body || ''}, ${item.publishedAt}, ${item.url})
+          ON CONFLICT (id) DO NOTHING
+        `;
+        insertedCount++;
+      } catch { /* skip individual failures */ }
     }
 
     return NextResponse.json({
       message: 'Synced successfully',
       repos: repoSet.size,
-      newReleases: newItems.length,
-      total: merged.length,
+      newReleases: insertedCount,
       errors,
     });
   } catch (err) {

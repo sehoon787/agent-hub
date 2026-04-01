@@ -102,10 +102,27 @@ jobs:
                   }
                 }
 
-                // 3. Security check on content
+                // 3. Security check on content (aligned with src/lib/security.ts)
                 if (fileContent) {
-                  if (/<script/i.test(fileContent)) errors.push('File contains script tags');
-                  if (/javascript:/i.test(fileContent)) errors.push('File contains javascript: URLs');
+                  const securityPatterns = [
+                    /eval\\s*\\(/i, /exec\\s*\\(/i, /child_process/i,
+                    /require\\s*\\(\\s*['\"]fs['\"]\\s*\\)/i,
+                    /import\\s+.*from\\s+['\"]child_process['"]/i,
+                    /process\\.env/i, /\\bsudo\\b/i, /rm\\s+-rf/i,
+                    /curl\\s+.*\\|\\s*sh/i, /wget\\s+.*\\|\\s*sh/i,
+                    /<script\\b/i, /javascript:/i,
+                    /on(error|load|click)\\s*=/i, /dangerouslySetInnerHTML/i,
+                    /\\.exec\\s*\\(/i, /spawn\\s*\\(/i,
+                    /\\bFetch\\s*\\(\\s*['\"]file:/i,
+                    /data:/i, /vbscript:/i,
+                    /<svg\\b/i, /<iframe\\b/i,
+                    /expression\\s*\\(/i, /\\$\\{/, /\\{\\{/
+                  ];
+                  for (const p of securityPatterns) {
+                    if (p.test(fileContent)) {
+                      errors.push('Suspicious pattern: ' + p.source);
+                    }
+                  }
                 }
 
                 // 4. Process result
