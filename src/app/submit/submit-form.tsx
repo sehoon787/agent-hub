@@ -176,7 +176,7 @@ const platformColors: Record<string, string> = {
 export function SubmitForm() {
   const { data: session, status } = useSession();
   const searchParams = useSearchParams();
-  const editNumber = searchParams.get('edit');
+  const editId = searchParams.get('edit');
   const [form, setForm] = useState<FormData>(initial);
   const [capabilityItems, setCapabilityItems] = useState<string[]>([]);
   const [toolItems, setToolItems] = useState<string[]>([]);
@@ -185,7 +185,6 @@ export function SubmitForm() {
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
   const [clientErrors, setClientErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
-  const [issueUrl, setIssueUrl] = useState('');
   const [loadingTimedOut, setLoadingTimedOut] = useState(false);
   const [autoFilling, setAutoFilling] = useState(false);
 
@@ -223,14 +222,14 @@ export function SubmitForm() {
 
   // Load existing submission data when editing
   useEffect(() => {
-    if (!editNumber) return;
+    if (!editId) return;
 
     async function loadSubmission() {
       try {
         const res = await fetch('/api/my-submissions');
         if (!res.ok) return;
         const data = await res.json();
-        const sub = data.submissions.find((s: { number: number; formData?: Partial<FormData> }) => s.number === Number(editNumber));
+        const sub = data.submissions.find((s: { id: number; formData?: Partial<FormData> }) => s.id === Number(editId));
         if (!sub?.formData) return;
 
         setForm((prev) => ({ ...prev, ...sub.formData }));
@@ -246,7 +245,7 @@ export function SubmitForm() {
     }
 
     loadSubmission();
-  }, [editNumber]);
+  }, [editId]);
 
   // Treat prolonged loading as unauthenticated (auth may not be configured)
   useEffect(() => {
@@ -343,8 +342,8 @@ export function SubmitForm() {
     setLoading(true);
 
     try {
-      const submitUrl = editNumber ? `/api/my-submissions/${editNumber}` : '/api/agents';
-      const submitMethod = editNumber ? 'PATCH' : 'POST';
+      const submitUrl = editId ? `/api/my-submissions/${editId}` : '/api/agents';
+      const submitMethod = editId ? 'PATCH' : 'POST';
       const res = await fetch(submitUrl, {
         method: submitMethod,
         headers: { 'Content-Type': 'application/json' },
@@ -354,7 +353,6 @@ export function SubmitForm() {
       const data = await res.json();
 
       if (res.ok) {
-        if (data.issueUrl) setIssueUrl(data.issueUrl);
         setSubmitted(true);
         setForm(initial);
         setCapabilityItems([]);
@@ -408,21 +406,11 @@ export function SubmitForm() {
     return (
       <div className="mt-12 flex flex-col items-center gap-4 rounded-xl border border-zinc-800 bg-zinc-900 p-12">
         <CheckCircle2 className="h-12 w-12 text-emerald-500" />
-        <h2 className="text-xl font-semibold text-zinc-100">{editNumber ? 'Submission Updated' : 'Submission Received'}</h2>
-        <p className="text-sm text-zinc-400">{editNumber ? 'Your submission has been updated.' : 'Your agent has been submitted and is pending review. Thank you for contributing!'}</p>
+        <h2 className="text-xl font-semibold text-zinc-100">{editId ? 'Submission Updated' : 'Submission Received'}</h2>
+        <p className="text-sm text-zinc-400">{editId ? 'Your submission has been updated.' : 'Your agent has been submitted and is pending review. Thank you for contributing!'}</p>
         <div className="mt-4 flex items-center gap-3">
-          {issueUrl && (
-            <a
-              href={issueUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-lg border border-zinc-700 bg-zinc-800 px-5 py-2 text-sm font-medium text-zinc-200 hover:bg-zinc-700"
-            >
-              View on GitHub
-            </a>
-          )}
           <button
-            onClick={() => { setSubmitted(false); setIssueUrl(''); }}
+            onClick={() => setSubmitted(false)}
             className="rounded-lg bg-violet-600 px-5 py-2 text-sm font-medium text-white hover:bg-violet-500"
           >
             Submit Another
@@ -596,7 +584,7 @@ export function SubmitForm() {
           disabled={loading}
           className="w-full rounded-lg bg-violet-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-violet-500 disabled:opacity-50"
         >
-          {loading ? (editNumber ? 'Updating...' : 'Submitting...') : (editNumber ? 'Update Submission' : 'Submit Agent')}
+          {loading ? (editId ? 'Updating...' : 'Submitting...') : (editId ? 'Update Submission' : 'Submit Agent')}
         </button>
       </div>
 

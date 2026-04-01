@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
-import { getDb } from "@/lib/db"
+import { getDb } from "@/db"
 
 // GET /api/favorites — returns all favorite slugs for the current user
 export const GET = auth(async function GET(req) {

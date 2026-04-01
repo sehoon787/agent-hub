@@ -4,7 +4,7 @@ import { auth } from '@/lib/auth';
 import { rateLimit } from '@/lib/rate-limit';
 import { agentSubmissionSchema } from '@/lib/validation';
 import { checkMaliciousContent } from '@/lib/security';
-import { githubApiUrl, getGithubHeaders, getAccessToken } from '@/lib/github-api';
+import { getAccessToken } from '@/lib/github-api';
 
 export async function GET(request: NextRequest) {
   const sp = request.nextUrl.searchParams;
@@ -109,14 +109,6 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  if (!process.env.GITHUB_TOKEN) {
-    return NextResponse.json({ error: 'GitHub integration not configured' }, { status: 503 });
-  }
-
-  function sanitizeLine(val: string): string {
-    return val.replace(/[\r\n]+/g, ' ').trim();
-  }
-
   // Auto-generate install command from githubUrl (supports /blob/ file URLs)
   let installCmd = '';
   const blobMatch = data.githubUrl.match(/github\.com\/([^/]+\/[^/]+)\/blob\/([^/]+)\/(.+)/);
@@ -166,65 +158,35 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  const issueBody = `## Agent Submission
-
-**name:** ${sanitizeLine(data.name)}
-**displayName:** ${sanitizeLine(data.displayName)}
-**slug:** ${sanitizeLine(slug)}
-**description:** ${sanitizeLine(data.description)}
-**longDescription:** ${sanitizeLine(data.longDescription ?? '')}
-**category:** ${sanitizeLine(data.category)}
-**model:** ${sanitizeLine(data.model)}
-**platform:** ${sanitizeLine(data.platform)}
-**author:** ${sanitizeLine(session.user.login ?? 'unknown')}
-**githubUrl:** ${sanitizeLine(data.githubUrl ?? '')}
-**installCommand:** ${sanitizeLine(installCmd)}
-**capabilities:** ${sanitizeLine(data.capabilities ?? '')}
-**tools:** ${sanitizeLine(data.tools ?? '')}
-**tags:** ${sanitizeLine(data.tags ?? '')}
-**submittedBy:** ${sanitizeLine(session.user.login ?? session.user.email ?? session.user.name ?? 'unknown')}`;
-
-  const ghRes = await fetch(githubApiUrl('issues'), {
-    method: 'POST',
-    headers: getGithubHeaders(),
-    body: JSON.stringify({
-      title: `[Agent Submission] ${data.displayName} (${data.platform})`,
-      body: issueBody,
-      labels: ['agent-submission'],
-    }),
-  });
-
-  if (!ghRes.ok) {
-    return NextResponse.json({ error: 'Failed to create submission. Please try again.' }, { status: 502 });
+  // Save to DB (primary)
+  if (!process.env.DATABASE_URL) {
+    return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
   }
 
-  const ghData = await ghRes.json() as { html_url: string; number: number };
-
-  // Sync to submissions DB (non-blocking)
-  if (process.env.DATABASE_URL) {
-    try {
-      const { getDb } = await import("@/lib/db")
-      const sql = getDb()
-      const userLogin = session.user.login ?? ''
-      const users = await sql`SELECT id FROM users WHERE login = ${userLogin}`
-      if (users.length > 0) {
-        const issueNumber = ghData.number
-        await sql`
-          INSERT INTO submissions (user_id, github_issue_number, slug, display_name, status)
-          VALUES (${users[0].id}, ${issueNumber}, ${slug}, ${data.displayName}, 'pending')
-          ON CONFLICT (github_issue_number) DO NOTHING
-        `
-      }
-    } catch (e) {
-      console.error("Failed to sync submission to DB:", e)
+  let submissionId: number | undefined;
+  try {
+    const { getDb } = await import("@/db");
+    const sql = getDb();
+    const userLogin = session.user.login ?? '';
+    const users = await sql`SELECT id FROM users WHERE login = ${userLogin}`;
+    if (users.length > 0) {
+      const result = await sql`
+        INSERT INTO submissions (user_id, slug, name, display_name, description, long_description, category, model, platform, author, github_url, install_command, capabilities, tools, tags, status)
+        VALUES (${users[0].id}, ${slug}, ${data.name}, ${data.displayName}, ${data.description}, ${data.longDescription ?? ''}, ${data.category}, ${data.model}, ${data.platform}, ${session.user.login ?? ''}, ${data.githubUrl ?? ''}, ${installCmd}, ${data.capabilities ?? ''}, ${data.tools ?? ''}, ${data.tags ?? ''}, 'pending')
+        RETURNING id
+      `;
+      submissionId = result[0]?.id;
     }
+  } catch (e) {
+    console.error("Failed to save submission to DB:", e);
+    return NextResponse.json({ error: 'Failed to save submission. Please try again.' }, { status: 500 });
   }
 
   return NextResponse.json(
     {
       success: true,
+      id: submissionId,
       slug,
-      issueUrl: ghData.html_url,
       message: 'Submitted successfully. Your agent will be reviewed.',
     },
     { status: 201 }

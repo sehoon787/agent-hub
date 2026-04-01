@@ -1,4 +1,4 @@
--- 1. Users (auto-created on GitHub OAuth login)
+-- Initial schema: users, favorites, submissions (metadata only)
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
   github_id TEXT UNIQUE NOT NULL,
@@ -10,7 +10,6 @@ CREATE TABLE users (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 2. Favorites
 CREATE TABLE favorites (
   id SERIAL PRIMARY KEY,
   user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
@@ -20,7 +19,6 @@ CREATE TABLE favorites (
 );
 CREATE INDEX idx_favorites_user ON favorites(user_id);
 
--- 3. Submissions metadata
 CREATE TABLE submissions (
   id SERIAL PRIMARY KEY,
   user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,

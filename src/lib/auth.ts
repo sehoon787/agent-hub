@@ -24,7 +24,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async signIn({ user, profile }) {
       if (!process.env.DATABASE_URL || !profile) return
       try {
-        const { getDb } = await import("@/lib/db")
+        const { getDb } = await import("@/db")
         const sql = getDb()
         const githubProfile = profile as { id?: number; login?: string }
         await sql`

@@ -134,11 +134,11 @@ async function createBranchAndPR(
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: Promise<{ number: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { number } = await params;
-  if (!/^\d+$/.test(number)) {
-    return NextResponse.json({ error: 'Invalid issue number' }, { status: 400 });
+  const { id } = await params;
+  if (!/^\d+$/.test(id)) {
+    return NextResponse.json({ error: 'Invalid submission id' }, { status: 400 });
   }
 
   const session = await auth();
@@ -159,10 +159,35 @@ export async function PATCH(
     return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
   }
 
-  const { slug, ...rest } = body as { slug: string; [key: string]: unknown };
-  if (!slug) {
-    return NextResponse.json({ error: 'slug is required' }, { status: 400 });
+  // Look up submission from DB to get the slug
+  if (!process.env.DATABASE_URL) {
+    return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
   }
+
+  const { getDb } = await import("@/db");
+  const sql = getDb();
+  const userLogin = session.user.login ?? '';
+
+  const rows = await sql`
+    SELECT s.id, s.slug, s.status
+    FROM submissions s
+    JOIN users u ON s.user_id = u.id
+    WHERE s.id = ${Number(id)} AND u.login = ${userLogin}
+  `;
+
+  if (rows.length === 0) {
+    return NextResponse.json({ error: 'Submission not found or not owned by you' }, { status: 404 });
+  }
+
+  const submission = rows[0];
+  if (submission.status !== 'approved') {
+    return NextResponse.json({ error: 'Only approved submissions can be edited via this endpoint' }, { status: 403 });
+  }
+
+  const slug = submission.slug as string;
+
+  const { slug: _bodySlug, ...rest } = body as { slug?: string; [key: string]: unknown };
+  void _bodySlug;
 
   const parsed = agentSubmissionSchema.safeParse(rest);
   if (!parsed.success) {
@@ -257,11 +282,11 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ number: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const { number } = await params;
-  if (!/^\d+$/.test(number)) {
-    return NextResponse.json({ error: 'Invalid issue number' }, { status: 400 });
+  const { id } = await params;
+  if (!/^\d+$/.test(id)) {
+    return NextResponse.json({ error: 'Invalid submission id' }, { status: 400 });
   }
 
   const session = await auth();
@@ -276,40 +301,31 @@ export async function DELETE(
   }
 
   try {
-    // Try to get slug from request body first
-    let slug: string | undefined;
-    try {
-      const body = await request.json();
-      slug = (body as { slug?: string }).slug;
-    } catch {
-      // No body is OK — we'll extract slug from issue
+    if (!process.env.DATABASE_URL) {
+      return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
     }
 
-    // If no slug from client, extract from issue body
-    if (!slug) {
-      const issueRes = await fetch(
-        githubApiUrl(`issues/${number}`),
-        { headers: getGithubHeaders() }
-      );
-      if (!issueRes.ok) {
-        return NextResponse.json({ error: 'Issue not found' }, { status: 404 });
-      }
-      const issue = await issueRes.json();
-      const slugMatch = ((issue as { body?: string }).body ?? '').match(/\*\*slug:\*\*\s*(\S+)/);
-      slug = slugMatch?.[1];
+    const { getDb } = await import("@/db");
+    const sql = getDb();
+    const userLogin = session.user.login ?? '';
 
-      // Fallback: derive slug from name field
-      if (!slug) {
-        const nameMatch = ((issue as { body?: string }).body ?? '').match(/\*\*name:\*\*\s*(\S+)/);
-        if (nameMatch) {
-          slug = nameMatch[1].toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-        }
-      }
+    const rows = await sql`
+      SELECT s.id, s.slug, s.status, s.display_name
+      FROM submissions s
+      JOIN users u ON s.user_id = u.id
+      WHERE s.id = ${Number(id)} AND u.login = ${userLogin}
+    `;
+
+    if (rows.length === 0) {
+      return NextResponse.json({ error: 'Submission not found or not owned by you' }, { status: 404 });
     }
 
-    if (!slug) {
-      return NextResponse.json({ error: 'Could not determine agent slug from submission' }, { status: 400 });
+    const submission = rows[0];
+    if (submission.status !== 'approved') {
+      return NextResponse.json({ error: 'Only approved submissions can be removed via this endpoint' }, { status: 403 });
     }
+
+    const slug = submission.slug as string;
 
     if (!process.env.GITHUB_TOKEN) {
       return NextResponse.json({ error: 'GitHub integration not configured' }, { status: 503 });
@@ -324,16 +340,10 @@ export async function DELETE(
     const agentIndex = agents.findIndex((a) => a.slug === slug);
 
     // Agent not in agents.json (PR never merged, or already removed)
-    // — just close the issue and add user-removed label
     if (agentIndex === -1) {
-      await fetch(
-        githubApiUrl(`issues/${number}`),
-        { method: 'PATCH', headers: getGithubHeaders(), body: JSON.stringify({ state: 'closed' }) }
-      );
-      await fetch(
-        githubApiUrl(`issues/${number}/labels`),
-        { method: 'POST', headers: getGithubHeaders(), body: JSON.stringify({ labels: ['user-removed'] }) }
-      );
+      // Update DB status
+      await sql`UPDATE submissions SET status = 'removed', updated_at = NOW() WHERE id = ${Number(id)}`;
+
       return NextResponse.json({ success: true });
     }
 
@@ -357,6 +367,9 @@ export async function DELETE(
     if (!prResult.success) {
       return NextResponse.json({ error: prResult.error }, { status: 502 });
     }
+
+    // Update DB status after creating removal PR
+    await sql`UPDATE submissions SET status = 'removed', updated_at = NOW() WHERE id = ${Number(id)}`;
 
     return NextResponse.json({ success: true, prUrl: prResult.prUrl });
   } catch {

@@ -7,11 +7,10 @@ import { Clock, CheckCircle2, XCircle, Loader2, LogIn, Trash2, Pencil } from 'lu
 import { Badge } from '@/components/ui/badge';
 
 interface Submission {
-  number: number;
+  id: number;
   title: string;
-  status: 'pending' | 'approved' | 'rejected';
+  status: 'pending' | 'approved' | 'listed' | 'rejected';
   slug?: string;
-  url: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -19,6 +18,7 @@ interface Submission {
 const statusConfig = {
   pending: { icon: Clock, label: 'Pending Review', color: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30' },
   approved: { icon: CheckCircle2, label: 'Approved', color: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' },
+  listed: { icon: CheckCircle2, label: 'Listed', color: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' },
   rejected: { icon: XCircle, label: 'Closed', color: 'bg-red-500/20 text-red-300 border-red-500/30' },
 };
 
@@ -61,18 +61,14 @@ export function SubmissionsList() {
     };
     if (!confirm(messages[sub.status])) return;
 
-    setActionLoading(sub.number);
+    setActionLoading(sub.id);
     try {
       const isApproved = sub.status === 'approved';
       const url = isApproved
-        ? `/api/my-submissions/${sub.number}/approved`
-        : `/api/my-submissions/${sub.number}`;
+        ? `/api/my-submissions/${sub.id}/approved`
+        : `/api/my-submissions/${sub.id}`;
       const res = await fetch(url, {
         method: 'DELETE',
-        ...(isApproved ? {
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ slug: sub.slug }),
-        } : {}),
       });
       if (!res.ok) {
         const data: Record<string, string> = await res.json().catch(() => ({}));
@@ -84,7 +80,7 @@ export function SubmissionsList() {
         window.open(data.prUrl, '_blank');
       }
       // Remove from list
-      setSubmissions((prev) => prev.filter((s) => s.number !== sub.number));
+      setSubmissions((prev) => prev.filter((s) => s.id !== sub.id));
     } catch {
       alert('Network error. Please try again.');
     } finally {
@@ -161,10 +157,10 @@ export function SubmissionsList() {
       {submissions.map((sub) => {
         const config = statusConfig[sub.status];
         const StatusIcon = config.icon;
-        const isLoading = actionLoading === sub.number;
+        const isLoading = actionLoading === sub.id;
         return (
           <div
-            key={sub.number}
+            key={sub.id}
             onClick={() => sub.status === 'approved' && sub.slug && router.push(`/agents/${sub.slug}`)}
             className={`flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-900 p-4 ${
               sub.status === 'approved' && sub.slug ? 'cursor-pointer hover:border-zinc-700' : ''
@@ -179,7 +175,7 @@ export function SubmissionsList() {
                 </Badge>
               </div>
               <p className="mt-1 text-xs text-zinc-500">
-                Submitted {new Date(sub.createdAt).toLocaleDateString()} · #{sub.number}
+                Submitted {new Date(sub.createdAt).toLocaleDateString()} · #{sub.id}
               </p>
             </div>
             <div className="ml-4 flex shrink-0 items-center gap-2">
@@ -193,7 +189,7 @@ export function SubmissionsList() {
                 </a>
               )}
               <a
-                href={`/submit?edit=${sub.number}`}
+                href={`/submit?edit=${sub.id}`}
                 onClick={(e) => e.stopPropagation()}
                 className="flex items-center gap-1.5 rounded-md border border-zinc-700 bg-zinc-800/50 px-3 py-1.5 text-xs text-zinc-300 hover:bg-zinc-800"
               >

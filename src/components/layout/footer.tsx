@@ -30,7 +30,6 @@ export function Footer() {
             <ul className="mt-3 space-y-2">
               <li><Link href="/submit" className="text-sm text-zinc-400 hover:text-zinc-100">Submit Agent</Link></li>
               <li><Link href="/about" className="text-sm text-zinc-400 hover:text-zinc-100">About</Link></li>
-              <li><a href="https://github.com/sehoon787/agent-hub" target="_blank" rel="noopener noreferrer" className="text-sm text-zinc-400 hover:text-zinc-100">GitHub</a></li>
             </ul>
           </div>
           <div>

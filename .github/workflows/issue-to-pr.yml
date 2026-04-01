@@ -1,8 +1,6 @@
 name: Process Agent Submission
 
 on:
-  issues:
-    types: [labeled]
   schedule:
     - cron: '0 0,12 * * *'  # Twice daily at 00:00 and 12:00 UTC
   workflow_dispatch:
@@ -10,121 +8,91 @@ on:
 permissions:
   contents: write
   pull-requests: write
-  issues: read
 
 jobs:
   create-pr:
-    # For label events: only when 'approved' label added to 'agent-submission' issues
-    # For schedule/dispatch: always run (early-exit check inside)
-    if: |
-      github.event_name == 'schedule' ||
-      github.event_name == 'workflow_dispatch' ||
-      (github.event.label.name == 'approved' && contains(github.event.issue.labels.*.name, 'agent-submission'))
     runs-on: ubuntu-latest
     steps:
-      - name: Determine issue to process
-        id: issue
+      - name: Determine submission to process
+        id: submission
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
-          if [ "${{ github.event_name }}" = "issues" ]; then
-            echo "number=${{ github.event.issue.number }}" >> "$GITHUB_OUTPUT"
-            echo "author=${{ github.event.issue.user.login }}" >> "$GITHUB_OUTPUT"
-            echo "sender=${{ github.event.sender.login }}" >> "$GITHUB_OUTPUT"
-            echo "skip=false" >> "$GITHUB_OUTPUT"
-          else
-            # Scheduled/manual: find first pending approved submission
-            ISSUE=$(gh api "repos/${{ github.repository }}/issues?labels=approved,agent-submission&state=open&per_page=1" --jq '.[0] // empty')
-            if [ -z "$ISSUE" ]; then
-              echo "No pending submissions found"
-              echo "skip=true" >> "$GITHUB_OUTPUT"
-              exit 0
-            fi
-            echo "number=$(echo "$ISSUE" | jq -r '.number')" >> "$GITHUB_OUTPUT"
-            echo "author=$(echo "$ISSUE" | jq -r '.user.login')" >> "$GITHUB_OUTPUT"
-            echo "sender=github-actions[bot]" >> "$GITHUB_OUTPUT"
-            echo "skip=false" >> "$GITHUB_OUTPUT"
+          if [ -z "$DATABASE_URL" ]; then
+            echo "DATABASE_URL not configured"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
+
+          npm init -y > /dev/null 2>&1
+          npm install @neondatabase/serverless > /dev/null 2>&1
+
+          RESULT=$(node -e "
+            const { neon } = require('@neondatabase/serverless');
+            const sql = neon(process.env.DATABASE_URL);
+            sql\`
+              SELECT s.id, s.slug, s.name, s.display_name, s.description, s.long_description,
+                     s.category, s.model, s.platform, s.author, s.github_url,
+                     s.install_command, s.capabilities, s.tools, s.tags
+              FROM submissions s
+              WHERE s.status = 'approved'
+              ORDER BY s.updated_at ASC
+              LIMIT 1
+            \`.then(rows => {
+              if (rows.length === 0) {
+                console.log(JSON.stringify({ skip: true }));
+              } else {
+                console.log(JSON.stringify({ skip: false, ...rows[0] }));
+              }
+            }).catch(err => {
+              console.error(err);
+              process.exit(1);
+            });
+          ")
+
+          SKIP=$(echo "$RESULT" | jq -r '.skip')
+          if [ "$SKIP" = "true" ]; then
+            echo "No pending approved submissions found"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "skip=false" >> "$GITHUB_OUTPUT"
+          echo "submission_data=$RESULT" >> "$GITHUB_OUTPUT"
 
       - name: Skip if no pending submissions
-        if: steps.issue.outputs.skip == 'true'
+        if: steps.submission.outputs.skip == 'true'
         run: echo "No pending submissions, exiting cleanly"
 
-      - name: Verify approver permissions
-        if: steps.issue.outputs.skip != 'true' && github.event_name == 'issues'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SENDER: ${{ steps.issue.outputs.sender }}
-        run: |
-          PERMISSION=$(gh api "repos/${{ github.repository }}/collaborators/$SENDER/permission" --jq '.permission')
-          if [[ "$PERMISSION" != "admin" && "$PERMISSION" != "maintain" && "$PERMISSION" != "write" ]]; then
-            echo "ERROR: User $SENDER does not have sufficient permissions ($PERMISSION)"
-            exit 1
-          fi
-          echo "Approved by $SENDER with $PERMISSION permission"
-
       - name: Checkout
-        if: steps.issue.outputs.skip != 'true'
+        if: steps.submission.outputs.skip != 'true'
         uses: actions/checkout@v4
 
       - name: Setup Node.js
-        if: steps.issue.outputs.skip != 'true'
+        if: steps.submission.outputs.skip != 'true'
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
 
       - name: Install dependencies
-        if: steps.issue.outputs.skip != 'true'
+        if: steps.submission.outputs.skip != 'true'
         run: npm ci
 
-      - name: Fetch issue body
-        if: steps.issue.outputs.skip != 'true'
-        id: body
+      - name: Parse submission and create agent entry
+        if: steps.submission.outputs.skip != 'true'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          BODY=$(gh api "repos/${{ github.repository }}/issues/${{ steps.issue.outputs.number }}" --jq '.body')
-          DELIM=$(openssl rand -hex 16)
-          echo "ISSUE_BODY<<$DELIM" >> "$GITHUB_ENV"
-          echo "$BODY" >> "$GITHUB_ENV"
-          echo "$DELIM" >> "$GITHUB_ENV"
-
-      - name: Parse issue and create agent entry
-        if: steps.issue.outputs.skip != 'true'
-        env:
-          ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
-          ISSUE_AUTHOR: ${{ steps.issue.outputs.author }}
+          SUBMISSION_DATA: ${{ steps.submission.outputs.submission_data }}
         run: |
           node -e "
             const fs = require('fs');
-            const body = process.env.ISSUE_BODY || '';
+            const data = JSON.parse(process.env.SUBMISSION_DATA);
 
-            // Parse **key:** value format from issue body
-            function parseField(body, key) {
-              const prefix = '**' + key + ':** ';
-              const line = body.split('\\n').find(function(l) { return l.startsWith(prefix); });
-              return line ? line.slice(prefix.length).trim() : '';
-            }
+            const { id, slug: dbSlug, name, display_name, description, long_description,
+                    category, model, platform, author, github_url,
+                    install_command, capabilities, tools, tags } = data;
 
-            const name = parseField(body, 'name');
-            const displayName = parseField(body, 'displayName');
-            const description = parseField(body, 'description');
-            const longDescription = parseField(body, 'longDescription');
-            const category = parseField(body, 'category').toLowerCase();
-            const model = parseField(body, 'model').toLowerCase();
-            const platform = parseField(body, 'platform').toLowerCase();
-            const author = parseField(body, 'author') || process.env.ISSUE_AUTHOR;
-            const githubUrl = parseField(body, 'githubUrl');
-            const capabilities = parseField(body, 'capabilities');
-            const tools = parseField(body, 'tools');
-            const tags = parseField(body, 'tags');
-
-            const submittedBy = parseField(body, 'submittedBy');
-            if (submittedBy && submittedBy !== process.env.ISSUE_AUTHOR) {
-              console.error('submittedBy mismatch: body=' + submittedBy + ' author=' + process.env.ISSUE_AUTHOR);
-              process.exit(1);
-            }
+            const displayName = display_name;
 
             // Validate required fields
             const validCategories = ['orchestrator', 'specialist', 'worker', 'analyst'];
@@ -135,15 +103,15 @@ jobs:
             if (!name || name.length < 2) errors.push('Invalid name');
             if (!displayName) errors.push('Missing displayName');
             if (!description || description.length < 10) errors.push('Description too short');
-            if (!validCategories.includes(category)) errors.push('Invalid category: ' + category);
-            if (!validModels.includes(model)) errors.push('Invalid model: ' + model);
-            if (!validPlatforms.includes(platform)) errors.push('Invalid platform: ' + platform);
+            if (!validCategories.includes(category.toLowerCase())) errors.push('Invalid category: ' + category);
+            if (!validModels.includes(model.toLowerCase())) errors.push('Invalid model: ' + model);
+            if (!validPlatforms.includes(platform.toLowerCase())) errors.push('Invalid platform: ' + platform);
 
-            // Security check — detect malicious patterns
-            const allText = [name, displayName, description, longDescription, githubUrl, capabilities, tools, tags].join(' ');
+            // Security check
+            const allText = [name, displayName, description, long_description, github_url, capabilities, tools, tags].join(' ');
             const dangerousPatterns = [
-              /eval\s*\(/i, /exec\s*\(/i, /child_process/i, /require\s*\(\s*['\"]fs['\"]/i,
-              /process\.env/i, /<script/i, /javascript:/i, /on(load|error|click)\s*=/i,
+              /eval\\s*\\(/i, /exec\\s*\\(/i, /child_process/i, /require\\s*\\(\\s*['\"]fs['\"]/i,
+              /process\\.env/i, /<script/i, /javascript:/i, /on(load|error|click)\\s*=/i,
               /dangerouslySetInnerHTML/i, /data:/i, /<svg/i, /<iframe/i
             ];
             for (const pattern of dangerousPatterns) {
@@ -158,7 +126,7 @@ jobs:
             }
 
             // Create slug
-            const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-\$)/g, '');
+            const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
             // Read existing agents
             const agents = JSON.parse(fs.readFileSync('src/lib/data/agents.json', 'utf8'));
@@ -167,32 +135,31 @@ jobs:
               process.exit(1);
             }
 
+            // Use install command from DB or generate one
+            let installCommand = install_command || '';
+            if (!installCommand && github_url && github_url.includes('/blob/')) {
+              var blobMatch = github_url.match(/github\\.com\\/([^/]+)\\/([^/]+)\\/blob\\/([^/]+)\\/(.+)/);
+              if (blobMatch) installCommand = 'curl -o ~/.claude/agents/' + slug + '.md https://raw.githubusercontent.com/' + blobMatch[1] + '/' + blobMatch[2] + '/' + blobMatch[3] + '/' + blobMatch[4];
+            }
+            if (!installCommand && platform.toLowerCase() === 'claude' && github_url) {
+              var m = github_url.match(/github\\.com\\/([^/]+)\\/([^/]+)/);
+              if (m) installCommand = 'curl -o ~/.claude/agents/' + slug + '.md https://raw.githubusercontent.com/' + m[1] + '/' + m[2] + '/main/agents/' + slug + '.md';
+            }
+
             const today = new Date().toISOString().split('T')[0];
             const newAgent = {
               slug,
               name: name.toLowerCase().replace(/[^a-z0-9_-]/g, '_'),
               displayName,
               description,
-              longDescription: longDescription || '',
-              category,
-              model,
+              longDescription: long_description || '',
+              category: category.toLowerCase(),
+              model: model.toLowerCase(),
               source: 'community',
-              platform,
+              platform: platform.toLowerCase(),
               author,
-              githubUrl: githubUrl || '',
-              installCommand: (function() {
-                var installCommand = parseField(body, 'installCommand');
-                if (installCommand) return installCommand;
-                if (githubUrl && githubUrl.includes('/blob/')) {
-                  var blobMatch = githubUrl.match(/github\\.com\\/([^/]+)\\/([^/]+)\\/blob\\/([^/]+)\\/(.+)/);
-                  if (blobMatch) return 'curl -o ~/.claude/agents/' + slug + '.md https://raw.githubusercontent.com/' + blobMatch[1] + '/' + blobMatch[2] + '/' + blobMatch[3] + '/' + blobMatch[4];
-                }
-                if (platform === 'claude' && githubUrl) {
-                  var m = githubUrl.match(/github\\.com\\/([^/]+)\\/([^/]+)/);
-                  if (m) return 'curl -o ~/.claude/agents/' + slug + '.md https://raw.githubusercontent.com/' + m[1] + '/' + m[2] + '/main/agents/' + slug + '.md';
-                }
-                return '';
-              })(),
+              githubUrl: github_url || '',
+              installCommand: installCommand || '',
               capabilities: capabilities ? capabilities.split(',').map(s => s.trim()).filter(Boolean) : [],
               tools: tools ? tools.split(',').map(s => s.trim()).filter(Boolean) : [],
               tags: tags ? tags.split(',').map(s => s.trim()).filter(Boolean) : [],
@@ -205,26 +172,44 @@ jobs:
             };
 
             agents.push(newAgent);
-            fs.writeFileSync('src/lib/data/agents.json', JSON.stringify(agents, null, 2) + '\n');
-            console.log('Added agent: ' + slug + ' (from issue #' + process.env.ISSUE_NUMBER + ')');
+            fs.writeFileSync('src/lib/data/agents.json', JSON.stringify(agents, null, 2) + '\\n');
+            console.log('Added agent: ' + slug + ' (submission #' + id + ')');
           "
 
       - name: Create Pull Request
-        if: steps.issue.outputs.skip != 'true'
+        if: steps.submission.outputs.skip != 'true'
         uses: peter-evans/create-pull-request@v6
+        env:
+          SUBMISSION_DATA: ${{ steps.submission.outputs.submission_data }}
         with:
-          commit-message: "feat: add community agent from issue #${{ steps.issue.outputs.number }}"
-          title: "[Agent] Add from issue #${{ steps.issue.outputs.number }}"
+          commit-message: "feat: add community agent from submission #${{ fromJson(steps.submission.outputs.submission_data).id }}"
+          title: "[Agent] Add from submission #${{ fromJson(steps.submission.outputs.submission_data).id }}"
           body: |
-            Adds a community-submitted agent from #${{ steps.issue.outputs.number }}.
+            Adds a community-submitted agent.
 
-            **Submitted by:** @${{ steps.issue.outputs.author }}
-            **Approved by:** @${{ steps.issue.outputs.sender }}
+            **Submitted by:** @${{ fromJson(steps.submission.outputs.submission_data).author }}
+            **Display Name:** ${{ fromJson(steps.submission.outputs.submission_data).display_name }}
 
             > This agent is added with `verified: false` and `source: 'community'`.
             > Review the changes to `agents.json` before merging.
-
-            Closes #${{ steps.issue.outputs.number }}
-          branch: "agent/issue-${{ steps.issue.outputs.number }}"
+          branch: "agent/submission-${{ fromJson(steps.submission.outputs.submission_data).id }}"
           labels: agent-submission
           delete-branch: true
+
+      - name: Update DB status
+        if: steps.submission.outputs.skip != 'true'
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          SUBMISSION_ID: ${{ fromJson(steps.submission.outputs.submission_data).id }}
+        run: |
+          if [ -n "$DATABASE_URL" ]; then
+            node -e "
+              const { neon } = require('@neondatabase/serverless');
+              const sql = neon(process.env.DATABASE_URL);
+              sql\`UPDATE submissions SET status = 'listed', updated_at = NOW() WHERE id = \${Number(process.env.SUBMISSION_ID)}\`.then(() => {
+                console.log('DB status updated to listed');
+              }).catch(err => {
+                console.error('Failed to update DB:', err);
+              });
+            "
+          fi

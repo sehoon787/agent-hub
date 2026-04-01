@@ -102,10 +102,13 @@ export default async function AgentDetailPage({
       <AgentJsonLd agent={agent} />
       <BreadcrumbJsonLd agent={agent} />
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-1 text-sm text-zinc-500">
-        <Link href="/agents" className="hover:text-zinc-300">Agents</Link>
-        <ChevronRight className="h-3 w-3" />
-        <span className="text-zinc-300"><AgentDisplayName displayName={agent.displayName} variant="inline" /></span>
+      <nav className="flex items-center justify-between text-sm text-zinc-500">
+        <div className="flex items-center gap-1">
+          <Link href="/agents" className="hover:text-zinc-300">Agents</Link>
+          <ChevronRight className="h-3 w-3" />
+          <span className="text-zinc-300"><AgentDisplayName displayName={agent.displayName} variant="inline" /></span>
+        </div>
+        <FavoriteButton slug={agent.slug} compact />
       </nav>
 
       {/* Header */}
@@ -141,7 +144,6 @@ export default async function AgentDetailPage({
           </div>
         </div>
         <div className="flex shrink-0 flex-wrap gap-2">
-          <FavoriteButton slug={agent.slug} />
           {repoKey && (
             <Link
               href={`/agents?repo=${repoKey}`}

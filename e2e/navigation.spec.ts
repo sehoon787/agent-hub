@@ -40,7 +40,7 @@ test.describe('Navigation', () => {
     const footer = page.locator('footer')
     await expect(footer).toBeVisible()
     // Footer has GitHub link
-    await expect(footer.locator('a[href="https://github.com/sehoon787/agent-hub"]')).toBeVisible()
+    await expect(footer.locator('a[href="https://github.com/sehoon787/agent-hub"]').first()).toBeVisible()
     // Footer has page links
     await expect(footer.locator('a[href="/agents"]')).toBeVisible()
     await expect(footer.locator('a[href="/submit"]')).toBeVisible()
