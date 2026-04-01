@@ -62,7 +62,8 @@ export async function getAgents(options?: {
         a.displayName.toLowerCase().includes(lower) ||
         a.description.toLowerCase().includes(lower) ||
         a.tags.some((t) => t.toLowerCase().includes(lower)) ||
-        a.author?.toLowerCase().includes(lower)
+        a.author?.toLowerCase().includes(lower) ||
+        a.platform.toLowerCase().includes(lower)
     );
   }
   if (category) agents = agents.filter((a) => a.category === category);

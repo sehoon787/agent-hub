@@ -3,8 +3,8 @@ import { test, expect } from '@playwright/test'
 test.describe('Search', () => {
   test('should show search results for valid query', async ({ page }) => {
     await page.goto('/search?q=security')
-    await page.waitForTimeout(500)
-    // SearchResults renders result items as links
+    // Wait for results to load from client-side API call
+    await expect(page.locator('a[href^="/agents/"]').first()).toBeVisible({ timeout: 15000 })
     const results = page.locator('a[href^="/agents/"]')
     const count = await results.count()
     expect(count).toBeGreaterThan(0)
@@ -31,7 +31,7 @@ test.describe('Search', () => {
 
   test('should search for Gemini agents', async ({ page }) => {
     await page.goto('/search?q=gemini')
-    await page.waitForTimeout(500)
+    await expect(page.locator('a[href^="/agents/"]').first()).toBeVisible({ timeout: 15000 })
     const results = page.locator('a[href^="/agents/"]')
     const count = await results.count()
     expect(count).toBeGreaterThan(0)

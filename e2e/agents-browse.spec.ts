@@ -127,8 +127,8 @@ test.describe('Agents Browse Page', () => {
 
   test('should show stage badges on agent cards', async ({ page }) => {
     await page.goto('/agents')
-    await page.waitForTimeout(500)
-    // At least some agent cards should have stage badges
+    // Wait for agent cards to load (skeletons replaced with actual content)
+    await expect(page.locator('main [data-slot="badge"]').first()).toBeVisible({ timeout: 15000 })
     const stageBadges = page.locator('main [data-slot="badge"]')
     const count = await stageBadges.count()
     expect(count).toBeGreaterThan(5)
