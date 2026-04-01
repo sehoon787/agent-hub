@@ -1,0 +1,592 @@
+[
+  {
+    "id": "andlaf-ak/claude-code-agents:v0.0.8",
+    "repo": "andlaf-ak/claude-code-agents",
+    "repoUrl": "https://github.com/andlaf-ak/claude-code-agents",
+    "tagName": "v0.0.8",
+    "title": "v0.0.8",
+    "body": "",
+    "publishedAt": "2026-04-01T06:39:39.230Z",
+    "url": "https://github.com/andlaf-ak/claude-code-agents/releases/tag/v0.0.8"
+  },
+  {
+    "id": "andlaf-ak/claude-code-agents:v0.0.7",
+    "repo": "andlaf-ak/claude-code-agents",
+    "repoUrl": "https://github.com/andlaf-ak/claude-code-agents",
+    "tagName": "v0.0.7",
+    "title": "v0.0.7",
+    "body": "",
+    "publishedAt": "2026-04-01T06:39:39.230Z",
+    "url": "https://github.com/andlaf-ak/claude-code-agents/releases/tag/v0.0.7"
+  },
+  {
+    "id": "andlaf-ak/claude-code-agents:v0.0.6",
+    "repo": "andlaf-ak/claude-code-agents",
+    "repoUrl": "https://github.com/andlaf-ak/claude-code-agents",
+    "tagName": "v0.0.6",
+    "title": "v0.0.6",
+    "body": "",
+    "publishedAt": "2026-04-01T06:39:39.230Z",
+    "url": "https://github.com/andlaf-ak/claude-code-agents/releases/tag/v0.0.6"
+  },
+  {
+    "id": "andlaf-ak/claude-code-agents:v0.0.5",
+    "repo": "andlaf-ak/claude-code-agents",
+    "repoUrl": "https://github.com/andlaf-ak/claude-code-agents",
+    "tagName": "v0.0.5",
+    "title": "v0.0.5",
+    "body": "",
+    "publishedAt": "2026-04-01T06:39:39.230Z",
+    "url": "https://github.com/andlaf-ak/claude-code-agents/releases/tag/v0.0.5"
+  },
+  {
+    "id": "andlaf-ak/claude-code-agents:v0.0.4",
+    "repo": "andlaf-ak/claude-code-agents",
+    "repoUrl": "https://github.com/andlaf-ak/claude-code-agents",
+    "tagName": "v0.0.4",
+    "title": "v0.0.4",
+    "body": "",
+    "publishedAt": "2026-04-01T06:39:39.230Z",
+    "url": "https://github.com/andlaf-ak/claude-code-agents/releases/tag/v0.0.4"
+  },
+  {
+    "id": "artsmc/claude-dev-agents:v0.2.1",
+    "repo": "artsmc/claude-dev-agents",
+    "repoUrl": "https://github.com/artsmc/claude-dev-agents",
+    "tagName": "v0.2.1",
+    "title": "v0.2.1",
+    "body": "",
+    "publishedAt": "2026-04-01T06:39:38.356Z",
+    "url": "https://github.com/artsmc/claude-dev-agents/releases/tag/v0.2.1"
+  },
+  {
+    "id": "artsmc/claude-dev-agents:0.1.0",
+    "repo": "artsmc/claude-dev-agents",
+    "repoUrl": "https://github.com/artsmc/claude-dev-agents",
+    "tagName": "0.1.0",
+    "title": "0.1.0",
+    "body": "",
+    "publishedAt": "2026-04-01T06:39:38.356Z",
+    "url": "https://github.com/artsmc/claude-dev-agents/releases/tag/0.1.0"
+  },
+  {
+    "id": "shinpr/ai-coding-project-boilerplate:v1.20.0",
+    "repo": "shinpr/ai-coding-project-boilerplate",
+    "repoUrl": "https://github.com/shinpr/ai-coding-project-boilerplate",
+    "tagName": "v1.20.0",
+    "title": "Release: v1.20.0",
+    "body": "This release hardens the design workflow so Design Docs are based on explicit codebase evidence before implementation starts, and task executors verify existing code before writing new code.\r\n\r\n## Hig",
+    "publishedAt": "2026-04-01T06:03:36Z",
+    "url": "https://github.com/shinpr/ai-coding-project-boilerplate/releases/tag/v1.20.0"
+  },
+  {
+    "id": "openai/codex:rust-v0.119.0-alpha.1",
+    "repo": "openai/codex",
+    "repoUrl": "https://github.com/openai/codex",
+    "tagName": "rust-v0.119.0-alpha.1",
+    "title": "0.119.0-alpha.1",
+    "body": "Release 0.119.0-alpha.1\n\n",
+    "publishedAt": "2026-03-31T17:53:34Z",
+    "url": "https://github.com/openai/codex/releases/tag/rust-v0.119.0-alpha.1"
+  },
+  {
+    "id": "openai/codex:rust-v0.118.0",
+    "repo": "openai/codex",
+    "repoUrl": "https://github.com/openai/codex",
+    "tagName": "rust-v0.118.0",
+    "title": "0.118.0",
+    "body": "## New Features\n- Windows sandbox runs can now enforce proxy-only networking with OS-level egress rules, instead of relying on environment variables alone. (#12220)\n- App-server clients can now start ",
+    "publishedAt": "2026-03-31T17:02:18Z",
+    "url": "https://github.com/openai/codex/releases/tag/rust-v0.118.0"
+  },
+  {
+    "id": "google-gemini/gemini-cli:v0.36.0-preview.7",
+    "repo": "google-gemini/gemini-cli",
+    "repoUrl": "https://github.com/google-gemini/gemini-cli",
+    "tagName": "v0.36.0-preview.7",
+    "title": "Release v0.36.0-preview.7",
+    "body": "**Full Changelog**: https://github.com/google-gemini/gemini-cli/compare/v0.36.0-preview.6...v0.36.0-preview.7",
+    "publishedAt": "2026-03-31T16:56:24Z",
+    "url": "https://github.com/google-gemini/gemini-cli/releases/tag/v0.36.0-preview.7"
+  },
+  {
+    "id": "openai/codex:rust-v0.118.0-alpha.5",
+    "repo": "openai/codex",
+    "repoUrl": "https://github.com/openai/codex",
+    "tagName": "rust-v0.118.0-alpha.5",
+    "title": "0.118.0-alpha.5",
+    "body": "Release 0.118.0-alpha.5\n\n",
+    "publishedAt": "2026-03-31T14:41:15Z",
+    "url": "https://github.com/openai/codex/releases/tag/rust-v0.118.0-alpha.5"
+  },
+  {
+    "id": "openai/codex:rust-v0.118.0-alpha.4",
+    "repo": "openai/codex",
+    "repoUrl": "https://github.com/openai/codex",
+    "tagName": "rust-v0.118.0-alpha.4",
+    "title": "0.118.0-alpha.4",
+    "body": "Release 0.118.0-alpha.4\n\n",
+    "publishedAt": "2026-03-31T09:20:13Z",
+    "url": "https://github.com/openai/codex/releases/tag/rust-v0.118.0-alpha.4"
+  },
+  {
+    "id": "shinpr/ai-coding-project-boilerplate:v1.19.1",
+    "repo": "shinpr/ai-coding-project-boilerplate",
+    "repoUrl": "https://github.com/shinpr/ai-coding-project-boilerplate",
+    "tagName": "v1.19.1",
+    "title": "Release: v1.19.1",
+    "body": "## Changed\r\n\r\n- Migrate circular dependency checker from madge to dpdm to resolve indirect dependency security vulnerabilities\r\n- Remove `.madgerc` config file and unused `check:deps:graph` script\r\n",
+    "publishedAt": "2026-03-30T14:45:23Z",
+    "url": "https://github.com/shinpr/ai-coding-project-boilerplate/releases/tag/v1.19.1"
+  },
+  {
+    "id": "shinpr/ai-coding-project-boilerplate:v1.19.0",
+    "repo": "shinpr/ai-coding-project-boilerplate",
+    "repoUrl": "https://github.com/shinpr/ai-coding-project-boilerplate",
+    "tagName": "v1.19.0",
+    "title": "Release: v1.19.0",
+    "body": "## What changed\r\n\r\n- Minimum Node.js version raised from >=20 to >=22\r\n- Node 20 reaches EOL on 2026-04-30; Node 22 is the current Active LTS\r\n",
+    "publishedAt": "2026-03-30T10:22:12Z",
+    "url": "https://github.com/shinpr/ai-coding-project-boilerplate/releases/tag/v1.19.0"
+  },
+  {
+    "id": "shinpr/ai-coding-project-boilerplate:v1.18.7",
+    "repo": "shinpr/ai-coding-project-boilerplate",
+    "repoUrl": "https://github.com/shinpr/ai-coding-project-boilerplate",
+    "tagName": "v1.18.7",
+    "title": "Release: v1.18.7",
+    "body": "## Problem\r\n\r\nskill-reviewer applied BP patterns as if skills were human-facing documents, causing false positives that blocked valid content from being used in skills.\r\n\r\n## What changed\r\n\r\n- **BP-00",
+    "publishedAt": "2026-03-30T04:16:34Z",
+    "url": "https://github.com/shinpr/ai-coding-project-boilerplate/releases/tag/v1.18.7"
+  },
+  {
+    "id": "shinpr/ai-coding-project-boilerplate:v1.18.6",
+    "repo": "shinpr/ai-coding-project-boilerplate",
+    "repoUrl": "https://github.com/shinpr/ai-coding-project-boilerplate",
+    "tagName": "v1.18.6",
+    "title": "Release: v1.18.6",
+    "body": "## Problem\r\n\r\nThe skill creation and review workflow had several precision gaps that reduced LLM execution accuracy:\r\n\r\n1. **Descriptions didn't function as triggers** — generated descriptions lacked ",
+    "publishedAt": "2026-03-29T13:37:21Z",
+    "url": "https://github.com/shinpr/ai-coding-project-boilerplate/releases/tag/v1.18.6"
+  },
+  {
+    "id": "Yeachan-Heo/oh-my-claudecode:v4.9.3",
+    "repo": "Yeachan-Heo/oh-my-claudecode",
+    "repoUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "tagName": "v4.9.3",
+    "title": "v4.9.3 — MCP Bridge Fix, 30+ Bug Fixes & Hardening",
+    "body": "# oh-my-claudecode v4.9.3: MCP Bridge Fix, 30+ Bug Fixes & Hardening\n\n## 🔥 Critical Fix\n\n**MCP bridge server crash on startup** — `setRequestHandler` was extracted without `.bind(server)`, causing `t",
+    "publishedAt": "2026-03-28T22:49:31Z",
+    "url": "https://github.com/Yeachan-Heo/oh-my-claudecode/releases/tag/v4.9.3"
+  },
+  {
+    "id": "Yeachan-Heo/oh-my-claudecode:v4.9.2",
+    "repo": "Yeachan-Heo/oh-my-claudecode",
+    "repoUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "tagName": "v4.9.2",
+    "title": "v4.9.2 — Security hardening, project memory, Korean i18n, 50+ fixes",
+    "body": "## What's Changed\n\n### Features\n- **Project Memory**: Progressive disclosure injection with hot-path tracking (`e6511ece`)\n- **HUD**: Auto-detect terminal width for responsive wrapping (`03691be7`)\n- ",
+    "publishedAt": "2026-03-28T19:02:58Z",
+    "url": "https://github.com/Yeachan-Heo/oh-my-claudecode/releases/tag/v4.9.2"
+  },
+  {
+    "id": "google-gemini/gemini-cli:v0.35.3",
+    "repo": "google-gemini/gemini-cli",
+    "repoUrl": "https://github.com/google-gemini/gemini-cli",
+    "tagName": "v0.35.3",
+    "title": "Release v0.35.3",
+    "body": "## What's Changed\n* fix(patch): cherry-pick 765fb67 to release/v0.35.2-pr-24055 [CONFLICTS] by @gemini-cli-robot in https://github.com/google-gemini/gemini-cli/pull/24063\n\n\n**Full Changelog**: https:/",
+    "publishedAt": "2026-03-28T03:24:15Z",
+    "url": "https://github.com/google-gemini/gemini-cli/releases/tag/v0.35.3"
+  },
+  {
+    "id": "google-gemini/gemini-cli:v0.36.0-preview.6",
+    "repo": "google-gemini/gemini-cli",
+    "repoUrl": "https://github.com/google-gemini/gemini-cli",
+    "tagName": "v0.36.0-preview.6",
+    "title": "Release v0.36.0-preview.6",
+    "body": "## What's Changed\n* fix(patch): cherry-pick 765fb67 to release/v0.36.0-preview.5-pr-24055 to patch version v0.36.0-preview.5 and create version 0.36.0-preview.6 by @gemini-cli-robot in https://github.",
+    "publishedAt": "2026-03-28T03:20:18Z",
+    "url": "https://github.com/google-gemini/gemini-cli/releases/tag/v0.36.0-preview.6"
+  },
+  {
+    "id": "openai/codex:rust-v0.118.0-alpha.3",
+    "repo": "openai/codex",
+    "repoUrl": "https://github.com/openai/codex",
+    "tagName": "rust-v0.118.0-alpha.3",
+    "title": "0.118.0-alpha.3",
+    "body": "Release 0.118.0-alpha.3\n\n",
+    "publishedAt": "2026-03-27T23:09:25Z",
+    "url": "https://github.com/openai/codex/releases/tag/rust-v0.118.0-alpha.3"
+  },
+  {
+    "id": "google-gemini/gemini-cli:v0.36.0-preview.5",
+    "repo": "google-gemini/gemini-cli",
+    "repoUrl": "https://github.com/google-gemini/gemini-cli",
+    "tagName": "v0.36.0-preview.5",
+    "title": "Release v0.36.0-preview.5",
+    "body": "**Full Changelog**: https://github.com/google-gemini/gemini-cli/compare/v0.36.0-preview.4...v0.36.0-preview.5",
+    "publishedAt": "2026-03-27T17:43:56Z",
+    "url": "https://github.com/google-gemini/gemini-cli/releases/tag/v0.36.0-preview.5"
+  },
+  {
+    "id": "sehoon787/my-claude:v0.23.1",
+    "repo": "sehoon787/my-claude",
+    "repoUrl": "https://github.com/sehoon787/my-claude",
+    "tagName": "v0.23.1",
+    "title": "v0.23.1",
+    "body": "## What's Changed\n* chore: bump plugin version to 0.23.0 by @github-actions[bot] in https://github.com/sehoon787/my-claude/pull/46\n\n\n**Full Changelog**: https://github.com/sehoon787/my-claude/compare/",
+    "publishedAt": "2026-03-27T01:41:34Z",
+    "url": "https://github.com/sehoon787/my-claude/releases/tag/v0.23.1"
+  },
+  {
+    "id": "sehoon787/my-claude:v0.23.0",
+    "repo": "sehoon787/my-claude",
+    "repoUrl": "https://github.com/sehoon787/my-claude",
+    "tagName": "v0.23.0",
+    "title": "v0.23.0",
+    "body": "## What's Changed\n* chore: bump plugin version to 0.22.1 by @github-actions[bot] in https://github.com/sehoon787/my-claude/pull/45\n\n\n**Full Changelog**: https://github.com/sehoon787/my-claude/compare/",
+    "publishedAt": "2026-03-27T00:28:47Z",
+    "url": "https://github.com/sehoon787/my-claude/releases/tag/v0.23.0"
+  },
+  {
+    "id": "google-gemini/gemini-cli:v0.36.0-preview.4",
+    "repo": "google-gemini/gemini-cli",
+    "repoUrl": "https://github.com/google-gemini/gemini-cli",
+    "tagName": "v0.36.0-preview.4",
+    "title": "Release v0.36.0-preview.4",
+    "body": "**Full Changelog**: https://github.com/google-gemini/gemini-cli/compare/v0.36.0-preview.3...v0.36.0-preview.4",
+    "publishedAt": "2026-03-26T19:56:24Z",
+    "url": "https://github.com/google-gemini/gemini-cli/releases/tag/v0.36.0-preview.4"
+  },
+  {
+    "id": "sehoon787/my-claude:v0.22.1",
+    "repo": "sehoon787/my-claude",
+    "repoUrl": "https://github.com/sehoon787/my-claude",
+    "tagName": "v0.22.1",
+    "title": "v0.22.1",
+    "body": "## What's Changed\n* chore: bump plugin version to 0.22.0 by @github-actions[bot] in https://github.com/sehoon787/my-claude/pull/44\n\n\n**Full Changelog**: https://github.com/sehoon787/my-claude/compare/",
+    "publishedAt": "2026-03-26T06:09:09Z",
+    "url": "https://github.com/sehoon787/my-claude/releases/tag/v0.22.1"
+  },
+  {
+    "id": "sehoon787/my-claude:v0.22.0",
+    "repo": "sehoon787/my-claude",
+    "repoUrl": "https://github.com/sehoon787/my-claude",
+    "tagName": "v0.22.0",
+    "title": "v0.22.0",
+    "body": "## What's Changed\n* chore: bump plugin version to 0.21.0 by @github-actions[bot] in https://github.com/sehoon787/my-claude/pull/43\n\n\n**Full Changelog**: https://github.com/sehoon787/my-claude/compare/",
+    "publishedAt": "2026-03-26T05:57:26Z",
+    "url": "https://github.com/sehoon787/my-claude/releases/tag/v0.22.0"
+  },
+  {
+    "id": "sehoon787/my-claude:v0.21.0",
+    "repo": "sehoon787/my-claude",
+    "repoUrl": "https://github.com/sehoon787/my-claude",
+    "tagName": "v0.21.0",
+    "title": "v0.21.0",
+    "body": "## What's Changed\n* chore: bump plugin version to 0.20.3 by @github-actions[bot] in https://github.com/sehoon787/my-claude/pull/42\n\n\n**Full Changelog**: https://github.com/sehoon787/my-claude/compare/",
+    "publishedAt": "2026-03-26T03:59:28Z",
+    "url": "https://github.com/sehoon787/my-claude/releases/tag/v0.21.0"
+  },
+  {
+    "id": "Yeachan-Heo/oh-my-claudecode:v4.9.1",
+    "repo": "Yeachan-Heo/oh-my-claudecode",
+    "repoUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "tagName": "v4.9.1",
+    "title": "v4.9.1",
+    "body": "## What's Changed (44 commits)\n\n### Bug Fixes\n- fix(hud): prevent session state leakage across HUD windows (#1816)\n- fix: session-scoped state cleanup on termination (#1798)\n- fix: keyword persistent ",
+    "publishedAt": "2026-03-24T00:03:15Z",
+    "url": "https://github.com/Yeachan-Heo/oh-my-claudecode/releases/tag/v4.9.1"
+  },
+  {
+    "id": "Yeachan-Heo/oh-my-claudecode:v4.9.0",
+    "repo": "Yeachan-Heo/oh-my-claudecode",
+    "repoUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "tagName": "v4.9.0",
+    "title": "v4.9.0",
+    "body": "# oh-my-claudecode v4.9.0: Team reliability, autoresearch setup, and safety hardening\n\n## Release Notes\n\nRelease 4.9.0 focuses on **team/runtime reliability**, **autoresearch onboarding and launch flo",
+    "publishedAt": "2026-03-19T12:19:10Z",
+    "url": "https://github.com/Yeachan-Heo/oh-my-claudecode/releases/tag/v4.9.0"
+  },
+  {
+    "id": "josstei/maestro-gemini:v1.4.0",
+    "repo": "josstei/maestro-gemini",
+    "repoUrl": "https://github.com/josstei/maestro-gemini",
+    "tagName": "v1.4.0",
+    "title": "v1.4.0",
+    "body": "\n### Added\n\n- **10 new specialist agents** — `seo_specialist`, `copywriter`, `content_strategist`, `ux_designer`, `accessibility_specialist`, `product_manager`, `analytics_engineer`, `i18n_specialist`",
+    "publishedAt": "2026-03-19T06:20:22Z",
+    "url": "https://github.com/josstei/maestro-gemini/releases/tag/v1.4.0"
+  },
+  {
+    "id": "Yeachan-Heo/oh-my-claudecode:v4.8.2",
+    "repo": "Yeachan-Heo/oh-my-claudecode",
+    "repoUrl": "https://github.com/Yeachan-Heo/oh-my-claudecode",
+    "tagName": "v4.8.2",
+    "title": "v4.8.2 - Major Hotfixes",
+    "body": "# oh-my-claudecode v4.8.2: Major Hotfixes\n\nHotfix release addressing **CCG skill nesting**, **team runtime enhancements**, **ralph/ralplan hook reliability**, **dead code cleanup**, and **deep-intervi",
+    "publishedAt": "2026-03-15T12:15:03Z",
+    "url": "https://github.com/Yeachan-Heo/oh-my-claudecode/releases/tag/v4.8.2"
+  },
+  {
+    "id": "josstei/maestro-gemini:v1.3.0",
+    "repo": "josstei/maestro-gemini",
+    "repoUrl": "https://github.com/josstei/maestro-gemini",
+    "tagName": "v1.3.0",
+    "title": "v1.3.0",
+    "body": "\n### Added\n\n- **Plan-based execution mode recommendation** — When `MAESTRO_EXECUTION_MODE=ask` (default), the orchestrator analyzes the implementation plan's dependency graph and presents a data-drive",
+    "publishedAt": "2026-03-07T06:38:53Z",
+    "url": "https://github.com/josstei/maestro-gemini/releases/tag/v1.3.0"
+  },
+  {
+    "id": "alirezarezvani/claude-skills:v2.0.0",
+    "repo": "alirezarezvani/claude-skills",
+    "repoUrl": "https://github.com/alirezarezvani/claude-skills",
+    "tagName": "v2.0.0",
+    "title": "v2.0.0 — 86 Skills, 9 Domains, 26 POWERFUL-Tier",
+    "body": "## 🚀 Claude Skills Library v2.0.0\n\nThe biggest release since launch — more than doubling the skill count with deep engineering capabilities.\n\n### 📊 By the Numbers\n\n| Metric | v1.0.2 | v2.0.0 |\n|----",
+    "publishedAt": "2026-03-04T02:22:23Z",
+    "url": "https://github.com/alirezarezvani/claude-skills/releases/tag/v2.0.0"
+  },
+  {
+    "id": "josstei/maestro-gemini:v1.2.1",
+    "repo": "josstei/maestro-gemini",
+    "repoUrl": "https://github.com/josstei/maestro-gemini",
+    "tagName": "v1.2.1",
+    "title": "v1.2.1",
+    "body": "\n### Added\n\n- **Expanded test coverage** — Added 91 unit tests and migrated integration tests to Node.js to validate hooks, dispatch, state handling, config resolution, and timeout behavior\n- **Cross-",
+    "publishedAt": "2026-02-23T02:30:45Z",
+    "url": "https://github.com/josstei/maestro-gemini/releases/tag/v1.2.1"
+  },
+  {
+    "id": "josstei/maestro-gemini:v1.2.0",
+    "repo": "josstei/maestro-gemini",
+    "repoUrl": "https://github.com/josstei/maestro-gemini",
+    "tagName": "v1.2.0",
+    "title": "v1.2.0",
+    "body": "### Added\r\n\r\n- **Hooks-based lifecycle middleware** — BeforeAgent and AfterAgent hooks with shared shell library (`hooks/lib/common.sh`), `safe_main` wrapper for guaranteed JSON output, and advisory e",
+    "publishedAt": "2026-02-19T06:03:14Z",
+    "url": "https://github.com/josstei/maestro-gemini/releases/tag/v1.2.0"
+  },
+  {
+    "id": "josstei/maestro-gemini:v1.1.1",
+    "repo": "josstei/maestro-gemini",
+    "repoUrl": "https://github.com/josstei/maestro-gemini",
+    "tagName": "v1.1.1",
+    "title": "v1.1.1",
+    "body": "\n### Fixed\n\n- Removed extension settings prompts from install — Gemini CLI doesn't support default values, so users were forced through 13 prompts on install. All settings now use orchestrator default",
+    "publishedAt": "2026-02-16T02:31:29Z",
+    "url": "https://github.com/josstei/maestro-gemini/releases/tag/v1.1.1"
+  },
+  {
+    "id": "pfangueiro/claude-code-agents:v2.3.0",
+    "repo": "pfangueiro/claude-code-agents",
+    "repoUrl": "https://github.com/pfangueiro/claude-code-agents",
+    "tagName": "v2.3.0",
+    "title": "v2.3.0 — Quality, Coordination & Extensibility",
+    "body": "## What's New in v2.3.0\n\n### Fixed\n- Removed fabricated metrics (\"90ms activation\", \"30% productivity\", \"85% accuracy\") from documentation\n- Fixed all `.claude/subagents/` references to `.claude/agent",
+    "publishedAt": "2026-02-12T14:27:41Z",
+    "url": "https://github.com/pfangueiro/claude-code-agents/releases/tag/v2.3.0"
+  },
+  {
+    "id": "peterfei/ai-agent-team:v2.0.1",
+    "repo": "peterfei/ai-agent-team",
+    "repoUrl": "https://github.com/peterfei/ai-agent-team",
+    "tagName": "v2.0.1",
+    "title": "AI Agent Team v2.0.1 ",
+    "body": "# AI Agent Team v2.0.1 发布说明\r\n\r\n我很高兴地宣布 **AI Agent Team v2.0.1** 正式发布！这个版本是一个重要的里程碑，为 AI 助手赋予了真正的“语义记忆”能力，并极大地优化了国内用户的使用体验。\r\n\r\n## 🌟 核心亮点\r\n\r\n### 1. 🧠 Thread Manager 语义搜索 (Semantic Search)\r\n\r\n这是本次更新的重头",
+    "publishedAt": "2025-12-12T08:24:43Z",
+    "url": "https://github.com/peterfei/ai-agent-team/releases/tag/v2.0.1"
+  },
+  {
+    "id": "peterfei/ai-agent-team:v2.0.0",
+    "repo": "peterfei/ai-agent-team",
+    "repoUrl": "https://github.com/peterfei/ai-agent-team",
+    "tagName": "v2.0.0",
+    "title": "AI Agent Team v2.0.0",
+    "body": "# AI Agent Team v2.0.0 发布说明\r\n\r\n> 🎉 **重大版本更新** - 全新的任务记忆和版本控制系统\r\n\r\n**发布日期**: 2025-12-05\r\n**版本**: 2.0.0\r\n**类型**: 重大功能更新\r\n\r\n---\r\n\r\n## 🌟 核心亮点\r\n\r\n### 🧠 AI 团队拥有\"记忆\"了！\r\n\r\nAI Agent Team 2.0 引入了革命性的 **Threa",
+    "publishedAt": "2025-12-05T08:02:02Z",
+    "url": "https://github.com/peterfei/ai-agent-team/releases/tag/v2.0.0"
+  },
+  {
+    "id": "peterfei/ai-agent-team:v1.0.4",
+    "repo": "peterfei/ai-agent-team",
+    "repoUrl": "https://github.com/peterfei/ai-agent-team",
+    "tagName": "v1.0.4",
+    "title": "AI Agent Team v1.0.4",
+    "body": "# 🎉 AI Agent Team v1.0.4 发布说明\r\n\r\n**发布时间**: 2025年12月3日\r\n**版本类型**: 特性增强版本\r\n\r\n## 📋 概述\r\n\r\nv1.0.4 版本是一个重大更新，正式集成了 **changelog-generator** 智能变更日志生成器，完成了 Phase 2 功能开发。此版本为 ai-agent-team 带来了强大的变更日志管理能力，包括 G",
+    "publishedAt": "2025-12-03T07:48:50Z",
+    "url": "https://github.com/peterfei/ai-agent-team/releases/tag/v1.0.4"
+  },
+  {
+    "id": "peterfei/ai-agent-team:v1.0.3",
+    "repo": "peterfei/ai-agent-team",
+    "repoUrl": "https://github.com/peterfei/ai-agent-team",
+    "tagName": "v1.0.3",
+    "title": "AI Agent Team v1.0.3",
+    "body": "# AI Agent Team v1.0.3 发布说明\r\n\r\n**发布日期：2025年11月25日**\r\n\r\n## 🎉 重大里程碑\r\n\r\nAI Agent Team v1.0.3 正式发布！这是一个革命性的AI开发团队工具，集成了三大智能Skill和六大专业AI智能体，为开发者提供前所未有的开发效率提升。\r\n\r\n---\r\n\r\n## ✨ 核心更新亮点\r\n\r\n### 🆕 SoftCopyright",
+    "publishedAt": "2025-12-03T07:19:21Z",
+    "url": "https://github.com/peterfei/ai-agent-team/releases/tag/v1.0.3"
+  },
+  {
+    "id": "ruvnet/agentic-flow:v2.3.6",
+    "repo": "ruvnet/agentic-flow",
+    "repoUrl": "https://github.com/ruvnet/agentic-flow",
+    "tagName": "v2.3.6",
+    "title": "v2.3.6",
+    "body": "",
+    "publishedAt": "2025-11-24T17:18:41Z",
+    "url": "https://github.com/ruvnet/agentic-flow/releases/tag/v2.3.6"
+  },
+  {
+    "id": "ruvnet/agentic-flow:v2.3.5",
+    "repo": "ruvnet/agentic-flow",
+    "repoUrl": "https://github.com/ruvnet/agentic-flow",
+    "tagName": "v2.3.5",
+    "title": "v2.3.5",
+    "body": "",
+    "publishedAt": "2025-11-24T16:04:44Z",
+    "url": "https://github.com/ruvnet/agentic-flow/releases/tag/v2.3.5"
+  },
+  {
+    "id": "ruvnet/agentic-flow:v2.3.4",
+    "repo": "ruvnet/agentic-flow",
+    "repoUrl": "https://github.com/ruvnet/agentic-flow",
+    "tagName": "v2.3.4",
+    "title": "v2.3.4",
+    "body": "",
+    "publishedAt": "2025-11-16T16:51:53Z",
+    "url": "https://github.com/ruvnet/agentic-flow/releases/tag/v2.3.4"
+  },
+  {
+    "id": "peterfei/ai-agent-team:v1.0.2",
+    "repo": "peterfei/ai-agent-team",
+    "repoUrl": "https://github.com/peterfei/ai-agent-team",
+    "tagName": "v1.0.2",
+    "title": "AI Agent Team v1.0.2",
+    "body": "# 🎉 AI Agent Team v1.0.2 发布日志\r\n\r\n**发布日期**: 2025-01-14\r\n**版本号**: 1.0.2\r\n**状态**: ✅ 发布成功\r\n\r\n---\r\n\r\n## 📦 版本信息\r\n\r\n- **包名**: `ai-agent-team`\r\n- **版本**: 1.0.2\r\n- **描述**: AI Agent Team - 拥有24/7专业AI开发团队：产品经理",
+    "publishedAt": "2025-11-14T16:48:24Z",
+    "url": "https://github.com/peterfei/ai-agent-team/releases/tag/v1.0.2"
+  },
+  {
+    "id": "ruvnet/agentic-flow:v2.3.3",
+    "repo": "ruvnet/agentic-flow",
+    "repoUrl": "https://github.com/ruvnet/agentic-flow",
+    "tagName": "v2.3.3",
+    "title": "v2.3.3",
+    "body": "",
+    "publishedAt": "2025-11-10T22:46:58Z",
+    "url": "https://github.com/ruvnet/agentic-flow/releases/tag/v2.3.3"
+  },
+  {
+    "id": "ruvnet/agentic-flow:v2.3.2",
+    "repo": "ruvnet/agentic-flow",
+    "repoUrl": "https://github.com/ruvnet/agentic-flow",
+    "tagName": "v2.3.2",
+    "title": "v2.3.2 - Documentation Update",
+    "body": "## v2.3.2 - Documentation Update\n\nUpdated README to reflect current features:\n- ✅ Removed \"(Coming Soon)\" entries\n- ✅ Updated v2.3 quantum features section\n- ✅ Added v2.3.1 validation improvements\n- ✅",
+    "publishedAt": "2025-11-10T21:40:27Z",
+    "url": "https://github.com/ruvnet/agentic-flow/releases/tag/v2.3.2"
+  },
+  {
+    "id": "houseworthe/house-agents:v1.0.0",
+    "repo": "houseworthe/house-agents",
+    "repoUrl": "https://github.com/houseworthe/house-agents",
+    "tagName": "v1.0.0",
+    "title": "v1.0.0 - Stable Production Release",
+    "body": "## 🎉 Stable Release\n\nHouse Agents moves to v1.0.0 after successful production validation. All core agents tested and performing with 95-99% token savings in real-world usage.\n\n**Production Metrics:**",
+    "publishedAt": "2025-10-20T01:10:14Z",
+    "url": "https://github.com/houseworthe/house-agents/releases/tag/v1.0.0"
+  },
+  {
+    "id": "lst97/claude-code-sub-agents:v1.1.0",
+    "repo": "lst97/claude-code-sub-agents",
+    "repoUrl": "https://github.com/lst97/claude-code-sub-agents",
+    "tagName": "v1.1.0",
+    "title": "v1.1.0",
+    "body": "Fix issue https://github.com/lst97/claude-code-sub-agents/issues/8 for CC >=1.0.80 sub agent parse issue.\r\n\r\n**Full Changelog**: https://github.com/lst97/claude-code-sub-agents/compare/v1.0.0...v1.1.0",
+    "publishedAt": "2025-08-15T11:02:46Z",
+    "url": "https://github.com/lst97/claude-code-sub-agents/releases/tag/v1.1.0"
+  },
+  {
+    "id": "lst97/claude-code-sub-agents:v1.0.0",
+    "repo": "lst97/claude-code-sub-agents",
+    "repoUrl": "https://github.com/lst97/claude-code-sub-agents",
+    "tagName": "v1.0.0",
+    "title": "First Release",
+    "body": "This collection provides a comprehensive set of 33 specialized AI subagents template for [Claude Code](https://docs.anthropic.com/en/docs/claude-code), designed to enhance development workflows with d",
+    "publishedAt": "2025-08-12T09:13:33Z",
+    "url": "https://github.com/lst97/claude-code-sub-agents/releases/tag/v1.0.0"
+  },
+  {
+    "id": "rshah515/claude-code-subagents:v1.0.0",
+    "repo": "rshah515/claude-code-subagents",
+    "repoUrl": "https://github.com/rshah515/claude-code-subagents",
+    "tagName": "v1.0.0",
+    "title": "Initial Release: 133 Specialized Agents",
+    "body": "## 🎉 Initial Release of Claude Code Subagents Collection\n\nThis comprehensive collection includes **133 specialized AI agents** for Claude Code, covering the entire software development lifecycle.\n\n##",
+    "publishedAt": "2025-08-03T16:58:22Z",
+    "url": "https://github.com/rshah515/claude-code-subagents/releases/tag/v1.0.0"
+  },
+  {
+    "id": "valllabh/claude-agents:v0.1.1",
+    "repo": "valllabh/claude-agents",
+    "repoUrl": "https://github.com/valllabh/claude-agents",
+    "tagName": "v0.1.1",
+    "title": "Claude Code Agents v0.1.1",
+    "body": "# Claude Code Agents Release v0.1.1\n\nThis release contains the complete set of enhanced Claude Code agents with sophisticated workflows and interactive capabilities.\n\n## What's Included\n\n- **8 Enhance",
+    "publishedAt": "2025-07-30T12:09:11Z",
+    "url": "https://github.com/valllabh/claude-agents/releases/tag/v0.1.1"
+  },
+  {
+    "id": "valllabh/claude-agents:v0.1.0",
+    "repo": "valllabh/claude-agents",
+    "repoUrl": "https://github.com/valllabh/claude-agents",
+    "tagName": "v0.1.0",
+    "title": "Claude Code Agents v0.1.0",
+    "body": "# Claude Code Agents Release v0.1.0\n\nThis release contains the complete set of enhanced Claude Code agents with sophisticated workflows and interactive capabilities.\n\n## What's Included\n\n- **8 Enhance",
+    "publishedAt": "2025-07-30T11:57:55Z",
+    "url": "https://github.com/valllabh/claude-agents/releases/tag/v0.1.0"
+  },
+  {
+    "id": "webdevtodayjason/sub-agents:v1.4.0",
+    "repo": "webdevtodayjason/sub-agents",
+    "repoUrl": "https://github.com/webdevtodayjason/sub-agents",
+    "tagName": "v1.4.0",
+    "title": "v1.4.0 - Context-Forge Integration & Enhanced Commands",
+    "body": "## 🎉 Claude Sub-Agents v1.4.0\n\nThis release brings full integration with context-forge projects and powerful new commands for project management.\n\n### ✨ What's New\n\n#### 🛠️ Context-Forge Integration",
+    "publishedAt": "2025-07-28T17:42:22Z",
+    "url": "https://github.com/webdevtodayjason/sub-agents/releases/tag/v1.4.0"
+  },
+  {
+    "id": "webdevtodayjason/sub-agents:v1.2.0",
+    "repo": "webdevtodayjason/sub-agents",
+    "repoUrl": "https://github.com/webdevtodayjason/sub-agents",
+    "tagName": "v1.2.0",
+    "title": "Release v1.2.0",
+    "body": "## Release v1.2.0\n\n### What's New\n- Complete AI development shop with 15 specialized agents\n- Added shadcn-ui-builder agent for UI/UX development\n- Enhanced agent coordination and performance\n\n### Bug",
+    "publishedAt": "2025-07-27T17:54:41Z",
+    "url": "https://github.com/webdevtodayjason/sub-agents/releases/tag/v1.2.0"
+  },
+  {
+    "id": "webdevtodayjason/sub-agents:v1.0.2",
+    "repo": "webdevtodayjason/sub-agents",
+    "repoUrl": "https://github.com/webdevtodayjason/sub-agents",
+    "tagName": "v1.0.2",
+    "title": "v1.0.2: ESM Module Compatibility Fix",
+    "body": "## 🐛 Bug Fix\n\nThis release fixes a critical issue that prevented installation on WSL2 and other environments.\n\n### Fixed\n- **ESM Module Error**: Fixed `__dirname is not defined` error when installing",
+    "publishedAt": "2025-07-26T12:00:06Z",
+    "url": "https://github.com/webdevtodayjason/sub-agents/releases/tag/v1.0.2"
+  },
+  {
+    "id": "webdevtodayjason/sub-agents:v1.0.1",
+    "repo": "webdevtodayjason/sub-agents",
+    "repoUrl": "https://github.com/webdevtodayjason/sub-agents",
+    "tagName": "v1.0.1",
+    "title": "v1.0.1: Agent Removal & Enhanced User Experience",
+    "body": "## What's New in v1.0.1 🚀\n\n### ✨ New Features\n- **Remove Command**: Safely uninstall agents with `claude-agents remove <agent>` (alias: `uninstall`)\n- **Enhanced Status Indicators**: \n  - ✅ **In Use*",
+    "publishedAt": "2025-07-25T11:18:08Z",
+    "url": "https://github.com/webdevtodayjason/sub-agents/releases/tag/v1.0.1"
+  }
+]
