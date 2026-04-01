@@ -1,4 +1,4 @@
-name: Verify Agent URLs
+name: Verify Agent Quality
 
 on:
   schedule:
