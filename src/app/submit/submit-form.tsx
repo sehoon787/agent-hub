@@ -7,8 +7,6 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Bot, CheckCircle2, LogIn, Plus, X, Terminal } from 'lucide-react';
-import { inferStages } from '@/lib/stage-classifier';
-
 interface FormData {
   name: string;
   displayName: string;
@@ -137,26 +135,6 @@ const PLATFORM_MODELS: Record<string, string[]> = {
 const NAME_RE = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/;
 const GITHUB_URL_RE = /^https:\/\/github/i;
 
-const stageColors: Record<string, string> = {
-  discover: 'bg-teal-500/20 text-teal-300 border-teal-500/30',
-  plan: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30',
-  implement: 'bg-lime-500/20 text-lime-300 border-lime-500/30',
-  review: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30',
-  verify: 'bg-sky-500/20 text-sky-300 border-sky-500/30',
-  debug: 'bg-rose-500/20 text-rose-300 border-rose-500/30',
-  operate: 'bg-stone-500/20 text-stone-300 border-stone-500/30',
-};
-
-const stageLabels: Record<string, string> = {
-  discover: 'Discover',
-  plan: 'Plan',
-  implement: 'Implement',
-  review: 'Review',
-  verify: 'Verify',
-  debug: 'Debug',
-  operate: 'Operate',
-};
-
 const modelColors: Record<string, string> = {
   opus: 'bg-violet-500/20 text-violet-300 border-violet-500/30',
   sonnet: 'bg-blue-500/20 text-blue-300 border-blue-500/30',
@@ -187,18 +165,6 @@ export function SubmitForm() {
   const [loading, setLoading] = useState(false);
   const [loadingTimedOut, setLoadingTimedOut] = useState(false);
   const [autoFilling, setAutoFilling] = useState(false);
-
-  const predictedStages = useMemo(() => {
-    if (!form.description) return [];
-    return inferStages({
-      description: form.description,
-      tags: form.tags.split(',').map(t => t.trim()).filter(Boolean),
-      capabilities: form.capabilities.split(',').map(c => c.trim()).filter(Boolean),
-      tools: form.tools.split(',').map(t => t.trim()).filter(Boolean),
-      model: form.model || undefined,
-      category: form.category || undefined,
-    });
-  }, [form.description, form.tags, form.capabilities, form.tools, form.model, form.category]);
 
   const generatedInstallCmd = useMemo(() => {
     if (!form.githubUrl || !form.name) return '';
@@ -621,11 +587,6 @@ export function SubmitForm() {
                 {form.category}
               </Badge>
             )}
-            {predictedStages.slice(0, 2).map((s) => (
-              <Badge key={s} variant="outline" className={`text-xs ${stageColors[s] ?? ''}`}>
-                {stageLabels[s] ?? s}
-              </Badge>
-            ))}
             {form.tags
               .split(',')
               .map((t) => t.trim())
@@ -637,18 +598,6 @@ export function SubmitForm() {
                 </Badge>
               ))}
           </div>
-          {predictedStages.length > 0 && (
-            <div className="mt-3 border-t border-zinc-800 pt-3">
-              <p className="text-xs text-zinc-500 mb-1.5">All Predicted Stages</p>
-              <div className="flex flex-wrap gap-1.5">
-                {predictedStages.map((s) => (
-                  <Badge key={s} variant="outline" className={`text-xs ${stageColors[s] ?? ''}`}>
-                    {stageLabels[s] ?? s}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-          )}
           {capabilityItems.length > 0 && (
             <div className="mt-3 border-t border-zinc-800 pt-3">
               <p className="text-xs text-zinc-500 mb-1.5">Capabilities</p>
