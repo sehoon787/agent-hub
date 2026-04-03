@@ -131,8 +131,8 @@ test.describe('Submit page — authenticated', () => {
 
   test('shows type toggle with Agent and Skill options', async ({ page }) => {
     await page.goto('/submit');
-    await expect(page.locator('button:has-text("Agent")')).toBeVisible({ timeout: 10000 });
-    await expect(page.locator('button:has-text("Skill")')).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Agent', exact: true })).toBeVisible({ timeout: 10000 });
+    await expect(page.getByRole('button', { name: 'Skill', exact: true })).toBeVisible();
   });
 
   test('submit success shows "Submit Related" button', async ({ page }) => {
