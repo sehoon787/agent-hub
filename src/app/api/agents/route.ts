@@ -15,6 +15,7 @@ export async function GET(request: NextRequest) {
     source: sp.get('source') || undefined,
     platform: sp.get('platform') || undefined,
     type: sp.get('type') || undefined,
+    repo: sp.get('repo') || undefined,
     stage: (() => {
       const s = sp.get('stage');
       const valid = new Set(['discover','plan','implement','review','verify','debug','operate']);
