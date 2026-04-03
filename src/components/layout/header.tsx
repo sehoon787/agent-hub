@@ -11,6 +11,7 @@ import { AuthButton } from '@/components/auth/auth-button';
 
 const navLinks: { href: string; label: string }[] = [
   { href: '/agents', label: 'Agents' },
+  { href: '/skills', label: 'Skills' },
   { href: '/submit', label: 'Submit' },
   { href: '/about', label: 'About' },
 ];

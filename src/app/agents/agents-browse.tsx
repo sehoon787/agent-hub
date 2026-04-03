@@ -35,7 +35,7 @@ const ALL_BROWSE_MODELS = [
   { value: 'gpt-5.4', label: 'GPT-5.4' },
 ];
 
-export function AgentsBrowse() {
+export function AgentsBrowse({ defaultType }: { defaultType?: 'agent' | 'skill' } = {}) {
   const searchParams = useSearchParams();
   const [q, setQ] = useState(searchParams.get('q') ?? '');
   const [category, setCategory] = useState<string | null>(null);
@@ -47,7 +47,7 @@ export function AgentsBrowse() {
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(12);
   const [repo, setRepo] = useState<string | null>(searchParams.get('repo'));
-  const [type, setType] = useState<string | null>(null);
+  const [type, setType] = useState<string | null>(defaultType || null);
 
   const [items, setItems] = useState<Agent[]>([]);
   const [total, setTotal] = useState(0);
@@ -84,7 +84,7 @@ export function AgentsBrowse() {
   const totalPages = Math.ceil(total / perPage);
 
   const filterGroups = [
-    {
+    ...(!defaultType ? [{
       title: 'Type',
       options: [
         { value: 'agent', label: 'Agent' },
@@ -92,7 +92,7 @@ export function AgentsBrowse() {
       ],
       selected: type,
       onSelect: (v: string | null) => { setType(v); setPage(1); },
-    },
+    }] : []),
     {
       title: 'Platform',
       options: [
@@ -167,8 +167,14 @@ export function AgentsBrowse() {
 
   return (
     <div className="py-8">
-      <h1 className="text-3xl font-bold text-zinc-100">Agents & Skills</h1>
-      <p className="mt-1 text-zinc-400">Browse AI coding agents and skills across Claude, Gemini, and Codex platforms</p>
+      <h1 className="text-3xl font-bold text-zinc-100">
+        {defaultType === 'skill' ? 'Browse Skills' : defaultType === 'agent' ? 'Browse Agents' : 'Agents & Skills'}
+      </h1>
+      <p className="mt-1 text-zinc-400">
+        {defaultType === 'skill'
+          ? 'Browse reusable Claude Code skills and capabilities'
+          : 'Browse AI coding agents and skills across Claude, Gemini, and Codex platforms'}
+      </p>
 
       <div className="mt-6">
         <SearchInput

@@ -73,6 +73,7 @@ const REPOS = [
   { owner: 'ruvnet', repo: 'agentic-flow', path: '.claude/skills', recursive: true },
   { owner: 'alirezarezvani', repo: 'claude-skills', path: 'skills', recursive: true, platform: 'universal' },
   { owner: 'rohitg00', repo: 'awesome-claude-code-toolkit', path: 'skills', recursive: true },
+  { owner: 'shinpr', repo: 'ai-coding-project-boilerplate', path: '.claude/skills-en', recursive: false },
 ];
 
 const args = process.argv.slice(2);

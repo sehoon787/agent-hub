@@ -119,7 +119,10 @@ export async function PATCH(
     const repoKey = blobMatch[1].replace(/\.git$/, '');
     const branch = blobMatch[2];
     const filePath = blobMatch[3];
-    installCmd = `curl -o ~/.claude/agents/${slug}.md https://raw.githubusercontent.com/${repoKey}/${branch}/${filePath}`;
+    const isSkill = data.type === 'skill';
+    const installDir = isSkill ? `~/.claude/skills/${slug}` : `~/.claude/agents`;
+    const installFile = isSkill ? 'SKILL.md' : `${slug}.md`;
+    installCmd = `curl -o ${installDir}/${installFile} https://raw.githubusercontent.com/${repoKey}/${branch}/${filePath}`;
   }
 
   // Update DB (primary)
@@ -139,6 +142,7 @@ export async function PATCH(
         capabilities = ${data.capabilities ?? ''},
         tools = ${data.tools ?? ''},
         tags = ${data.tags ?? ''},
+        type = ${data.type ?? 'agent'},
         updated_at = NOW()
       WHERE id = ${Number(id)}
     `;
