@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useSession, signIn } from 'next-auth/react';
 import Link from 'next/link';
-import { Loader2, LogIn, Heart } from 'lucide-react';
+import { Loader2, LogIn, Heart, Bot, Sparkles } from 'lucide-react';
 import { AgentCard } from '@/components/cards/agent-card';
 import type { Agent } from '@/lib/types';
 import { useFavorites } from '@/hooks/use-favorites';
@@ -84,17 +84,45 @@ export function FavoritesList() {
           href="/agents"
           className="rounded-lg bg-violet-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-violet-500"
         >
-          Browse Agents
+          Browse Agents & Skills
         </Link>
       </div>
     );
   }
 
+  const favoriteAgents = agents.filter((a) => a.type !== 'skill');
+  const favoriteSkills = agents.filter((a) => a.type === 'skill');
+
   return (
-    <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {agents.map((agent) => (
-        <AgentCard key={agent.slug} agent={agent} />
-      ))}
+    <div className="mt-6 space-y-10">
+      {favoriteAgents.length > 0 && (
+        <section>
+          <div className="flex items-center gap-2">
+            <Bot className="h-5 w-5 text-violet-400" />
+            <h2 className="text-lg font-semibold text-zinc-100">Agents</h2>
+            <span className="text-sm text-zinc-500">({favoriteAgents.length})</span>
+          </div>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {favoriteAgents.map((agent) => (
+              <AgentCard key={agent.slug} agent={agent} />
+            ))}
+          </div>
+        </section>
+      )}
+      {favoriteSkills.length > 0 && (
+        <section>
+          <div className="flex items-center gap-2">
+            <Sparkles className="h-5 w-5 text-cyan-400" />
+            <h2 className="text-lg font-semibold text-zinc-100">Skills</h2>
+            <span className="text-sm text-zinc-500">({favoriteSkills.length})</span>
+          </div>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {favoriteSkills.map((agent) => (
+              <AgentCard key={agent.slug} agent={agent} />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

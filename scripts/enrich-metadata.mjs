@@ -158,26 +158,38 @@ async function main() {
   if (repoFilter) console.log(`Filtering to repo: ${repoFilter}`);
 
   // Fetch items that need enrichment
-  let query = `
-    SELECT id, slug, type, name, display_name, description, long_description,
-           capabilities, tools, tags, install_command, github_url
-    FROM agents
-    WHERE (
-      description IS NULL OR description = '' OR description = name
-      OR array_length(capabilities, 1) IS NULL
-      OR array_length(tools, 1) IS NULL
-    )
-  `;
+  let rows;
   if (repoFilter) {
-    query += ` AND github_url LIKE '%${repoFilter.replace(/'/g, "''")}%'`;
+    const pattern = `%${repoFilter}%`;
+    rows = await sql`
+      SELECT id, slug, type, name, display_name, description, long_description,
+             capabilities, tools, tags, install_command, github_url
+      FROM agents
+      WHERE (
+        description IS NULL OR description = '' OR description = name
+        OR array_length(capabilities, 1) IS NULL
+        OR array_length(tools, 1) IS NULL
+      )
+      AND github_url LIKE ${pattern}
+      ORDER BY id
+    `;
+  } else {
+    rows = await sql`
+      SELECT id, slug, type, name, display_name, description, long_description,
+             capabilities, tools, tags, install_command, github_url
+      FROM agents
+      WHERE (
+        description IS NULL OR description = '' OR description = name
+        OR array_length(capabilities, 1) IS NULL
+        OR array_length(tools, 1) IS NULL
+      )
+      ORDER BY id
+    `;
   }
-  query += ' ORDER BY id';
-
-  const rows = await sql(query);
   console.log(`Found ${rows.length} items to enrich`);
 
   // Get all slugs for cross-reference detection
-  const allSlugsResult = await sql('SELECT slug FROM agents');
+  const allSlugsResult = await sql`SELECT slug FROM agents`;
   const allSlugs = allSlugsResult.map(r => r.slug);
 
   let updated = 0;
@@ -238,15 +250,15 @@ async function main() {
         if (toolsChanged) console.log(`    tools: [${newTools?.length} items]`);
         if (tagsChanged) console.log(`    tags: +${newTags.length - existingTags.length} cross-refs`);
       } else {
-        await sql(`
+        await sql`
           UPDATE agents
-          SET description = $1,
-              capabilities = $2,
-              tools = $3,
-              tags = $4,
+          SET description = ${newDesc},
+              capabilities = ${newCaps},
+              tools = ${newTools},
+              tags = ${newTags},
               updated_at = NOW()
-          WHERE id = $5
-        `, [newDesc, newCaps, newTools, newTags, row.id]);
+          WHERE id = ${row.id}
+        `;
         console.log(`  UPDATED ${row.slug}`);
       }
       updated++;

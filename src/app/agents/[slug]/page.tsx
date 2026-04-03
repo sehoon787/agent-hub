@@ -187,28 +187,37 @@ export default async function AgentDetailPage({
           <TabsTrigger value="config">Configuration</TabsTrigger>
         </TabsList>
         <TabsContent value="overview" className="mt-4 space-y-6">
-          <div>
-            <h2 className="text-lg font-semibold text-zinc-100">Description</h2>
-            <p className="mt-2 text-sm leading-relaxed text-zinc-400">
-              {agent.longDescription}
-            </p>
-          </div>
-          <div>
-            <h2 className="text-lg font-semibold text-zinc-100">Capabilities</h2>
-            <div className="mt-2">
-              <CapabilityList items={agent.capabilities} />
+          {agent.longDescription && (
+            <div>
+              <h2 className="text-lg font-semibold text-zinc-100">Description</h2>
+              <p className="mt-2 text-sm leading-relaxed text-zinc-400">
+                {agent.longDescription}
+              </p>
             </div>
-          </div>
-          <div>
-            <h2 className="text-lg font-semibold text-zinc-100">Tools</h2>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {agent.tools.map((tool) => (
-                <Badge key={tool} variant="outline" className="border-zinc-700 font-mono text-xs text-zinc-400">
-                  {tool}
-                </Badge>
-              ))}
+          )}
+          {agent.capabilities.length > 0 && (
+            <div>
+              <h2 className="text-lg font-semibold text-zinc-100">Capabilities</h2>
+              <div className="mt-2">
+                <CapabilityList items={agent.capabilities} />
+              </div>
             </div>
-          </div>
+          )}
+          {agent.tools.length > 0 && (
+            <div>
+              <h2 className="text-lg font-semibold text-zinc-100">Tools</h2>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {agent.tools.map((tool) => (
+                  <Badge key={tool} variant="outline" className="border-zinc-700 font-mono text-xs text-zinc-400">
+                    {tool}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          )}
+          {!agent.longDescription && agent.capabilities.length === 0 && agent.tools.length === 0 && (
+            <p className="text-sm text-zinc-500">No detailed information available yet.</p>
+          )}
         </TabsContent>
         <TabsContent value="config" className="mt-4">
           <div>
