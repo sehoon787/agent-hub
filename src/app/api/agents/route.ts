@@ -14,6 +14,7 @@ export async function GET(request: NextRequest) {
     model: sp.get('model') || undefined,
     source: sp.get('source') || undefined,
     platform: sp.get('platform') || undefined,
+    type: sp.get('type') || undefined,
     stage: (() => {
       const s = sp.get('stage');
       const valid = new Set(['discover','plan','implement','review','verify','debug','operate']);
@@ -57,6 +58,7 @@ export async function POST(request: NextRequest) {
   }
 
   const data = parsed.data;
+  const itemType = (body as Record<string, unknown>).type === 'skill' ? 'skill' : 'agent';
   const securityCheck = checkMaliciousContent(data as Record<string, unknown>);
   if (!securityCheck.safe) {
     return NextResponse.json({ error: 'Submission contains disallowed content' }, { status: 400 });
@@ -116,7 +118,11 @@ export async function POST(request: NextRequest) {
     const repoKey = blobMatch[1].replace(/\.git$/, '');
     const branch = blobMatch[2];
     const filePath = blobMatch[3];
-    installCmd = `curl -o ~/.claude/agents/${slug}.md https://raw.githubusercontent.com/${repoKey}/${branch}/${filePath}`;
+    if (itemType === 'skill') {
+      installCmd = `curl -o ~/.claude/skills/${slug}/SKILL.md https://raw.githubusercontent.com/${repoKey}/${branch}/${filePath}`;
+    } else {
+      installCmd = `curl -o ~/.claude/agents/${slug}.md https://raw.githubusercontent.com/${repoKey}/${branch}/${filePath}`;
+    }
   }
 
   // Verify file exists and has valid agent format
@@ -171,8 +177,8 @@ export async function POST(request: NextRequest) {
     const users = await sql`SELECT id FROM users WHERE login = ${userLogin}`;
     if (users.length > 0) {
       const result = await sql`
-        INSERT INTO submissions (user_id, slug, name, display_name, description, long_description, category, model, platform, author, github_url, install_command, capabilities, tools, tags, status)
-        VALUES (${users[0].id}, ${slug}, ${data.name}, ${data.displayName}, ${data.description}, ${data.longDescription ?? ''}, ${data.category}, ${data.model}, ${data.platform}, ${session.user.login ?? ''}, ${data.githubUrl ?? ''}, ${installCmd}, ${data.capabilities ?? ''}, ${data.tools ?? ''}, ${data.tags ?? ''}, 'pending')
+        INSERT INTO submissions (user_id, slug, name, display_name, description, long_description, category, model, platform, author, github_url, install_command, capabilities, tools, tags, type, status)
+        VALUES (${users[0].id}, ${slug}, ${data.name}, ${data.displayName}, ${data.description}, ${data.longDescription ?? ''}, ${data.category}, ${data.model}, ${data.platform}, ${session.user.login ?? ''}, ${data.githubUrl ?? ''}, ${installCmd}, ${data.capabilities ?? ''}, ${data.tools ?? ''}, ${data.tags ?? ''}, ${itemType}, 'pending')
         RETURNING id
       `;
       submissionId = result[0]?.id;

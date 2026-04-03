@@ -1,10 +1,11 @@
-import type { Agent, AgentCategory, AgentModel, AgentPlatform, AgentSource, AgentStage, RepoSummary, Stats, SearchResult, NewsItem } from './types';
+import type { Agent, AgentCategory, AgentModel, AgentPlatform, AgentSource, AgentStage, ItemType, RepoSummary, Stats, SearchResult, NewsItem } from './types';
 import { inferStages } from './stage-classifier';
 import { getDb } from '@/db';
 
 function mapRowToAgent(row: Record<string, unknown>): Agent {
   const raw = {
     id: row.id as number,
+    type: (row.type as ItemType) || 'agent',
     slug: row.slug as string,
     name: row.name as string,
     displayName: row.display_name as string,
@@ -40,6 +41,7 @@ export async function getAgents(options?: {
   platform?: string;
   stage?: string;
   repo?: string;
+  type?: string;
   sort?: string;
   page?: number;
   limit?: number;
@@ -47,7 +49,7 @@ export async function getAgents(options?: {
   if (!process.env.DATABASE_URL) return { items: [], total: 0 };
 
   const sql = getDb();
-  const { q, category, model, source, platform, stage, repo, sort, page = 1, limit: rawLimit = 12 } = options ?? {};
+  const { q, category, model, source, platform, stage, repo, type, sort, page = 1, limit: rawLimit = 12 } = options ?? {};
   const limit = Math.min(Math.max(1, rawLimit), 100);
   const offset = (page - 1) * limit;
 
@@ -67,6 +69,7 @@ export async function getAgents(options?: {
     );
   }
   if (category) agents = agents.filter((a) => a.category === category);
+  if (type) agents = agents.filter((a) => a.type === type);
   if (model) agents = agents.filter((a) => a.model === model);
   if (source) agents = agents.filter((a) => a.source === source);
   if (platform) agents = agents.filter((a) => a.platform === platform);
@@ -104,7 +107,8 @@ export async function getFeaturedAgents(limit = 6): Promise<Agent[]> {
   if (!process.env.DATABASE_URL) return [];
   const sql = getDb();
   const rows = await sql`SELECT * FROM agents ORDER BY stars DESC`;
-  const agents = rows.map(mapRowToAgent);
+  let agents = rows.map(mapRowToAgent);
+  agents = agents.filter(a => a.type === 'agent');
 
   const FEATURED_BOOST = 50000;
   const sorted = [...agents].sort(
@@ -191,17 +195,32 @@ export async function getRecentAgents(limit = 6): Promise<Agent[]> {
   return result;
 }
 
-export async function getRelatedAgents(slug: string, limit = 3): Promise<Agent[]> {
+export async function getRelatedItems(slug: string, limit = 6): Promise<Agent[]> {
   const agent = await getAgent(slug);
   if (!agent) return [];
   if (!process.env.DATABASE_URL) return [];
   const sql = getDb();
-  const rows = await sql`
+
+  // First: find items from the same repo
+  const repoMatch = agent.githubUrl?.match(/github\.com\/([^/]+\/[^/]+)/);
+  if (repoMatch) {
+    const repoPattern = `%github.com/${repoMatch[1]}%`;
+    const rows = await sql`
+      SELECT * FROM agents
+      WHERE slug != ${slug} AND github_url LIKE ${repoPattern}
+      ORDER BY type ASC, stars DESC
+      LIMIT ${limit}
+    `;
+    if (rows.length > 0) return rows.map(mapRowToAgent);
+  }
+
+  // Fallback: same category or model
+  const fallbackRows = await sql`
     SELECT * FROM agents
     WHERE slug != ${slug} AND (category = ${agent.category} OR model = ${agent.model})
     LIMIT ${limit}
   `;
-  return rows.map(mapRowToAgent);
+  return fallbackRows.map(mapRowToAgent);
 }
 
 export async function getAllAgentSlugs(): Promise<string[]> {
@@ -261,12 +280,12 @@ export async function searchAll(q: string): Promise<SearchResult[]> {
   const sql = getDb();
   const pattern = `%${q}%`;
   const rows = await sql`
-    SELECT slug, name, display_name, description FROM agents
+    SELECT slug, name, display_name, description, type FROM agents
     WHERE name ILIKE ${pattern} OR display_name ILIKE ${pattern} OR description ILIKE ${pattern} OR platform ILIKE ${pattern}
     LIMIT 50
   `;
   return rows.map((r) => ({
-    type: 'agent' as const,
+    type: (r.type as 'agent' | 'skill') || 'agent',
     slug: r.slug as string,
     name: r.name as string,
     displayName: r.display_name as string,
@@ -327,13 +346,15 @@ export async function getNewsPaginated(options?: {
 
 export async function getStats(): Promise<Stats> {
   if (!process.env.DATABASE_URL) {
-    return { totalAgents: 0, totalRepositories: 0, totalPlatforms: 0, totalContributors: 0 };
+    return { totalAgents: 0, totalSkills: 0, totalRepositories: 0, totalPlatforms: 0, totalContributors: 0 };
   }
 
   const sql = getDb();
 
   const countRows = await sql`SELECT COUNT(*) as total FROM agents`;
-  const totalAgents = Number(countRows[0].total);
+  const skillRows = await sql`SELECT COUNT(*) as total FROM agents WHERE type = 'skill'`;
+  const totalSkills = Number(skillRows[0].total);
+  const totalAgents = Number(countRows[0].total) - totalSkills;
 
   const repoRows = await sql`
     SELECT COUNT(DISTINCT substring(github_url from 'github\\.com/([^/]+/[^/]+)')) as total
@@ -349,5 +370,5 @@ export async function getStats(): Promise<Stats> {
   const totalFromRepoStats = Number(contribRows[0].total);
   const contributorCount = totalFromRepoStats > 0 ? totalFromRepoStats : Number(authorRows[0].total);
 
-  return { totalAgents, totalRepositories, totalPlatforms, totalContributors: contributorCount };
+  return { totalAgents, totalSkills, totalRepositories, totalPlatforms, totalContributors: contributorCount };
 }

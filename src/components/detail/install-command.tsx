@@ -7,9 +7,10 @@ import { cn } from '@/lib/utils';
 interface InstallCommandProps {
   command: string;
   compact?: boolean;
+  label?: string;
 }
 
-export function InstallCommand({ command, compact }: InstallCommandProps) {
+export function InstallCommand({ command, compact, label }: InstallCommandProps) {
   const [copied, setCopied] = useState(false);
   if (!command) return null;
 
@@ -27,7 +28,7 @@ export function InstallCommand({ command, compact }: InstallCommandProps) {
       )}
       onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
     >
-      <code className="truncate text-zinc-300">{command}</code>
+      <code className="truncate text-zinc-300">{label ?? command}</code>
       <button
         onClick={handleCopy}
         className="shrink-0 text-zinc-500 hover:text-zinc-300"

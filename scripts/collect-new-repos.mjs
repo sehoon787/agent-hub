@@ -62,6 +62,13 @@ const REPOS = [
   { owner: 'pfangueiro', repo: 'claude-code-agents', path: '.claude/agents', recursive: false },
   { owner: 'artsmc', repo: 'claude-dev-agents', path: 'agents', recursive: true },
   { owner: 'SolutionsExcite', repo: 'claude-developer-template', path: '.claude/agents', recursive: false },
+  // === Skills directories ===
+  { owner: 'obra', repo: 'superpowers', path: 'agents', recursive: false, platform: 'universal' },
+  { owner: 'obra', repo: 'superpowers', path: 'skills', recursive: true, platform: 'universal' },
+  { owner: 'softaworks', repo: 'agent-toolkit', path: 'skills', recursive: true },
+  { owner: 'ruvnet', repo: 'agentic-flow', path: '.claude/skills', recursive: true },
+  { owner: 'alirezarezvani', repo: 'claude-skills', path: 'skills', recursive: true, platform: 'universal' },
+  { owner: 'rohitg00', repo: 'awesome-claude-code-toolkit', path: 'skills', recursive: true },
 ];
 
 const VALID_CATEGORIES = ['orchestrator', 'specialist', 'worker', 'analyst'];
@@ -96,6 +103,11 @@ function parseFrontmatter(content) {
 
 function slugify(name) {
   return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}
+
+function inferType(filePath) {
+  const parts = filePath.toLowerCase().split('/');
+  return parts.includes('skills') ? 'skill' : 'agent';
 }
 
 function inferCategory(name, description) {
@@ -156,12 +168,12 @@ const SKIP_DIRS = new Set([
   'node_modules', '.git', '.github', 'docs', 'examples', 'tests',
   'test', '__tests__', 'scripts', '.vscode', 'dist', 'build',
   'assets', 'images', 'img', '.husky',
-  'skills', 'hooks', 'commands', 'rules', 'prompts', 'templates', 'config', 'src', 'lib', 'plugins',
+  'hooks', 'commands', 'rules', 'prompts', 'templates', 'config', 'src', 'lib', 'plugins',
 ]);
 
 const SKIP_FILES = new Set([
   'readme.md', 'changelog.md', 'contributing.md', 'license.md',
-  'code_of_conduct.md', 'security.md', 'todo.md',
+  'code_of_conduct.md', 'security.md', 'todo.md', 'claude.md',
 ]);
 
 async function listMdFiles(owner, repo, path, recursive) {
@@ -216,7 +228,14 @@ async function main() {
       const fm = parseFrontmatter(content);
 
       // Extract agent name from frontmatter or filename
-      const rawName = fm.name || file.name.replace('.md', '');
+      const genericNames = new Set(['skill', 'agent', 'index']);
+      const fileBaseName = file.name.replace('.md', '');
+      const rawName = fm.name || (
+        genericNames.has(fileBaseName.toLowerCase())
+          ? file.path.split('/').slice(-2, -1)[0] || fileBaseName
+          : fileBaseName
+      );
+      const type = inferType(file.path);
       const agentSlug = slugify(rawName);
 
       // Create prefixed slug: owner--agentSlug
@@ -271,7 +290,9 @@ async function main() {
         author: fm.author || owner,
         githubUrl: file.html_url || `https://github.com/${owner}/${repo}`,
         installCommand: file.download_url
-          ? `curl -o ~/.claude/agents/${agentSlug}.md ${file.download_url}`
+          ? (type === 'skill'
+            ? `curl -o ~/.claude/skills/${agentSlug}/SKILL.md ${file.download_url}`
+            : `curl -o ~/.claude/agents/${agentSlug}.md ${file.download_url}`)
           : '',
         capabilities: fm.capabilities ? fm.capabilities.split(',').map(s => s.trim()).filter(Boolean) : [],
         tools: fm.tools ? fm.tools.split(',').map(s => s.trim()).filter(Boolean) : [],
@@ -282,6 +303,7 @@ async function main() {
         forks: 0,
         featured: false,
         verified: false,
+        type,
       };
 
       // Verify installCommand URL exists
@@ -306,7 +328,7 @@ async function main() {
       repoAdded++;
     }
 
-    console.log(`  Added ${repoAdded} agents from this repo (total new: ${newAgents.length})`);
+    console.log(`  Added ${repoAdded} items from this repo (total new: ${newAgents.length})`);
   }
 
   console.log(`\n=== SUMMARY ===`);
@@ -321,14 +343,14 @@ async function main() {
   // Insert new agents into DB
   for (const entry of newAgents) {
     await sql.query(
-      `INSERT INTO agents (slug, name, display_name, description, long_description, category, model, source, platform, author, github_url, install_command, capabilities, tools, tags, stars, forks, featured, verified)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)
+      `INSERT INTO agents (slug, name, display_name, description, long_description, category, model, source, platform, author, github_url, install_command, capabilities, tools, tags, stars, forks, featured, verified, type)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20)
        ON CONFLICT (slug) DO NOTHING`,
-      [entry.slug, entry.name, entry.displayName, entry.description, entry.longDescription, entry.category, entry.model, entry.source, entry.platform, entry.author, entry.githubUrl, entry.installCommand, entry.capabilities, entry.tools, entry.tags, entry.stars, entry.forks, entry.featured, entry.verified]
+      [entry.slug, entry.name, entry.displayName, entry.description, entry.longDescription, entry.category, entry.model, entry.source, entry.platform, entry.author, entry.githubUrl, entry.installCommand, entry.capabilities, entry.tools, entry.tags, entry.stars, entry.forks, entry.featured, entry.verified, entry.type]
     );
   }
 
-  console.log(`Inserted ${newAgents.length} new agents into DB`);
+  console.log(`Inserted ${newAgents.length} new items into DB`);
 }
 
 main().catch(err => {

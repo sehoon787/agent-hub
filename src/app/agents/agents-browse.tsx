@@ -47,6 +47,7 @@ export function AgentsBrowse() {
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(12);
   const [repo, setRepo] = useState<string | null>(searchParams.get('repo'));
+  const [type, setType] = useState<string | null>(null);
 
   const [items, setItems] = useState<Agent[]>([]);
   const [total, setTotal] = useState(0);
@@ -62,6 +63,7 @@ export function AgentsBrowse() {
     if (source) params.set('source', source);
     if (platform) params.set('platform', platform);
     if (repo) params.set('repo', repo);
+    if (type) params.set('type', type);
     params.set('sort', sort);
     params.set('page', String(page));
     params.set('limit', String(perPage));
@@ -77,11 +79,20 @@ export function AgentsBrowse() {
         setTotal(0);
       })
       .finally(() => setIsLoading(false));
-  }, [q, category, stage, model, source, platform, sort, page, perPage, repo]);
+  }, [q, category, stage, model, source, platform, sort, page, perPage, repo, type]);
 
   const totalPages = Math.ceil(total / perPage);
 
   const filterGroups = [
+    {
+      title: 'Type',
+      options: [
+        { value: 'agent', label: 'Agent' },
+        { value: 'skill', label: 'Skill' },
+      ],
+      selected: type,
+      onSelect: (v: string | null) => { setType(v); setPage(1); },
+    },
     {
       title: 'Platform',
       options: [
@@ -156,8 +167,8 @@ export function AgentsBrowse() {
 
   return (
     <div className="py-8">
-      <h1 className="text-3xl font-bold text-zinc-100">Agents</h1>
-      <p className="mt-1 text-zinc-400">Browse AI coding agents across Claude, Gemini, and Codex platforms</p>
+      <h1 className="text-3xl font-bold text-zinc-100">Agents & Skills</h1>
+      <p className="mt-1 text-zinc-400">Browse AI coding agents and skills across Claude, Gemini, and Codex platforms</p>
 
       <div className="mt-6">
         <SearchInput
@@ -227,7 +238,7 @@ export function AgentsBrowse() {
               ))}
             </div>
           ) : items.length === 0 ? (
-            <p className="py-20 text-center text-zinc-500">No agents found matching your criteria.</p>
+            <p className="py-20 text-center text-zinc-500">No items found matching your criteria.</p>
           ) : (
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {items.map((a) => (

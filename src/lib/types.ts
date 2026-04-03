@@ -3,10 +3,12 @@ export type AgentModel = 'opus' | 'sonnet' | 'haiku' | 'gemini-2.5-pro' | 'gemin
 export type AgentSource = 'official' | 'community' | 'plugin';
 export type AgentPlatform = 'claude' | 'gemini' | 'codex' | 'cursor' | 'windsurf' | 'aider' | 'universal';
 export type AgentStage = 'discover' | 'plan' | 'implement' | 'review' | 'verify' | 'debug' | 'operate';
+export type ItemType = 'agent' | 'skill';
 
 export interface Agent {
   id?: number;
   slug: string;
+  type: ItemType;
   name: string;
   displayName: string;
   description: string;
@@ -35,7 +37,7 @@ export interface Agent {
 export type RawAgent = Omit<Agent, 'stages'>;
 
 export interface SearchResult {
-  type: 'agent';
+  type: 'agent' | 'skill';
   slug: string;
   name: string;
   displayName: string;
@@ -44,6 +46,7 @@ export interface SearchResult {
 
 export interface Stats {
   totalAgents: number;
+  totalSkills: number;
   totalRepositories: number;
   totalPlatforms: number;
   totalContributors: number;

@@ -1,13 +1,13 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { ExternalLink, ChevronRight, Bot, BadgeCheck, Package } from 'lucide-react';
+import { ExternalLink, ChevronRight, Bot, Sparkles, BadgeCheck, Package } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { getAgent, getRelatedAgents } from '@/lib/data';
+import { getAgent, getRelatedItems } from '@/lib/data';
 import { InstallCommand } from '@/components/detail/install-command';
 import { CapabilityList } from '@/components/detail/capability-list';
-import { RelatedAgents } from '@/components/detail/related-items';
+import { AgentCard } from '@/components/cards/agent-card';
 import { AgentJsonLd, BreadcrumbJsonLd } from '@/components/seo/json-ld';
 import { AgentDisplayName } from '@/components/ui/agent-display-name';
 import { FavoriteButton } from '@/components/favorites/favorite-button';
@@ -75,7 +75,7 @@ export default async function AgentDetailPage({
   const agent = await getAgent(slug);
   if (!agent) notFound();
 
-  const related = await getRelatedAgents(slug);
+  const related = await getRelatedItems(slug);
   const repoMatch = agent.githubUrl?.match(/github\.com\/([^/]+\/[^/]+)/);
   const repoKey = repoMatch?.[1];
 
@@ -113,7 +113,11 @@ export default async function AgentDetailPage({
       <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-3">
-            <Bot className="h-8 w-8 shrink-0 text-violet-400" />
+            {agent.type === 'skill' ? (
+              <Sparkles className="h-8 w-8 shrink-0 text-cyan-400" />
+            ) : (
+              <Bot className="h-8 w-8 shrink-0 text-violet-400" />
+            )}
             <h1 className="text-3xl font-bold text-zinc-100"><AgentDisplayName displayName={agent.displayName} variant="inline" /></h1>
             {agent.verified && (
               <BadgeCheck className="h-5 w-5 shrink-0 text-emerald-400" aria-label="Verified" />
@@ -124,6 +128,11 @@ export default async function AgentDetailPage({
             <Badge variant="outline" className={modelColors[agent.model]}>
               {agent.model}
             </Badge>
+            {agent.type === 'skill' && (
+              <Badge variant="outline" className="bg-cyan-500/20 text-cyan-300 border-cyan-500/30">
+                Skill
+              </Badge>
+            )}
           </div>
           <p className="mt-2 max-w-2xl text-zinc-400">{agent.description}</p>
           <div className="mt-3 flex flex-wrap gap-2">
@@ -228,7 +237,29 @@ ${agent.longDescription}`}
         </TabsContent>
       </Tabs>
 
-      <RelatedAgents agents={related} />
+      {related.length > 0 && (
+        <section className="mt-12">
+          <h2 className="text-xl font-semibold text-zinc-100">Related Items</h2>
+          <p className="mt-1 text-sm text-zinc-400">
+            {related.some(r => r.githubUrl?.includes(repoKey ?? '___'))
+              ? `From the same repository — designed to work together`
+              : 'Similar agents and skills'}
+          </p>
+          {related.some(r => r.installCommand) && agent.installCommand && (
+            <div className="mt-3">
+              <InstallCommand
+                command={[agent.installCommand, ...related.filter(r => r.installCommand).map(r => r.installCommand)].join(' && ')}
+                label="Install All"
+              />
+            </div>
+          )}
+          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {related.map((a) => (
+              <AgentCard key={a.slug} agent={a} />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

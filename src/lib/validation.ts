@@ -14,6 +14,7 @@ const PLATFORM_COMPATIBLE_MODELS: Record<string, string[]> = {
 export { PLATFORM_COMPATIBLE_MODELS };
 
 export const agentSubmissionSchema = z.object({
+  type: z.enum(["agent", "skill"]).optional().default("agent"),
   name: z
     .string()
     .min(2, "Name must be at least 2 characters")

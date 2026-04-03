@@ -38,6 +38,7 @@ CREATE TABLE submissions (
   capabilities TEXT DEFAULT '',
   tools TEXT DEFAULT '',
   tags TEXT DEFAULT '',
+  type TEXT DEFAULT 'agent' NOT NULL,
   status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'listed', 'rejected', 'removed')),
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
@@ -56,6 +57,7 @@ CREATE TABLE IF NOT EXISTS agents (
   category TEXT NOT NULL,
   model TEXT NOT NULL,
   platform TEXT NOT NULL,
+  type TEXT DEFAULT 'agent' NOT NULL,
   source TEXT DEFAULT 'community',
   author TEXT NOT NULL,
   github_url TEXT DEFAULT '',

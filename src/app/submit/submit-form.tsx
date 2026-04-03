@@ -6,8 +6,9 @@ import { useSearchParams } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { Bot, CheckCircle2, LogIn, Plus, X, Terminal } from 'lucide-react';
+import { Bot, Sparkles, CheckCircle2, LogIn, Plus, X, Terminal } from 'lucide-react';
 interface FormData {
+  type: string;  // 'agent' | 'skill'
   name: string;
   displayName: string;
   description: string;
@@ -23,6 +24,7 @@ interface FormData {
 }
 
 const initial: FormData = {
+  type: 'agent',
   name: '',
   displayName: '',
   description: '',
@@ -165,6 +167,8 @@ export function SubmitForm() {
   const [loading, setLoading] = useState(false);
   const [loadingTimedOut, setLoadingTimedOut] = useState(false);
   const [autoFilling, setAutoFilling] = useState(false);
+  const [submittedRepo, setSubmittedRepo] = useState('');
+  const [submittedType, setSubmittedType] = useState('agent');
 
   const generatedInstallCmd = useMemo(() => {
     if (!form.githubUrl || !form.name) return '';
@@ -173,10 +177,13 @@ export function SubmitForm() {
       const repoKey = blobMatch[1].replace(/\.git$/, '');
       const branch = blobMatch[2];
       const filePath = blobMatch[3];
+      if (form.type === 'skill') {
+        return `curl -o ~/.claude/skills/${form.name}/SKILL.md https://raw.githubusercontent.com/${repoKey}/${branch}/${filePath}`;
+      }
       return `curl -o ~/.claude/agents/${form.name}.md https://raw.githubusercontent.com/${repoKey}/${branch}/${filePath}`;
     }
     return '';
-  }, [form.githubUrl, form.name]);
+  }, [form.githubUrl, form.name, form.type]);
 
   // Auto-fill author from GitHub login (username) on mount
   useEffect(() => {
@@ -319,6 +326,8 @@ export function SubmitForm() {
       const data = await res.json();
 
       if (res.ok) {
+        setSubmittedRepo(form.githubUrl);
+        setSubmittedType(form.type);
         setSubmitted(true);
         setForm(initial);
         setCapabilityItems([]);
@@ -376,11 +385,23 @@ export function SubmitForm() {
         <p className="text-sm text-zinc-400">{editId ? 'Your submission has been updated.' : 'Your agent has been submitted and is pending review. Thank you for contributing!'}</p>
         <div className="mt-4 flex items-center gap-3">
           <button
-            onClick={() => setSubmitted(false)}
+            onClick={() => { setSubmitted(false); setSubmittedRepo(''); }}
             className="rounded-lg bg-violet-600 px-5 py-2 text-sm font-medium text-white hover:bg-violet-500"
           >
             Submit Another
           </button>
+          {submittedRepo && (
+            <button
+              onClick={() => {
+                setSubmitted(false);
+                setForm({ ...initial, githubUrl: submittedRepo.replace(/\/blob\/.*$/, ''), type: submittedType === 'agent' ? 'skill' : 'agent' });
+                setSubmittedRepo('');
+              }}
+              className="rounded-lg border border-zinc-700 bg-zinc-800 px-5 py-2 text-sm font-medium text-zinc-300 hover:bg-zinc-700"
+            >
+              Submit Related {submittedType === 'agent' ? 'Skill' : 'Agent'}
+            </button>
+          )}
         </div>
       </div>
     );
@@ -389,6 +410,35 @@ export function SubmitForm() {
   return (
     <div className="mt-6 grid gap-8 lg:grid-cols-2">
       <div className="space-y-4">
+        <div>
+          <label className="text-sm font-medium text-zinc-300">Type</label>
+          <div className="mt-1 flex gap-2">
+            <button
+              type="button"
+              onClick={() => update('type', 'agent')}
+              className={`flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition-colors ${
+                form.type === 'agent'
+                  ? 'border-violet-500 bg-violet-500/20 text-violet-300'
+                  : 'border-zinc-700 bg-zinc-800/50 text-zinc-400 hover:text-zinc-200'
+              }`}
+            >
+              <Bot className="h-4 w-4" />
+              Agent
+            </button>
+            <button
+              type="button"
+              onClick={() => update('type', 'skill')}
+              className={`flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition-colors ${
+                form.type === 'skill'
+                  ? 'border-cyan-500 bg-cyan-500/20 text-cyan-300'
+                  : 'border-zinc-700 bg-zinc-800/50 text-zinc-400 hover:text-zinc-200'
+              }`}
+            >
+              <Sparkles className="h-4 w-4" />
+              Skill
+            </button>
+          </div>
+        </div>
         <div>
           <label className="text-sm font-medium text-zinc-300">Name (slug)</label>
           <Input
@@ -490,10 +540,10 @@ export function SubmitForm() {
             value={form.githubUrl}
             onChange={(e) => { update('githubUrl', e.target.value); validate('githubUrl', e.target.value); }}
             onBlur={(e) => handleGithubUrlBlur(e.target.value)}
-            placeholder="https://github.com/owner/repo/blob/main/agents/my-agent.md"
+            placeholder={form.type === 'skill' ? 'https://github.com/owner/repo/blob/main/skills/my-skill/SKILL.md' : 'https://github.com/owner/repo/blob/main/agents/my-agent.md'}
             className={`mt-1 bg-zinc-800/50 text-zinc-100 ${fieldErrors.githubUrl || clientErrors.githubUrl ? 'border-red-500' : 'border-zinc-700'}`}
           />
-          <p className="mt-1 text-xs text-zinc-500">Full URL to the agent .md file on GitHub</p>
+          <p className="mt-1 text-xs text-zinc-500">{form.type === 'skill' ? 'Full URL to the skill .md file on GitHub' : 'Full URL to the agent .md file on GitHub'}</p>
           {autoFilling && <p className="mt-1 text-xs text-violet-400">Auto-detecting repository info...</p>}
           {clientErrors.githubUrl && <p className="mt-1 text-xs text-red-400">{clientErrors.githubUrl}</p>}
           {fieldErrors.githubUrl && <p className="mt-1 text-xs text-red-400">{fieldErrors.githubUrl[0]}</p>}
@@ -550,7 +600,7 @@ export function SubmitForm() {
           disabled={loading}
           className="w-full rounded-lg bg-violet-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-violet-500 disabled:opacity-50"
         >
-          {loading ? (editId ? 'Updating...' : 'Submitting...') : (editId ? 'Update Submission' : 'Submit Agent')}
+          {loading ? (editId ? 'Updating...' : 'Submitting...') : (editId ? 'Update Submission' : `Submit ${form.type === 'skill' ? 'Skill' : 'Agent'}`)}
         </button>
       </div>
 
@@ -560,7 +610,11 @@ export function SubmitForm() {
         <div className="mt-3 rounded-xl border border-zinc-800 bg-zinc-900 p-5">
           <div className="flex items-start justify-between gap-2">
             <div className="flex min-w-0 items-center gap-2">
-              <Bot className="h-5 w-5 shrink-0 text-violet-400" />
+              {form.type === 'skill' ? (
+                <Sparkles className="h-5 w-5 shrink-0 text-cyan-400" />
+              ) : (
+                <Bot className="h-5 w-5 shrink-0 text-violet-400" />
+              )}
               <h3 className="truncate font-semibold text-zinc-100">
                 {form.displayName || form.name || 'Your Agent'}
               </h3>

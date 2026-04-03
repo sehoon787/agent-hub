@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Bot, GitFork, Star, BadgeCheck } from 'lucide-react';
+import { Bot, Sparkles, GitFork, Star, BadgeCheck } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import type { Agent } from '@/lib/types';
 import { InstallCommand } from '@/components/detail/install-command';
@@ -59,7 +59,11 @@ export function AgentCard({ agent }: { agent: Agent }) {
     >
       {/* Row 1: name + @owner + verified badge */}
       <div className="flex items-start gap-2">
-        <Bot className="h-5 w-5 shrink-0 text-zinc-400 mt-0.5" />
+        {agent.type === 'skill' ? (
+          <Sparkles className="h-5 w-5 shrink-0 text-cyan-400 mt-0.5" />
+        ) : (
+          <Bot className="h-5 w-5 shrink-0 text-zinc-400 mt-0.5" />
+        )}
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-1.5">
             <h3 className="truncate font-semibold text-zinc-100 group-hover:text-white">
@@ -90,6 +94,11 @@ export function AgentCard({ agent }: { agent: Agent }) {
         </Badge>
       </div>
       <div className="mt-3 flex flex-wrap items-start gap-1.5">
+        {agent.type === 'skill' && (
+          <Badge variant="outline" className="text-xs bg-cyan-500/20 text-cyan-300 border-cyan-500/30">
+            Skill
+          </Badge>
+        )}
         <Badge variant="secondary" className="text-xs">
           {categoryLabels[agent.category]}
         </Badge>
