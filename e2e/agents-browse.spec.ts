@@ -144,4 +144,17 @@ test.describe('Agents Browse Page', () => {
     expect(text).toMatch(/^@[a-zA-Z0-9._-]+\/[a-zA-Z0-9._-]+/)
   })
 
+  test('should NOT show Type filter (agents only mode)', async ({ page }) => {
+    await page.goto('/agents')
+    // Wait for page to fully load (Platform filter should be visible)
+    await expect(page.locator('aside button:has-text("Claude")')).toBeVisible({ timeout: 5000 })
+    // Type filter options should NOT exist in sidebar
+    // The Type filter would show "Agent" and "Skill" buttons in the sidebar
+    // With defaultType="agent", the Type filter group is not rendered
+    const agentTypeButton = page.locator('aside button:has-text("Agent")')
+    // "Agent" might appear in other contexts, so check there's no Type section header
+    // The filter sidebar renders titles as h3 elements
+    await expect(page.locator('aside h3:has-text("Type")')).not.toBeVisible()
+  })
+
 })

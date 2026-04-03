@@ -169,6 +169,7 @@ export function SubmitForm() {
   const [autoFilling, setAutoFilling] = useState(false);
   const [submittedRepo, setSubmittedRepo] = useState('');
   const [submittedType, setSubmittedType] = useState('agent');
+  const [submittedItems, setSubmittedItems] = useState<Array<{ name: string; type: string }>>([]);
 
   const generatedInstallCmd = useMemo(() => {
     if (!form.githubUrl || !form.name) return '';
@@ -328,6 +329,7 @@ export function SubmitForm() {
       if (res.ok) {
         setSubmittedRepo(form.githubUrl);
         setSubmittedType(form.type);
+        setSubmittedItems((prev) => [...prev, { name: form.displayName || form.name, type: form.type }]);
         setSubmitted(true);
         setForm(initial);
         setCapabilityItems([]);
@@ -382,7 +384,24 @@ export function SubmitForm() {
       <div className="mt-12 flex flex-col items-center gap-4 rounded-xl border border-zinc-800 bg-zinc-900 p-12">
         <CheckCircle2 className="h-12 w-12 text-emerald-500" />
         <h2 className="text-xl font-semibold text-zinc-100">{editId ? 'Submission Updated' : 'Submission Received'}</h2>
-        <p className="text-sm text-zinc-400">{editId ? 'Your submission has been updated.' : 'Your agent has been submitted and is pending review. Thank you for contributing!'}</p>
+        <p className="text-sm text-zinc-400">{editId ? 'Your submission has been updated.' : 'Your submission has been received and is pending review. Thank you for contributing!'}</p>
+        {submittedItems.length > 1 && (
+          <div className="mt-2 w-full max-w-sm rounded-lg border border-zinc-800 bg-zinc-950 p-4">
+            <p className="text-xs font-medium text-zinc-400">Submitted in this session</p>
+            <ul className="mt-2 space-y-1">
+              {submittedItems.map((item, i) => (
+                <li key={i} className="flex items-center gap-2 text-sm text-zinc-300">
+                  {item.type === 'skill' ? (
+                    <Sparkles className="h-3 w-3 text-cyan-400" />
+                  ) : (
+                    <Bot className="h-3 w-3 text-violet-400" />
+                  )}
+                  {item.name}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
         <div className="mt-4 flex items-center gap-3">
           <button
             onClick={() => { setSubmitted(false); setSubmittedRepo(''); }}

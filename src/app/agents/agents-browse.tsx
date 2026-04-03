@@ -83,6 +83,8 @@ export function AgentsBrowse({ defaultType }: { defaultType?: 'agent' | 'skill' 
 
   const totalPages = Math.ceil(total / perPage);
 
+  const isSkillMode = defaultType === 'skill';
+
   const filterGroups = [
     ...(!defaultType ? [{
       title: 'Type',
@@ -114,7 +116,7 @@ export function AgentsBrowse({ defaultType }: { defaultType?: 'agent' | 'skill' 
         setPage(1);
       },
     },
-    {
+    ...(!isSkillMode ? [{
       title: 'Category',
       options: [
         { value: 'orchestrator', label: 'Orchestrator' },
@@ -124,7 +126,7 @@ export function AgentsBrowse({ defaultType }: { defaultType?: 'agent' | 'skill' 
       ],
       selected: category,
       onSelect: (v: string | null) => { setCategory(v); setPage(1); },
-    },
+    }] : []),
     {
       title: 'Stage',
       options: [
@@ -139,14 +141,14 @@ export function AgentsBrowse({ defaultType }: { defaultType?: 'agent' | 'skill' 
       selected: stage,
       onSelect: (v: string | null) => { setStage(v); setPage(1); },
     },
-    {
+    ...(!isSkillMode ? [{
       title: 'Model',
       options: platform && BROWSE_PLATFORM_MODELS[platform]
         ? BROWSE_PLATFORM_MODELS[platform]
         : ALL_BROWSE_MODELS,
       selected: model,
       onSelect: (v: string | null) => { setModel(v); setPage(1); },
-    },
+    }] : []),
     {
       title: 'Source',
       options: [
@@ -180,7 +182,7 @@ export function AgentsBrowse({ defaultType }: { defaultType?: 'agent' | 'skill' 
         <SearchInput
           defaultValue={q}
           onChange={(v) => { setQ(v); setPage(1); }}
-          placeholder="Search agents..."
+          placeholder={isSkillMode ? "Search skills..." : "Search agents..."}
         />
       </div>
 

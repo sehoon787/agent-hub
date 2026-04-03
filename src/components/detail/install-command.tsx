@@ -23,15 +23,36 @@ export function InstallCommand({ command, compact, label }: InstallCommandProps)
   return (
     <div
       className={cn(
-        'flex items-center justify-between gap-2 rounded-lg border border-zinc-700 bg-zinc-800/50 font-mono',
-        compact ? 'px-2 py-1 text-xs' : 'px-3 py-2 text-sm'
+        'flex items-center gap-0 rounded-lg border border-zinc-700 bg-zinc-800/50 font-mono',
+        compact ? 'text-xs' : 'text-sm'
       )}
       onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
     >
-      <code className="truncate text-zinc-300">{label ?? command}</code>
+      {label && (
+        <span
+          className={cn(
+            'shrink-0 rounded-l-lg border-r border-zinc-700 bg-zinc-800 font-sans font-medium text-zinc-300',
+            compact ? 'px-2 py-1 text-xs' : 'px-3 py-2 text-sm'
+          )}
+        >
+          {label}
+        </span>
+      )}
+      <code
+        className={cn(
+          'min-w-0 flex-1 truncate text-zinc-400',
+          compact ? 'px-2 py-1' : 'px-3 py-2',
+          !label && 'text-zinc-300'
+        )}
+      >
+        {command}
+      </code>
       <button
         onClick={handleCopy}
-        className="shrink-0 text-zinc-500 hover:text-zinc-300"
+        className={cn(
+          'shrink-0 text-zinc-500 hover:text-zinc-300',
+          compact ? 'px-2 py-1' : 'px-3 py-2'
+        )}
         aria-label="Copy command"
       >
         {copied ? (

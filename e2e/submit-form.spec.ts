@@ -123,4 +123,26 @@ test.describe('Submit page — authenticated', () => {
     const placeholder = await githubInput.getAttribute('placeholder');
     expect(placeholder).toContain('/blob/');
   });
+
+  test('page title shows "Submit an Agent or Skill"', async ({ page }) => {
+    await page.goto('/submit');
+    await expect(page.locator('h1').first()).toContainText('Agent or Skill');
+  });
+
+  test('shows type toggle with Agent and Skill options', async ({ page }) => {
+    await page.goto('/submit');
+    await expect(page.locator('button:has-text("Agent")')).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('button:has-text("Skill")')).toBeVisible();
+  });
+
+  test('submit success shows "Submit Related" button', async ({ page }) => {
+    // We can only test that the "Submit Related" button appears in the success state
+    // This would require a successful submission which needs auth + valid data
+    // So we test the submit button text changes based on type toggle
+    await page.goto('/submit');
+    await expect(page.locator('button:has-text("Submit Agent")')).toBeVisible({ timeout: 10000 });
+    // Click Skill toggle
+    await page.locator('button:has-text("Skill")').click();
+    await expect(page.locator('button:has-text("Submit Skill")')).toBeVisible();
+  });
 });

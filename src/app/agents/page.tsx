@@ -15,7 +15,7 @@ export default async function AgentsPage() {
     <>
       <CollectionPageJsonLd count={stats.totalAgents} />
       <Suspense fallback={<div className="py-8 text-center text-zinc-500">Loading...</div>}>
-        <AgentsBrowse />
+        <AgentsBrowse defaultType="agent" />
       </Suspense>
     </>
   );

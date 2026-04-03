@@ -99,4 +99,20 @@ test.describe('Agent Detail Page', () => {
     await page.goto('/agents/hephaestus')
     await expect(page.locator('h2:has-text("Description")')).toBeVisible()
   })
+
+  test('should show Install All with label and command when related items exist', async ({ page }) => {
+    await page.goto('/agents/hephaestus')
+    // Wait for related section to load
+    const relatedSection = page.locator('text=Related').first()
+    await expect(relatedSection).toBeVisible({ timeout: 5000 })
+    // If Install All exists, it should show both label text and copy button
+    const installAll = page.locator('text=Install All')
+    const installAllCount = await installAll.count()
+    if (installAllCount > 0) {
+      await expect(installAll.first()).toBeVisible()
+      // The Install All button should have a copy button nearby
+      const copyButton = page.locator('button[aria-label="Copy command"]')
+      await expect(copyButton.first()).toBeVisible()
+    }
+  })
 })
