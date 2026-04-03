@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // scripts/enrich-metadata.mjs
 // Enriches agent/skill metadata by fetching and parsing their markdown source files.
-// Usage: node scripts/enrich-metadata.mjs [--repo owner/repo] [--dry-run]
+// Usage: node scripts/enrich-metadata.mjs [--repo owner/repo] [--dry-run] [--force]
 
 import { neon } from '@neondatabase/serverless';
 
@@ -15,6 +15,7 @@ const sql = neon(DATABASE_URL);
 
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
+const forceAll = args.includes('--force');
 const repoIdx = args.indexOf('--repo');
 const repoFilter = repoIdx !== -1 ? args[repoIdx + 1] : null;
 
@@ -103,40 +104,200 @@ function extractDescription(content) {
   return paragraph.slice(0, 500) || '';
 }
 
-// Extract capabilities from markdown sections
-function extractCapabilities(content) {
-  const caps = [];
-  // Look for ## Capabilities or ## Features sections
-  const match = content.match(/##\s*(Capabilities|Features|What it does)\s*\n([\s\S]*?)(?=\n##|\n---|\Z)/i);
-  if (match) {
-    const section = match[2];
-    for (const line of section.split('\n')) {
-      const item = line.match(/^[-*]\s+(.+)/);
-      if (item) caps.push(item[1].trim().slice(0, 200));
-    }
-  }
-  return caps.slice(0, 15);
+// Extract long description from markdown body (full content minus frontmatter, cleaned up)
+function extractLongDescription(content) {
+  const body = content.replace(/^---[\s\S]*?---\r?\n?/, '').trim();
+  if (!body) return '';
+  // Remove code blocks to keep it readable
+  const cleaned = body
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+  return cleaned.slice(0, 5000) || '';
 }
 
-// Extract tools from markdown
-function extractTools(content) {
-  const tools = [];
-  const match = content.match(/##\s*(Tools|Available Tools)\s*\n([\s\S]*?)(?=\n##|\n---|\Z)/i);
-  if (match) {
-    const section = match[2];
-    for (const line of section.split('\n')) {
-      const item = line.match(/^[-*]\s+(?:\*\*)?([A-Za-z][A-Za-z0-9_-]*)(?:\*\*)?/);
-      if (item) tools.push(item[1]);
+// Strip leading emoji/unicode symbols from a heading string for matching
+function stripEmoji(str) {
+  // Remove leading emoji, symbols, and whitespace before matching
+  return str.replace(/^[\u{1F000}-\u{1FFFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{FE00}-\u{FEFF}\u{1F300}-\u{1F9FF}🎯🔧🚀📋✅🌟💡⚡🏗️🎨🔍📦🧪🛠️]+\s*/u, '').trim();
+}
+
+// Extract bullets from a section string
+function extractBulletsFromSection(section) {
+  const results = [];
+  for (const line of section.split('\n')) {
+    const item = line.match(/^\s*[-*]\s+(?:\*\*)?(.+?)(?:\*\*)?$/) ||
+                 line.match(/^\s*\d+\.\s+(?:\*\*)?(.+?)(?:\*\*)?$/);
+    if (item) {
+      const text = item[1].trim().replace(/\*\*/g, '').replace(/`/g, '');
+      if (text.length > 10 && text.length < 300 && !text.startsWith('http') && !text.match(/^\[.+\]\(.+\)$/)) {
+        results.push(text.slice(0, 200));
+      }
     }
   }
-  // Also check frontmatter-style "tools:" in body
+  return results;
+}
+
+// Extract capabilities from markdown sections — expanded patterns
+function extractCapabilities(content) {
+  // Remove frontmatter and code blocks for processing
+  const body = content.replace(/^---[\s\S]*?---\r?\n?/, '').trim();
+  const bodyNoCode = body.replace(/```[\s\S]*?```/g, '');
+
+  // Ordered list of heading keywords that signal capability-like content
+  // Each entry is a regex that matches the heading text (after emoji strip)
+  const capabilityHeadings = [
+    /^capabilities?$/i,
+    /^core\s+capabilities?$/i,
+    /^features?$/i,
+    /^core\s+features?$/i,
+    /^what\s+(?:it|this\s+(?:skill|agent))\s+does?$/i,
+    /^what\s+this\s+skill\s+(?:does|provides?)$/i,
+    /^core\s+(?:competencies|expertise|concepts|mission)$/i,
+    /^key\s+(?:responsibilities|principles|functions|capabilities?)$/i,
+    /^focus\s+areas?$/i,
+    /^design\s+principles?$/i,
+    /^implementation\s+best\s+practices?$/i,
+    /^best\s+practices?$/i,
+    /^(?:core\s+)?workflows?$/i,
+    /^core\s+(?:principles?|framework)$/i,
+    /^frameworks?$/i,
+    /^purpose$/i,
+    /^overview$/i,
+    /^role\s*(?:&|and)\s*expertise$/i,
+    /^skill\s+integration$/i,
+    /^advanced\s+features?$/i,
+    /^quick\s+start$/i,
+    /^trigger\s+phrases?$/i,
+    /^approach$/i,
+    /^checklist$/i,
+    /^common\s+patterns?$/i,
+    /^success\s+(?:metrics?|criteria)$/i,
+    /^when\s+to\s+use(?:\s+this\s+skill)?$/i,
+  ];
+
+  // Split body into sections by ## headings
+  const sections = bodyNoCode.split(/(?=^##\s)/m);
+
+  // First pass: find sections whose heading matches a capability pattern
+  for (const section of sections) {
+    const headingMatch = section.match(/^##\s+(.+)/);
+    if (!headingMatch) continue;
+    const headingText = stripEmoji(headingMatch[1]).trim().replace(/:$/, '');
+    const isCapabilitySection = capabilityHeadings.some(p => p.test(headingText));
+    if (!isCapabilitySection) continue;
+
+    // Extract after the heading line
+    const afterHeading = section.replace(/^##\s+.+\n/, '');
+    const bullets = extractBulletsFromSection(afterHeading);
+    if (bullets.length > 0) {
+      return bullets.slice(0, 15);
+    }
+  }
+
+  // Second pass: extract bullets from the first 3 content sections (skip empty/heading-only)
+  const caps = [];
+  let sectionsChecked = 0;
+  for (const section of sections) {
+    if (sectionsChecked >= 3) break;
+    const afterHeading = section.replace(/^##\s+.+\n/, '');
+    const bullets = extractBulletsFromSection(afterHeading);
+    if (bullets.length > 0) {
+      caps.push(...bullets);
+      sectionsChecked++;
+    }
+  }
+  if (caps.length > 0) return caps.slice(0, 15);
+
+  // Fallback: extract ANY meaningful bullets from the entire document
+  const allBullets = extractBulletsFromSection(bodyNoCode);
+  return allBullets.slice(0, 15);
+}
+
+// Extract tools from markdown — expanded patterns
+function extractTools(content) {
+  const tools = [];
+
+  // Frontmatter tools: is the highest-priority source (already handled in main via fm.tools,
+  // but also check body-level "tools:" blocks for completeness)
   const fmTools = content.match(/^tools:\s*\n((?:\s+-\s+.+\n?)+)/m);
   if (fmTools) {
     for (const line of fmTools[1].split('\n')) {
       const item = line.match(/^\s+-\s+(.+)/);
-      if (item && !tools.includes(item[1].trim())) tools.push(item[1].trim());
+      if (item) {
+        const t = item[1].trim();
+        if (!tools.includes(t)) tools.push(t);
+      }
     }
+    if (tools.length > 0) return tools.slice(0, 20);
   }
+
+  // Tool headings to search for (heading text after emoji strip)
+  const toolHeadings = [
+    /^(?:available\s+)?tools?(?:\s+available)?$/i,
+    /^development\s+(?:workflow|tools?|environment)$/i,
+    /^(?:tech(?:nical)?\s+)?stack$/i,
+    /^(?:required\s+)?(?:technologies|dependencies)$/i,
+    /^common\s+components?$/i,
+    /^integration\s+patterns?$/i,
+    /^hooks?$/i,
+    /^mui[-\s]specific\s+hooks?$/i,
+  ];
+
+  const body = content.replace(/^---[\s\S]*?---\r?\n?/, '').trim();
+  const sections = body.split(/(?=^##\s)/m);
+
+  for (const section of sections) {
+    const headingMatch = section.match(/^##\s+(.+)/);
+    if (!headingMatch) continue;
+    const headingText = stripEmoji(headingMatch[1]).trim().replace(/:$/, '');
+    const isToolSection = toolHeadings.some(p => p.test(headingText));
+    if (!isToolSection) continue;
+
+    const afterHeading = section.replace(/^##\s+.+\n/, '');
+
+    // Extract ### sub-headings as tool names (e.g., ### risk_assessment.py)
+    for (const line of afterHeading.split('\n')) {
+      const subHeading = line.match(/^###\s+(.+)/);
+      if (subHeading) {
+        const name = subHeading[1].trim().replace(/\*\*/g, '');
+        if (name.length > 1 && name.length < 80 && !tools.includes(name)) {
+          tools.push(name);
+        }
+      }
+    }
+
+    // Extract bullet items
+    for (const line of afterHeading.split('\n')) {
+      const item = line.match(/^\s*[-*]\s+(?:\*\*)?([A-Za-z][A-Za-z0-9_./ -]*)(?:\*\*)?/);
+      if (item) {
+        const toolName = item[1].trim().replace(/\*\*/g, '');
+        if (toolName.length > 1 && toolName.length < 80 && !tools.includes(toolName)) {
+          tools.push(toolName);
+        }
+      }
+    }
+
+    if (tools.length > 0) break;
+  }
+
+  // Secondary: extract backtick-quoted names from body that look like tool/component names
+  // (e.g., `useMediaQuery`, `risk_assessment.py`, `eslint`)
+  if (tools.length === 0) {
+    const backtickItems = [];
+    const backtickRe = /`([A-Za-z][A-Za-z0-9_./:-]{2,40})`/g;
+    let m;
+    while ((m = backtickRe.exec(body)) !== null) {
+      const name = m[1];
+      // Filter: looks like a tool/command name (has extension, or camelCase, or snake_case with underscores)
+      if (/\.|_|-/.test(name) || /^[a-z][a-z0-9]+(?:[A-Z][a-z0-9]+)+$/.test(name)) {
+        if (!backtickItems.includes(name)) backtickItems.push(name);
+      }
+      if (backtickItems.length >= 20) break;
+    }
+    tools.push(...backtickItems);
+  }
+
   return tools.slice(0, 20);
 }
 
@@ -154,39 +315,63 @@ function extractCrossRefs(content, allSlugs) {
 }
 
 async function main() {
-  console.log(`Enrichment script started${dryRun ? ' (DRY RUN)' : ''}`);
+  console.log(`Enrichment script v2 started${dryRun ? ' (DRY RUN)' : ''}${forceAll ? ' (FORCE ALL)' : ''}`);
   if (repoFilter) console.log(`Filtering to repo: ${repoFilter}`);
 
   // Fetch items that need enrichment
+  // With --force: re-process ALL items (overwrite caps/tools/long_description)
+  // Without --force: only items missing data
   let rows;
-  if (repoFilter) {
-    const pattern = `%${repoFilter}%`;
-    rows = await sql`
-      SELECT id, slug, type, name, display_name, description, long_description,
-             capabilities, tools, tags, install_command, github_url
-      FROM agents
-      WHERE (
-        description IS NULL OR description = '' OR description = name
-        OR array_length(capabilities, 1) IS NULL
-        OR array_length(tools, 1) IS NULL
-      )
-      AND github_url LIKE ${pattern}
-      ORDER BY id
-    `;
+  if (forceAll) {
+    if (repoFilter) {
+      const pattern = `%${repoFilter}%`;
+      rows = await sql`
+        SELECT id, slug, type, name, display_name, description, long_description,
+               capabilities, tools, tags, install_command, github_url
+        FROM agents
+        WHERE github_url LIKE ${pattern}
+        ORDER BY id
+      `;
+    } else {
+      rows = await sql`
+        SELECT id, slug, type, name, display_name, description, long_description,
+               capabilities, tools, tags, install_command, github_url
+        FROM agents
+        ORDER BY id
+      `;
+    }
   } else {
-    rows = await sql`
-      SELECT id, slug, type, name, display_name, description, long_description,
-             capabilities, tools, tags, install_command, github_url
-      FROM agents
-      WHERE (
-        description IS NULL OR description = '' OR description = name
-        OR array_length(capabilities, 1) IS NULL
-        OR array_length(tools, 1) IS NULL
-      )
-      ORDER BY id
-    `;
+    if (repoFilter) {
+      const pattern = `%${repoFilter}%`;
+      rows = await sql`
+        SELECT id, slug, type, name, display_name, description, long_description,
+               capabilities, tools, tags, install_command, github_url
+        FROM agents
+        WHERE (
+          description IS NULL OR description = '' OR description = name
+          OR array_length(capabilities, 1) IS NULL
+          OR array_length(tools, 1) IS NULL
+          OR long_description IS NULL OR long_description = ''
+        )
+        AND github_url LIKE ${pattern}
+        ORDER BY id
+      `;
+    } else {
+      rows = await sql`
+        SELECT id, slug, type, name, display_name, description, long_description,
+               capabilities, tools, tags, install_command, github_url
+        FROM agents
+        WHERE (
+          description IS NULL OR description = '' OR description = name
+          OR array_length(capabilities, 1) IS NULL
+          OR array_length(tools, 1) IS NULL
+          OR long_description IS NULL OR long_description = ''
+        )
+        ORDER BY id
+      `;
+    }
   }
-  console.log(`Found ${rows.length} items to enrich`);
+  console.log(`Found ${rows.length} items to process`);
 
   // Get all slugs for cross-reference detection
   const allSlugsResult = await sql`SELECT slug FROM agents`;
@@ -220,13 +405,33 @@ async function main() {
         ? (fm.description || extractDescription(content) || row.description)
         : row.description;
 
+      // Capabilities: frontmatter > body extraction. With --force, always re-extract.
       const fmCaps = Array.isArray(fm.capabilities) ? fm.capabilities : [];
       const bodyCaps = extractCapabilities(content);
-      const newCaps = (row.capabilities?.length > 0) ? row.capabilities : (fmCaps.length > 0 ? fmCaps : bodyCaps);
+      let newCaps;
+      if (forceAll || !row.capabilities?.length) {
+        newCaps = fmCaps.length > 0 ? fmCaps : bodyCaps;
+      } else {
+        newCaps = row.capabilities;
+      }
 
-      const fmTools = Array.isArray(fm.tools) ? fm.tools : [];
+      // Tools: frontmatter > body extraction. With --force, always re-extract.
+      const fmToolsList = Array.isArray(fm.tools) ? fm.tools : [];
       const bodyTools = extractTools(content);
-      const newTools = (row.tools?.length > 0) ? row.tools : (fmTools.length > 0 ? fmTools : bodyTools);
+      let newTools;
+      if (forceAll || !row.tools?.length) {
+        newTools = fmToolsList.length > 0 ? fmToolsList : bodyTools;
+      } else {
+        newTools = row.tools;
+      }
+
+      // Long description: always fill if empty or --force
+      let newLongDesc;
+      if (forceAll || !row.long_description) {
+        newLongDesc = extractLongDescription(content);
+      } else {
+        newLongDesc = row.long_description;
+      }
 
       const crossRefs = extractCrossRefs(content, allSlugs.filter(s => s !== row.slug));
       const existingTags = row.tags || [];
@@ -237,8 +442,9 @@ async function main() {
       const capsChanged = JSON.stringify(newCaps) !== JSON.stringify(row.capabilities);
       const toolsChanged = JSON.stringify(newTools) !== JSON.stringify(row.tools);
       const tagsChanged = JSON.stringify(newTags) !== JSON.stringify(existingTags);
+      const longDescChanged = newLongDesc !== (row.long_description || '');
 
-      if (!descChanged && !capsChanged && !toolsChanged && !tagsChanged) {
+      if (!descChanged && !capsChanged && !toolsChanged && !tagsChanged && !longDescChanged) {
         skipped++;
         continue;
       }
@@ -248,6 +454,7 @@ async function main() {
         if (descChanged) console.log(`    description: "${newDesc?.slice(0, 80)}..."`);
         if (capsChanged) console.log(`    capabilities: [${newCaps?.length} items]`);
         if (toolsChanged) console.log(`    tools: [${newTools?.length} items]`);
+        if (longDescChanged) console.log(`    long_description: ${newLongDesc?.length} chars`);
         if (tagsChanged) console.log(`    tags: +${newTags.length - existingTags.length} cross-refs`);
       } else {
         await sql`
@@ -255,16 +462,17 @@ async function main() {
           SET description = ${newDesc},
               capabilities = ${newCaps},
               tools = ${newTools},
+              long_description = ${newLongDesc},
               tags = ${newTags},
               updated_at = NOW()
           WHERE id = ${row.id}
         `;
-        console.log(`  UPDATED ${row.slug}`);
+        console.log(`  UPDATED ${row.slug} (caps:${newCaps?.length || 0} tools:${newTools?.length || 0} longDesc:${newLongDesc?.length || 0})`);
       }
       updated++;
 
-      // Rate limit: 100ms between requests
-      await new Promise(r => setTimeout(r, 100));
+      // Rate limit: 50ms between requests
+      await new Promise(r => setTimeout(r, 50));
     } catch (err) {
       console.log(`  ERROR ${row.slug}: ${err.message}`);
       failed++;

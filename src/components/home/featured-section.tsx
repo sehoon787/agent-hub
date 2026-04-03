@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Bot, Sparkles } from 'lucide-react';
 import { getFeaturedAgents, getRecentAgents } from '@/lib/data';
 import { AgentCard } from '@/components/cards/agent-card';
 
@@ -36,8 +37,39 @@ export async function FeaturedSection() {
           View all &rarr;
         </Link>
       </div>
-      <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {recent.map((a) => <AgentCard key={a.slug} agent={a} />)}
+      <div className="mt-6 space-y-10">
+        {(() => {
+          const recentAgents = recent.filter((a) => a.type !== 'skill');
+          const recentSkills = recent.filter((a) => a.type === 'skill');
+          return (
+            <>
+              {recentAgents.length > 0 && (
+                <section>
+                  <div className="flex items-center gap-2">
+                    <Bot className="h-5 w-5 text-violet-400" />
+                    <h3 className="text-lg font-semibold text-zinc-100">Agents</h3>
+                    <span className="text-sm text-zinc-500">({recentAgents.length})</span>
+                  </div>
+                  <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {recentAgents.map((a) => <AgentCard key={a.slug} agent={a} />)}
+                  </div>
+                </section>
+              )}
+              {recentSkills.length > 0 && (
+                <section>
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="h-5 w-5 text-cyan-400" />
+                    <h3 className="text-lg font-semibold text-zinc-100">Skills</h3>
+                    <span className="text-sm text-zinc-500">({recentSkills.length})</span>
+                  </div>
+                  <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {recentSkills.map((a) => <AgentCard key={a.slug} agent={a} />)}
+                  </div>
+                </section>
+              )}
+            </>
+          );
+        })()}
       </div>
     </section>
   );
