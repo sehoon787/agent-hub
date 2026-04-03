@@ -11,10 +11,14 @@ config({ path: '.env.local' });
 
 const sql = neon(process.env.DATABASE_URL);
 
-const TOKEN = process.env.GITHUB_TOKEN || '';
+const TOKEN = process.env.GITHUB_TOKEN;
+if (!TOKEN) {
+  console.error('Error: GITHUB_TOKEN is required. Add it to .env.local');
+  process.exit(1);
+}
 const headers = {
   Accept: 'application/vnd.github.v3+json',
-  ...(TOKEN ? { Authorization: `Bearer ${TOKEN}` } : {}),
+  Authorization: `Bearer ${TOKEN}`,
 };
 
 // Repos to collect from. `path` is the directory containing .md agent files.
@@ -70,6 +74,19 @@ const REPOS = [
   { owner: 'alirezarezvani', repo: 'claude-skills', path: 'skills', recursive: true, platform: 'universal' },
   { owner: 'rohitg00', repo: 'awesome-claude-code-toolkit', path: 'skills', recursive: true },
 ];
+
+const args = process.argv.slice(2);
+const repoFilterIdx = args.indexOf('--repo');
+let reposToScan = REPOS;
+if (repoFilterIdx !== -1 && args[repoFilterIdx + 1]) {
+  const [owner, repo] = args[repoFilterIdx + 1].split('/');
+  reposToScan = REPOS.filter(r => r.owner === owner && r.repo === repo);
+  if (reposToScan.length === 0) {
+    console.error(`Error: ${args[repoFilterIdx + 1]} not found in REPOS array`);
+    process.exit(1);
+  }
+  console.log(`Filtering to ${reposToScan.length} entries for ${owner}/${repo}`);
+}
 
 const VALID_CATEGORIES = ['orchestrator', 'specialist', 'worker', 'analyst'];
 const VALID_MODELS = ['opus', 'sonnet', 'haiku', 'gemini-2.5-pro', 'gemini-2.5-flash', 'gpt-5.4', 'gpt-5.4-mini', 'custom'];
@@ -211,7 +228,7 @@ async function main() {
   const newAgents = [];
   let totalSkipped = 0;
 
-  for (const { owner, repo, path, recursive, platform: repoPlatform } of REPOS) {
+  for (const { owner, repo, path, recursive, platform: repoPlatform } of reposToScan) {
     console.log(`\nScanning ${owner}/${repo} (path: ${path || '/'})...`);
 
     const mdFiles = await listMdFiles(owner, repo, path, recursive);
