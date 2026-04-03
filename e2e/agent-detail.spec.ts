@@ -47,9 +47,9 @@ test.describe('Agent Detail Page', () => {
     await expect(page.locator('h2:has-text("Capabilities")')).toBeVisible()
   })
 
-  test('should show tools section', async ({ page }) => {
+  test('should hide tools section when agent has no tools', async ({ page }) => {
     await page.goto('/agents/hephaestus')
-    await expect(page.locator('h2:has-text("Tools")')).toBeVisible()
+    await expect(page.locator('h2:has-text("Tools")')).not.toBeVisible()
   })
 
   test('should have tabs for Overview and Configuration', async ({ page }) => {
