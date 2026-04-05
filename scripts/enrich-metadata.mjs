@@ -98,7 +98,7 @@ function extractDescription(content) {
       paragraph = '';
       continue;
     }
-    if (trimmed.startsWith('```') || trimmed.startsWith('|') || trimmed.startsWith('-')) continue;
+    if (trimmed.startsWith('```') || trimmed.startsWith('|') || trimmed.startsWith('-') || trimmed.startsWith('**')) continue;
     paragraph += (paragraph ? ' ' : '') + trimmed;
   }
   return paragraph.slice(0, 500) || '';

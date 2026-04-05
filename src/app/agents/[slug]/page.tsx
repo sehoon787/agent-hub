@@ -11,6 +11,7 @@ import { AgentCard } from '@/components/cards/agent-card';
 import { AgentJsonLd, BreadcrumbJsonLd } from '@/components/seo/json-ld';
 import { AgentDisplayName } from '@/components/ui/agent-display-name';
 import { FavoriteButton } from '@/components/favorites/favorite-button';
+import { MarkdownContent } from '@/components/ui/markdown-content';
 
 export const revalidate = 60;
 
@@ -102,7 +103,9 @@ export default async function AgentDetailPage({
       {/* Breadcrumb */}
       <nav className="flex items-center justify-between text-sm text-zinc-500">
         <div className="flex items-center gap-1">
-          <Link href="/agents" className="hover:text-zinc-300">Agents</Link>
+          <Link href={agent.type === 'skill' ? '/skills' : '/agents'} className="hover:text-zinc-300">
+            {agent.type === 'skill' ? 'Skills' : 'Agents'}
+          </Link>
           <ChevronRight className="h-3 w-3" />
           <span className="text-zinc-300"><AgentDisplayName displayName={agent.displayName} variant="inline" /></span>
         </div>
@@ -190,9 +193,9 @@ export default async function AgentDetailPage({
           {agent.longDescription && (
             <div>
               <h2 className="text-lg font-semibold text-zinc-100">Description</h2>
-              <p className="mt-2 text-sm leading-relaxed text-zinc-400">
-                {agent.longDescription}
-              </p>
+              <div className="mt-2">
+                <MarkdownContent content={agent.longDescription} />
+              </div>
             </div>
           )}
           {agent.capabilities.length > 0 && (
