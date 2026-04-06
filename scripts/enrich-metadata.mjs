@@ -65,7 +65,10 @@ function parseFrontmatter(content) {
       currentList = null;
       const val = kvMatch[2].trim();
       if (val) {
-        result[currentKey] = val.replace(/^["']|["']$/g, '');
+        // Strip outer quotes, then strip again to handle double-quoted values like ""value""
+        let cleaned = val.replace(/^["']|["']$/g, '');
+        cleaned = cleaned.replace(/^["']|["']$/g, '');
+        result[currentKey] = cleaned;
       }
     } else if (currentKey && !currentList && line.trim()) {
       // Continuation of multiline value
@@ -98,7 +101,13 @@ function extractDescription(content) {
       paragraph = '';
       continue;
     }
+    // Skip markdown syntax and code artifacts
     if (trimmed.startsWith('```') || trimmed.startsWith('|') || trimmed.startsWith('-') || trimmed.startsWith('**')) continue;
+    if (trimmed.startsWith('>')) continue;  // blockquotes
+    if (trimmed.startsWith('├') || trimmed.startsWith('└') || trimmed.startsWith('│')) continue;  // file trees
+    if (trimmed.startsWith('[') && trimmed.includes('](')) continue;  // markdown links
+    if (trimmed.startsWith('{') || trimmed.startsWith('*')) continue;  // JSON/asterisk
+    if (trimmed.startsWith('|-') || trimmed.startsWith('>-')) continue;  // yaml-like artifacts
     paragraph += (paragraph ? ' ' : '') + trimmed;
   }
   return paragraph.slice(0, 500) || '';
